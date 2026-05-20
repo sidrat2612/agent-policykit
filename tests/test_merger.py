@@ -4,10 +4,10 @@ from pathlib import Path
 
 import pytest
 
-from agent_guardrails.core.merger import filter_bundle_by_severity, merge_packs
-from agent_guardrails.core.models import PolicyBundle, ProjectContext, Rule, RulePack
-from agent_guardrails.core.policy_engine import build_policy_bundle, list_available_packs
-from agent_guardrails.types import ProjectType, RuleCategory, Severity
+from agent_policykit.core.merger import filter_bundle_by_severity, merge_packs
+from agent_policykit.core.models import PolicyBundle, ProjectContext, Rule, RulePack
+from agent_policykit.core.policy_engine import build_policy_bundle, list_available_packs
+from agent_policykit.types import ProjectType, RuleCategory, Severity
 
 
 def _make_rule(id: str, severity: Severity = Severity.MEDIUM) -> Rule:

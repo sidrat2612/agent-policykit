@@ -26,6 +26,10 @@ env/
 .coverage
 htmlcov/
 .tox/
+.ruff_cache/
+
+# Local temp workspaces
+temp_task*/
 
 # OS
 .DS_Store

@@ -4,11 +4,11 @@ from pathlib import Path
 
 import pytest
 
-from agent_guardrails.analysis.detector import detect_project_context
-from agent_guardrails.analysis.framework_detector import detect_frameworks
-from agent_guardrails.analysis.language_detector import detect_languages
-from agent_guardrails.analysis.project_type_detector import detect_project_type
-from agent_guardrails.types import ProjectType
+from agent_policykit.analysis.detector import detect_project_context
+from agent_policykit.analysis.framework_detector import detect_frameworks
+from agent_policykit.analysis.language_detector import detect_languages
+from agent_policykit.analysis.project_type_detector import detect_project_type
+from agent_policykit.types import ProjectType
 
 
 class TestLanguageDetector:
@@ -140,5 +140,5 @@ class TestDetectProjectContext:
         (github_dir / "copilot-instructions.md").write_text("# Instructions")
 
         ctx = detect_project_context(tmp_path)
-        from agent_guardrails.types import AgentTarget
+        from agent_policykit.types import AgentTarget
         assert AgentTarget.COPILOT_REPO in ctx.targets

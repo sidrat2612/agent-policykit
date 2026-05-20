@@ -4,10 +4,10 @@ from pathlib import Path
 
 import pytest
 
-from agent_guardrails.core.diff_engine import compute_diff, _extract_managed_section
-from agent_guardrails.core.models import AdapterOutput
-from agent_guardrails.core.update_engine import apply_updates
-from agent_guardrails.types import MergeStrategy
+from agent_policykit.core.diff_engine import compute_diff, _extract_managed_section
+from agent_policykit.core.models import AdapterOutput
+from agent_policykit.core.update_engine import apply_updates
+from agent_policykit.types import MergeStrategy
 
 
 class TestDiffEngine:
@@ -37,15 +37,15 @@ class TestDiffEngine:
         assert result.modified_files[0].added_lines > 0
 
     def test_managed_section_diff(self, tmp_path):
-        existing = "# My Notes\n\n<!-- agent-guardrails:managed -->\nOld rules\n<!-- agent-guardrails:end -->\n\n# Custom\n"
-        proposed = "<!-- agent-guardrails:managed -->\nNew rules\n<!-- agent-guardrails:end -->\n"
+        existing = "# My Notes\n\n<!-- agent-policykit:managed -->\nOld rules\n<!-- agent-policykit:end -->\n\n# Custom\n"
+        proposed = "<!-- agent-policykit:managed -->\nNew rules\n<!-- agent-policykit:end -->\n"
         (tmp_path / "test.md").write_text(existing)
         outputs = [AdapterOutput(path="test.md", content=proposed)]
         result = compute_diff(tmp_path, outputs)
         assert result.has_changes
 
     def test_managed_section_unchanged(self, tmp_path):
-        managed = "<!-- agent-guardrails:managed -->\nRules\n<!-- agent-guardrails:end -->"
+        managed = "<!-- agent-policykit:managed -->\nRules\n<!-- agent-policykit:end -->"
         existing = f"# Header\n\n{managed}\n\n# Custom\n"
         proposed = f"{managed}\n"
         (tmp_path / "test.md").write_text(existing)
@@ -58,7 +58,7 @@ class TestExtractManagedSection:
     """Tests for managed section extraction."""
 
     def test_extract_present(self):
-        content = "header\n<!-- agent-guardrails:managed -->\nstuff\n<!-- agent-guardrails:end -->\nfooter"
+        content = "header\n<!-- agent-policykit:managed -->\nstuff\n<!-- agent-policykit:end -->\nfooter"
         section = _extract_managed_section(content)
         assert section is not None
         assert "stuff" in section
@@ -105,8 +105,8 @@ class TestUpdateEngine:
         assert (tmp_path / "file.md").read_text() == "new"
 
     def test_section_merge_preserves_user_content(self, tmp_path):
-        existing = "# My Custom Header\n\n<!-- agent-guardrails:managed -->\nOld rules\n<!-- agent-guardrails:end -->\n\n# My Custom Footer\n"
-        proposed = "<!-- agent-guardrails:managed -->\nNew rules\n<!-- agent-guardrails:end -->\n"
+        existing = "# My Custom Header\n\n<!-- agent-policykit:managed -->\nOld rules\n<!-- agent-policykit:end -->\n\n# My Custom Footer\n"
+        proposed = "<!-- agent-policykit:managed -->\nNew rules\n<!-- agent-policykit:end -->\n"
         (tmp_path / "file.md").write_text(existing)
         outputs = [AdapterOutput(path="file.md", content=proposed, merge_strategy=MergeStrategy.SECTION_MERGE)]
         result = apply_updates(tmp_path, outputs)

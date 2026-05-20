@@ -1,17 +1,17 @@
-# agent-guardrails
+# agent-policykit
 
 Universal instruction compiler for coding agents.
 
 ## Installation
 
 ```bash
-pip install agent-guardrails
+pip install agent-policykit
 ```
 
 ## Usage
 
 ```bash
-agent-guardrails --help
-agent-guardrails detect
-agent-guardrails generate --target copilot,agents-md
+agent-policykit --help
+agent-policykit detect
+agent-policykit generate --target copilot,agents-md
 ```

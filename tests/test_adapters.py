@@ -4,18 +4,18 @@ from pathlib import Path
 
 import pytest
 
-from agent_guardrails.adapters import get_adapter, list_adapters
-from agent_guardrails.adapters.agents_md import AgentsMdAdapter
-from agent_guardrails.adapters.aider import AiderAdapter
-from agent_guardrails.adapters.claude_code import ClaudeCodeAdapter
-from agent_guardrails.adapters.codex import CodexAdapter
-from agent_guardrails.adapters.copilot_path import CopilotPathAdapter
-from agent_guardrails.adapters.copilot_repo import CopilotRepoAdapter
-from agent_guardrails.adapters.cursor import CursorAdapter
-from agent_guardrails.adapters.gemini_cli import GeminiCliAdapter
-from agent_guardrails.core.models import PolicyBundle, ProjectContext, Rule
-from agent_guardrails.core.policy_engine import build_policy_bundle
-from agent_guardrails.types import AgentTarget, MergeStrategy, ProjectType, RuleCategory, Severity
+from agent_policykit.adapters import get_adapter, list_adapters
+from agent_policykit.adapters.agents_md import AgentsMdAdapter
+from agent_policykit.adapters.aider import AiderAdapter
+from agent_policykit.adapters.claude_code import ClaudeCodeAdapter
+from agent_policykit.adapters.codex import CodexAdapter
+from agent_policykit.adapters.copilot_path import CopilotPathAdapter
+from agent_policykit.adapters.copilot_repo import CopilotRepoAdapter
+from agent_policykit.adapters.cursor import CursorAdapter
+from agent_policykit.adapters.gemini_cli import GeminiCliAdapter
+from agent_policykit.core.models import PolicyBundle, ProjectContext, Rule
+from agent_policykit.core.policy_engine import build_policy_bundle
+from agent_policykit.types import AgentTarget, MergeStrategy, ProjectType, RuleCategory, Severity
 
 
 @pytest.fixture
@@ -66,8 +66,8 @@ class TestCopilotRepoAdapter:
         adapter = CopilotRepoAdapter()
         outputs = adapter.render(sample_bundle, sample_context)
         content = outputs[0].content
-        assert "<!-- agent-guardrails:managed -->" in content
-        assert "<!-- agent-guardrails:end -->" in content
+        assert "<!-- agent-policykit:managed -->" in content
+        assert "<!-- agent-policykit:end -->" in content
 
     def test_render_contains_rules(self, sample_bundle, sample_context):
         adapter = CopilotRepoAdapter()

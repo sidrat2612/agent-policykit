@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from agent_guardrails.core.loader import (
+from agent_policykit.core.loader import (
     PACKS_DIR,
     load_framework_pack,
     load_governance_packs,
@@ -13,8 +13,8 @@ from agent_guardrails.core.loader import (
     load_packs_from_directory,
     load_project_type_pack,
 )
-from agent_guardrails.core.models import RulePack
-from agent_guardrails.types import RuleCategory
+from agent_policykit.core.models import RulePack
+from agent_policykit.types import RuleCategory
 
 
 class TestLoadPackFile:

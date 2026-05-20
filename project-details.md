@@ -1,17 +1,17 @@
 ## Project identity
 
-**Project name:** `agent-guardrails` [blog.gitguardian](https://blog.gitguardian.com/github-copilot-security-and-privacy/)
-**Python package:** `agent_guardrails` [blog.gitguardian](https://blog.gitguardian.com/github-copilot-security-and-privacy/)
-**CLI command:** `agent-guardrails` [blog.gitguardian](https://blog.gitguardian.com/github-copilot-security-and-privacy/)
+**Project name:** `agent-policykit` [blog.gitguardian](https://blog.gitguardian.com/github-copilot-security-and-privacy/)
+**Python package:** `agent_policykit` [blog.gitguardian](https://blog.gitguardian.com/github-copilot-security-and-privacy/)
+**CLI command:** `agent-policykit` [blog.gitguardian](https://blog.gitguardian.com/github-copilot-security-and-privacy/)
 **Tagline:** Universal instruction compiler for coding agents. [blog.gitguardian](https://blog.gitguardian.com/github-copilot-security-and-privacy/)
 
-**Definition:** `agent-guardrails` is a Python-based multi-agent instruction compiler that generates secure, compliant, language-aware instruction files for coding agents. [youtube](https://www.youtube.com/watch?v=9x4ekT65HX8)
+**Definition:** `agent-policykit` is a Python-based multi-agent instruction compiler that generates secure, compliant, language-aware instruction files for coding agents. [youtube](https://www.youtube.com/watch?v=9x4ekT65HX8)
 
 The project exists to solve a specific problem: teams should not have to manually maintain separate prompt files and rule documents for every coding agent. Instead, one canonical governance model should produce all required instruction artifacts for the repository and the agents working inside it. [youtube](https://www.youtube.com/watch?v=9x4ekT65HX8)
 
 ## Mission
 
-The mission of `agent-guardrails` is to help engineering teams define once and enforce everywhere. It should generate strong instructions for code generation, code review, refactoring, testing, architecture decisions, and infrastructure work so that coding agents behave more like disciplined senior engineers and less like generic autocomplete tools. [youtube](https://www.youtube.com/watch?v=9x4ekT65HX8)
+The mission of `agent-policykit` is to help engineering teams define once and enforce everywhere. It should generate strong instructions for code generation, code review, refactoring, testing, architecture decisions, and infrastructure work so that coding agents behave more like disciplined senior engineers and less like generic autocomplete tools. [youtube](https://www.youtube.com/watch?v=9x4ekT65HX8)
 
 The system should support:
 - Repository-wide instructions. [youtube](https://www.youtube.com/watch?v=9x4ekT65HX8)
@@ -23,7 +23,7 @@ The system should support:
 
 ## Core product concept
 
-`agent-guardrails` is not just a prompt library. It is a Python engine that:
+`agent-policykit` is not just a prompt library. It is a Python engine that:
 - Loads a shared engineering governance core.
 - Applies language-specific rule packs.
 - Applies framework-specific rule packs.
@@ -35,7 +35,7 @@ The architecture follows a “canonical policy model + target-specific renderer�
 
 ## Supported instruction targets
 
-Version 1 of `agent-guardrails` should support these output types:
+Version 1 of `agent-policykit` should support these output types:
 
 ### GitHub Copilot
 - `.github/copilot-instructions.md` for repository-wide instructions. [youtube](https://www.youtube.com/watch?v=9x4ekT65HX8)
@@ -67,7 +67,7 @@ The first implementation does not need bespoke rendering for every platform, bec
 
 ## Supported agents
 
-`agent-guardrails` should define two support tiers.
+`agent-policykit` should define two support tiers.
 
 ### Tier 1: first-class adapters
 These should be built first because they directly match documented instruction formats or widely used agent workflows:
@@ -102,10 +102,10 @@ This tiered model keeps V1 practical while still leveraging the broader cross-ag
 
 ## Folder structure
 
-Use this repository structure for `agent-guardrails`:
+Use this repository structure for `agent-policykit`:
 
 ```text
-agent-guardrails/
+agent-policykit/
 ├── pyproject.toml
 ├── README.md
 ├── LICENSE
@@ -118,7 +118,7 @@ agent-guardrails/
 │   ├── project-types.md
 │   └── examples/
 ├── src/
-│   └── agent_guardrails/
+│   └── agent_policykit/
 │       ├── __init__.py
 │       ├── cli.py
 │       ├── config.py
@@ -241,7 +241,7 @@ This layout separates policy modeling, repo analysis, language packs, framework 
 
 ## Canonical policy model
 
-The heart of `agent-guardrails` should be a canonical internal policy model, not a collection of ad hoc markdown files. This model is the source of truth, and adapters only transform it into target-specific instruction formats. [youtube](https://www.youtube.com/watch?v=9x4ekT65HX8)
+The heart of `agent-policykit` should be a canonical internal policy model, not a collection of ad hoc markdown files. This model is the source of truth, and adapters only transform it into target-specific instruction formats. [youtube](https://www.youtube.com/watch?v=9x4ekT65HX8)
 
 The canonical policy bundle should include:
 - Governance rules
@@ -278,7 +278,7 @@ PolicyBundle(
 
 ## Language pack design
 
-`agent-guardrails` should support at least **28 language packs** in the initial architecture:
+`agent-policykit` should support at least **28 language packs** in the initial architecture:
 
 - Python
 - JavaScript
@@ -439,7 +439,7 @@ For example:
 
 ## Governance baseline
 
-Every generated instruction set from `agent-guardrails` must enforce:
+Every generated instruction set from `agent-policykit` must enforce:
 - Security by default
 - Least privilege
 - Deny by default
@@ -473,7 +473,7 @@ The governance baseline must cover:
 
 ## Review mode
 
-`agent-guardrails` must support a review-mode overlay that makes coding agents behave like strict, skeptical, hard-to-impress senior reviewers. The review mode should be blunt, technically sharp, and aggressive about identifying missing safeguards, but still professional and actionable. [youtube](https://www.youtube.com/watch?v=9x4ekT65HX8)
+`agent-policykit` must support a review-mode overlay that makes coding agents behave like strict, skeptical, hard-to-impress senior reviewers. The review mode should be blunt, technically sharp, and aggressive about identifying missing safeguards, but still professional and actionable. [youtube](https://www.youtube.com/watch?v=9x4ekT65HX8)
 
 Review-mode instructions should require agents to inspect:
 - Functional correctness
@@ -490,7 +490,7 @@ The system should also support a “grumpy reviewer” tone layer for code revie
 
 ## Update and merge behavior
 
-When `agent-guardrails` updates an existing repository’s instructions, it must:
+When `agent-policykit` updates an existing repository’s instructions, it must:
 - Preserve strong safeguards unless explicitly told to weaken them
 - Detect duplication
 - Merge overlapping rules carefully
@@ -535,13 +535,13 @@ Example adapters:
 
 ## CLI responsibilities
 
-The `agent-guardrails` CLI should support commands such as:
-- `agent-guardrails init`
-- `agent-guardrails detect`
-- `agent-guardrails generate`
-- `agent-guardrails update`
-- `agent-guardrails diff`
-- `agent-guardrails validate`
+The `agent-policykit` CLI should support commands such as:
+- `agent-policykit init`
+- `agent-policykit detect`
+- `agent-policykit generate`
+- `agent-policykit update`
+- `agent-policykit diff`
+- `agent-policykit validate`
 
 Typical workflow:
 1. Detect repository stack and structure.
@@ -557,7 +557,7 @@ Typical workflow:
 
 ## First milestone
 
-The best first milestone for `agent-guardrails` is:
+The best first milestone for `agent-policykit` is:
 - Implement canonical policy models.
 - Implement governance packs.
 - Implement five language packs: Python, TypeScript, Java, Go, C#.
@@ -570,7 +570,7 @@ That gets the project to a useful V1 quickly using instruction formats that are 
 
 ## Final scope
 
-The final scope of `agent-guardrails` is:
+The final scope of `agent-policykit` is:
 
 - A Python-based multi-agent instruction compiler. [youtube](https://www.youtube.com/watch?v=9x4ekT65HX8)
 - A canonical policy engine with governance, language, framework, and project-type packs.
@@ -592,8 +592,8 @@ The final scope of `agent-guardrails` is:
 | Template engine | Jinja2 |
 | Pack format | YAML (human-readable, declarative) |
 | Python version | 3.11+ (modern typing: `Self`, `TypeAlias`) |
-| Config file | `[tool.agent-guardrails]` in `pyproject.toml` — no separate config file |
-| Section ownership | `<!-- agent-guardrails:managed -->` HTML comments mark tool-managed sections; unmarked sections are user-owned and preserved on update |
+| Config file | `[tool.agent-policykit]` in `pyproject.toml` — no separate config file |
+| Section ownership | `<!-- agent-policykit:managed -->` HTML comments mark tool-managed sections; unmarked sections are user-owned and preserved on update |
 | Security stance | Security rules cannot be silently downgraded; `--force` required for weakening |
 | Output size management | Renderer auto-condenses when approaching limits (Codex 32 KiB, Claude Code 200 lines, Cursor 500 lines); warns user; splits only if condensing is insufficient and adapter supports multi-file |
 | Review mode toggle | CLI flag `--mode review` activates review overlay across all adapters |
@@ -669,15 +669,15 @@ project_doc_max_bytes = 32768
 
 Files to create:
 - `pyproject.toml`
-- `src/agent_guardrails/__init__.py`
-- `src/agent_guardrails/cli.py`
-- `src/agent_guardrails/config.py`
-- `src/agent_guardrails/types.py`
-- `src/agent_guardrails/core/__init__.py`
-- `src/agent_guardrails/core/models.py`
+- `src/agent_policykit/__init__.py`
+- `src/agent_policykit/cli.py`
+- `src/agent_policykit/config.py`
+- `src/agent_policykit/types.py`
+- `src/agent_policykit/core/__init__.py`
+- `src/agent_policykit/core/models.py`
 
 Work:
-1. Initialize `pyproject.toml` with hatchling, Python 3.11+, CLI entry point `agent-guardrails`
+1. Initialize `pyproject.toml` with hatchling, Python 3.11+, CLI entry point `agent-policykit`
 2. Define domain models: `Rule`, `RulePack`, `PolicyBundle`, `ProjectContext`, `AdapterOutput`
 3. Define enums: `RuleCategory`, `Severity`, `MergeStrategy`, `AgentTarget`
 4. CLI skeleton with click: subcommands `init`, `detect`, `generate`, `update`, `diff`, `validate`
@@ -685,7 +685,7 @@ Work:
 
 Verification:
 - `pip install -e .` succeeds
-- `agent-guardrails --help` displays subcommands
+- `agent-policykit --help` displays subcommands
 - Models can be instantiated
 
 ---
@@ -695,15 +695,15 @@ Verification:
 **Goal:** YAML pack system with governance packs loaded and validated.
 
 Files to create:
-- `src/agent_guardrails/core/loader.py`
-- `src/agent_guardrails/core/validator.py`
-- `src/agent_guardrails/packs/governance/base.yaml`
-- `src/agent_guardrails/packs/governance/security.yaml`
-- `src/agent_guardrails/packs/governance/compliance.yaml`
-- `src/agent_guardrails/packs/governance/review.yaml`
-- `src/agent_guardrails/packs/governance/architecture.yaml`
-- `src/agent_guardrails/packs/governance/testing.yaml`
-- `src/agent_guardrails/packs/governance/operations.yaml`
+- `src/agent_policykit/core/loader.py`
+- `src/agent_policykit/core/validator.py`
+- `src/agent_policykit/packs/governance/base.yaml`
+- `src/agent_policykit/packs/governance/security.yaml`
+- `src/agent_policykit/packs/governance/compliance.yaml`
+- `src/agent_policykit/packs/governance/review.yaml`
+- `src/agent_policykit/packs/governance/architecture.yaml`
+- `src/agent_policykit/packs/governance/testing.yaml`
+- `src/agent_policykit/packs/governance/operations.yaml`
 
 Work:
 1. YAML loader that reads `.yaml` from `packs/` directories, validates schema, returns typed `RulePack`
@@ -722,11 +722,11 @@ Verification:
 **Goal:** Declarative packs for Python, TypeScript, Java, Go, C#.
 
 Files to create:
-- `src/agent_guardrails/packs/languages/python.yaml`
-- `src/agent_guardrails/packs/languages/typescript.yaml`
-- `src/agent_guardrails/packs/languages/java.yaml`
-- `src/agent_guardrails/packs/languages/go.yaml`
-- `src/agent_guardrails/packs/languages/csharp.yaml`
+- `src/agent_policykit/packs/languages/python.yaml`
+- `src/agent_policykit/packs/languages/typescript.yaml`
+- `src/agent_policykit/packs/languages/java.yaml`
+- `src/agent_policykit/packs/languages/go.yaml`
+- `src/agent_policykit/packs/languages/csharp.yaml`
 
 Each pack defines: `structure`, `api_rules`, `service_rules`, `data_rules`, `method_rules`, `error_handling_rules`, `logging_rules`, `concurrency_rules`, `testing_rules`, `security_checklist`, `anti_patterns`.
 
@@ -741,9 +741,9 @@ Verification:
 **Goal:** Framework packs for FastAPI, Next.js, Spring Boot.
 
 Files to create:
-- `src/agent_guardrails/packs/frameworks/fastapi.yaml` (extends: python)
-- `src/agent_guardrails/packs/frameworks/nextjs.yaml` (extends: typescript)
-- `src/agent_guardrails/packs/frameworks/spring_boot.yaml` (extends: java)
+- `src/agent_policykit/packs/frameworks/fastapi.yaml` (extends: python)
+- `src/agent_policykit/packs/frameworks/nextjs.yaml` (extends: typescript)
+- `src/agent_policykit/packs/frameworks/spring_boot.yaml` (extends: java)
 
 Each pack defines: `extends_language`, `folder_layout`, `validation_approach`, `controller_conventions`, `dependency_injection`, `model_placement`, `error_handling`, `auth_patterns`, `testing_conventions`, `anti_patterns`.
 
@@ -754,9 +754,9 @@ Each pack defines: `extends_language`, `folder_layout`, `validation_approach`, `
 **Goal:** API service, web app, microservice.
 
 Files to create:
-- `src/agent_guardrails/packs/project_types/api_service.yaml`
-- `src/agent_guardrails/packs/project_types/web_app.yaml`
-- `src/agent_guardrails/packs/project_types/microservice.yaml`
+- `src/agent_policykit/packs/project_types/api_service.yaml`
+- `src/agent_policykit/packs/project_types/web_app.yaml`
+- `src/agent_policykit/packs/project_types/microservice.yaml`
 
 ---
 
@@ -765,8 +765,8 @@ Files to create:
 **Goal:** Merge all packs into a single PolicyBundle with priority resolution and dedup.
 
 Files to create:
-- `src/agent_guardrails/core/merger.py`
-- `src/agent_guardrails/core/policy_engine.py`
+- `src/agent_policykit/core/merger.py`
+- `src/agent_policykit/core/policy_engine.py`
 
 Work:
 1. Merger: governance + language + framework + project-type → `PolicyBundle`. More-specific wins on overlap. Security rules never silently downgraded.
@@ -785,12 +785,12 @@ Verification:
 **Goal:** Auto-detect languages, frameworks, project type from repo contents.
 
 Files to create:
-- `src/agent_guardrails/analysis/__init__.py`
-- `src/agent_guardrails/analysis/language_detector.py`
-- `src/agent_guardrails/analysis/framework_detector.py`
-- `src/agent_guardrails/analysis/project_type_detector.py`
-- `src/agent_guardrails/analysis/repo_detector.py`
-- `src/agent_guardrails/analysis/path_selector.py`
+- `src/agent_policykit/analysis/__init__.py`
+- `src/agent_policykit/analysis/language_detector.py`
+- `src/agent_policykit/analysis/framework_detector.py`
+- `src/agent_policykit/analysis/project_type_detector.py`
+- `src/agent_policykit/analysis/repo_detector.py`
+- `src/agent_policykit/analysis/path_selector.py`
 
 Work:
 1. Language detector: scan file extensions + config files (`package.json`, `pyproject.toml`, `go.mod`, `pom.xml`, `*.csproj`)
@@ -806,17 +806,17 @@ Work:
 **Goal:** Transform PolicyBundle → agent-specific instruction files.
 
 Files to create:
-- `src/agent_guardrails/adapters/__init__.py`
-- `src/agent_guardrails/adapters/base.py`
-- `src/agent_guardrails/adapters/copilot_repo.py`
-- `src/agent_guardrails/adapters/copilot_path.py`
-- `src/agent_guardrails/adapters/agents_md.py`
-- `src/agent_guardrails/templates/copilot_instructions.md.j2`
-- `src/agent_guardrails/templates/path_instructions.md.j2`
-- `src/agent_guardrails/templates/agents.md.j2`
-- `src/agent_guardrails/templates/review_mode.md.j2`
-- `src/agent_guardrails/templates/generic_agent.md.j2`
-- `src/agent_guardrails/core/renderer.py`
+- `src/agent_policykit/adapters/__init__.py`
+- `src/agent_policykit/adapters/base.py`
+- `src/agent_policykit/adapters/copilot_repo.py`
+- `src/agent_policykit/adapters/copilot_path.py`
+- `src/agent_policykit/adapters/agents_md.py`
+- `src/agent_policykit/templates/copilot_instructions.md.j2`
+- `src/agent_policykit/templates/path_instructions.md.j2`
+- `src/agent_policykit/templates/agents.md.j2`
+- `src/agent_policykit/templates/review_mode.md.j2`
+- `src/agent_policykit/templates/generic_agent.md.j2`
+- `src/agent_policykit/core/renderer.py`
 
 Work:
 1. `AgentAdapter` protocol: `name`, `output_paths()`, `render()`, `merge_strategy()`, `size_limit`
@@ -837,12 +837,12 @@ Verification:
 **Goal:** Safe update with conflict detection and dry-run.
 
 Files to create:
-- `src/agent_guardrails/core/diff_engine.py`
-- `src/agent_guardrails/core/update_engine.py`
+- `src/agent_policykit/core/diff_engine.py`
+- `src/agent_policykit/core/update_engine.py`
 
 Work:
 1. Diff engine: compare existing vs. new, produce unified diff, detect security downgrades
-2. Update engine: section-based merge using `<!-- agent-guardrails:managed -->` ownership markers
+2. Update engine: section-based merge using `<!-- agent-policykit:managed -->` ownership markers
    - Tool-managed sections: regenerated freely
    - Unmarked sections: user-owned, preserved on update
    - Security rules: refuse downgrade without `--force`
@@ -860,16 +860,16 @@ Verification:
 **Goal:** Wire all components into working CLI subcommands.
 
 Files to create:
-- `src/agent_guardrails/commands/__init__.py`
-- `src/agent_guardrails/commands/init_cmd.py`
-- `src/agent_guardrails/commands/detect.py`
-- `src/agent_guardrails/commands/generate.py`
-- `src/agent_guardrails/commands/update.py`
-- `src/agent_guardrails/commands/diff.py`
-- `src/agent_guardrails/commands/validate.py`
+- `src/agent_policykit/commands/__init__.py`
+- `src/agent_policykit/commands/init_cmd.py`
+- `src/agent_policykit/commands/detect.py`
+- `src/agent_policykit/commands/generate.py`
+- `src/agent_policykit/commands/update.py`
+- `src/agent_policykit/commands/diff.py`
+- `src/agent_policykit/commands/validate.py`
 
 Commands:
-- `init` — interactive setup: detect repo, ask for targets, write `[tool.agent-guardrails]` config
+- `init` — interactive setup: detect repo, ask for targets, write `[tool.agent-policykit]` config
 - `detect` — run repo analysis, print detected stack
 - `generate` — full pipeline: detect → load → merge → render → write (or `--dry-run`)
 - `update` — regenerate with merge against existing files
@@ -883,11 +883,11 @@ Commands:
 **Goal:** Cursor, Claude Code, Aider, Codex, Gemini CLI adapters.
 
 Files to create:
-- `src/agent_guardrails/adapters/cursor.py`
-- `src/agent_guardrails/adapters/claude_code.py`
-- `src/agent_guardrails/adapters/aider.py`
-- `src/agent_guardrails/adapters/codex.py`
-- `src/agent_guardrails/adapters/gemini_cli.py`
+- `src/agent_policykit/adapters/cursor.py`
+- `src/agent_policykit/adapters/claude_code.py`
+- `src/agent_policykit/adapters/aider.py`
+- `src/agent_policykit/adapters/codex.py`
+- `src/agent_policykit/adapters/gemini_cli.py`
 
 Adapter details:
 - **Cursor** → `.cursor/rules/*.mdc` with YAML frontmatter (`description`, `globs`, `alwaysApply`)
@@ -922,13 +922,13 @@ Files to create:
 ### End-to-end verification checklist
 
 1. `pip install -e ".[dev]"` succeeds
-2. `agent-guardrails --help` shows all subcommands
-3. `agent-guardrails detect` on a FastAPI repo → Python + FastAPI + API service
-4. `agent-guardrails generate --target copilot,agents-md --dry-run` produces valid output
-5. `agent-guardrails generate --target all` writes all instruction files
-6. `agent-guardrails update` preserves user-owned sections and refuses security downgrades without `--force`
-7. `agent-guardrails diff` shows unified diff of pending changes
-8. `agent-guardrails validate` catches policy violations
+2. `agent-policykit --help` shows all subcommands
+3. `agent-policykit detect` on a FastAPI repo → Python + FastAPI + API service
+4. `agent-policykit generate --target copilot,agents-md --dry-run` produces valid output
+5. `agent-policykit generate --target all` writes all instruction files
+6. `agent-policykit update` preserves user-owned sections and refuses security downgrades without `--force`
+7. `agent-policykit diff` shows unified diff of pending changes
+8. `agent-policykit validate` catches policy violations
 9. `pytest` passes all unit and integration tests
 10. Generated `.github/copilot-instructions.md` is valid markdown under ~2 pages
 11. Generated `.github/instructions/*.instructions.md` have valid `applyTo` frontmatter

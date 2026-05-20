@@ -2,9 +2,9 @@
 
 import pytest
 
-from agent_guardrails.core.models import PolicyBundle, Rule, RulePack
-from agent_guardrails.core.validator import validate_bundle, validate_pack, validate_packs
-from agent_guardrails.types import RuleCategory, Severity
+from agent_policykit.core.models import PolicyBundle, Rule, RulePack
+from agent_policykit.core.validator import validate_bundle, validate_pack, validate_packs
+from agent_policykit.types import RuleCategory, Severity
 
 
 def _make_rule(id: str = "test.rule_1", text: str = "Test rule") -> Rule:

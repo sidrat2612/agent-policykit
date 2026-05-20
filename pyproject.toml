@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "agent-guardrails"
+name = "agent-policykit"
 version = "0.1.0"
 description = "Universal instruction compiler for coding agents"
 readme = "README.md"
@@ -39,13 +39,13 @@ dev = [
 ]
 
 [project.scripts]
-agent-guardrails = "agent_guardrails.cli:main"
+agent-policykit = "agent_policykit.cli:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/agent_guardrails"]
+packages = ["src/agent_policykit"]
 
-[tool.agent-guardrails]
-# Configuration for agent-guardrails itself (dogfooding)
+[tool.agent-policykit]
+# Configuration for agent-policykit itself (dogfooding)
 targets = ["copilot", "agents-md"]
 languages = ["python"]
 project_type = "cli_tool"
