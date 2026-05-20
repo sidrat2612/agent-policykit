@@ -4,7 +4,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from agent_policykit.commands.common import console, detect_context_and_bundle, load_all_adapters, render_outputs, resolve_targets
+from agent_policykit.commands.common import (
+    console,
+    detect_context_and_bundle,
+    load_all_adapters,
+    render_outputs,
+    resolve_targets,
+)
 from agent_policykit.core.update_engine import apply_updates
 
 

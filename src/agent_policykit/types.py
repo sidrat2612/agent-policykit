@@ -1,9 +1,9 @@
 """Shared enumerations and type aliases for agent-policykit."""
 
-from enum import Enum
+from enum import StrEnum
 
 
-class RuleCategory(str, Enum):
+class RuleCategory(StrEnum):
     """Categories of rules in the policy system."""
 
     GOVERNANCE = "governance"
@@ -19,7 +19,7 @@ class RuleCategory(str, Enum):
     OUTPUT_CONTRACT = "output_contract"
 
 
-class Severity(str, Enum):
+class Severity(StrEnum):
     """Severity levels for rules."""
 
     CRITICAL = "critical"
@@ -29,7 +29,7 @@ class Severity(str, Enum):
     INFO = "info"
 
 
-class MergeStrategy(str, Enum):
+class MergeStrategy(StrEnum):
     """How an adapter merges with existing files."""
 
     OVERWRITE = "overwrite"
@@ -38,7 +38,7 @@ class MergeStrategy(str, Enum):
     SKIP_IF_EXISTS = "skip_if_exists"
 
 
-class AgentTarget(str, Enum):
+class AgentTarget(StrEnum):
     """Supported agent output targets."""
 
     COPILOT_REPO = "copilot"
@@ -67,7 +67,7 @@ class AgentTarget(str, Enum):
     GEMINI_CLI = "gemini-cli"
 
 
-class ProjectType(str, Enum):
+class ProjectType(StrEnum):
     """Supported project types."""
 
     API_SERVICE = "api_service"

@@ -10,7 +10,6 @@ from rich.console import Console
 from agent_policykit.core.models import AdapterOutput, PolicyBundle, ProjectContext
 from agent_policykit.types import AgentTarget
 
-
 console = Console()
 err_console = Console(stderr=True)
 

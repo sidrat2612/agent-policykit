@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import re
 
-
 _RULE_IDS_RE = re.compile(
     r"<!--\s*agent-policykit:rule-ids:(?P<category>[a-z_]+)=(?P<ids>[^>]*)\s*-->",
     re.IGNORECASE,

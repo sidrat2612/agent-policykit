@@ -6,9 +6,9 @@ import click
 
 from agent_policykit import __version__
 from agent_policykit.commands.detect import run_detect
+from agent_policykit.commands.diff import run_diff
 from agent_policykit.commands.generate import run_generate
 from agent_policykit.commands.init import run_init
-from agent_policykit.commands.diff import run_diff
 from agent_policykit.commands.update import run_update
 from agent_policykit.commands.validate import run_validate
 

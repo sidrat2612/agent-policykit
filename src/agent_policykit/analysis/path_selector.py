@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-from pathlib import Path
 import re
+from pathlib import Path
 
 from agent_policykit.core.models import InstructionScope
-
 
 COMMON_SOURCE_DIRS = [
     "src",

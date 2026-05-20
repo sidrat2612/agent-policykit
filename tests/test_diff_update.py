@@ -1,10 +1,8 @@
 """Tests for the diff and update engines."""
 
-from pathlib import Path
 
-import pytest
 
-from agent_policykit.core.diff_engine import compute_diff, _extract_managed_section
+from agent_policykit.core.diff_engine import _extract_managed_section, compute_diff
 from agent_policykit.core.models import AdapterOutput
 from agent_policykit.core.update_engine import apply_updates
 from agent_policykit.types import MergeStrategy

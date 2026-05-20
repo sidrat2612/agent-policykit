@@ -1,8 +1,6 @@
 """Tests for the pack merger and policy engine."""
 
-from pathlib import Path
 
-import pytest
 
 from agent_policykit.core.merger import build_review_bundle, filter_bundle_by_severity, merge_packs
 from agent_policykit.core.models import PolicyBundle, ProjectContext, Rule, RulePack

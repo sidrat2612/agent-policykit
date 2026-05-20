@@ -10,7 +10,6 @@ from agent_policykit.analysis.detector import detect_project_context
 from agent_policykit.cli import main
 from agent_policykit.types import ProjectType
 
-
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 

@@ -8,7 +8,6 @@ from agent_policykit.core.output_limits import apply_output_limits
 from agent_policykit.core.renderer import render_template
 from agent_policykit.types import AgentTarget, MergeStrategy
 
-
 PLATFORM_MARKDOWN_EXPORTS: dict[AgentTarget, tuple[str, str]] = {
     AgentTarget.GENERIC_MARKDOWN: ("AGENT_POLICY.md", "Generic Markdown Compatibility"),
     AgentTarget.ROOCODE: ("AGENT_POLICY.roocode.md", "RooCode"),

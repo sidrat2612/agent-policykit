@@ -1,6 +1,5 @@
 """Tests for the YAML pack loader."""
 
-from pathlib import Path
 
 import pytest
 
@@ -13,7 +12,6 @@ from agent_policykit.core.loader import (
     load_packs_from_directory,
     load_project_type_pack,
 )
-from agent_policykit.core.models import RulePack
 from agent_policykit.types import RuleCategory
 
 

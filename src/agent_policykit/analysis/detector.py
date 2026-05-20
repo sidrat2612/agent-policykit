@@ -8,15 +8,14 @@ from agent_policykit.analysis.framework_detector import detect_frameworks
 from agent_policykit.analysis.language_detector import detect_languages
 from agent_policykit.analysis.path_selector import (
     build_instruction_scopes,
-    detect_subproject_paths,
     detect_source_paths,
+    detect_subproject_paths,
     detect_test_paths,
     select_instruction_globs,
 )
 from agent_policykit.analysis.project_type_detector import detect_project_type
 from agent_policykit.core.models import ProjectContext
 from agent_policykit.types import AgentTarget
-
 
 # Known agent tool config file patterns
 AGENT_TARGET_MARKERS: dict[AgentTarget, list[str]] = {

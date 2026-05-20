@@ -1,6 +1,5 @@
 """Tests for adapters and renderer."""
 
-from pathlib import Path
 
 import pytest
 
@@ -13,7 +12,10 @@ from agent_policykit.adapters.copilot_path import CopilotPathAdapter
 from agent_policykit.adapters.copilot_repo import CopilotRepoAdapter
 from agent_policykit.adapters.cursor import CursorAdapter
 from agent_policykit.adapters.gemini_cli import GeminiCliAdapter
-from agent_policykit.adapters.generic_markdown import GenericMarkdownAdapter, PLATFORM_MARKDOWN_EXPORTS
+from agent_policykit.adapters.generic_markdown import (
+    PLATFORM_MARKDOWN_EXPORTS,
+    GenericMarkdownAdapter,
+)
 from agent_policykit.analysis.path_selector import build_instruction_scopes
 from agent_policykit.core.models import PolicyBundle, ProjectContext, Rule
 from agent_policykit.core.policy_engine import build_policy_bundle

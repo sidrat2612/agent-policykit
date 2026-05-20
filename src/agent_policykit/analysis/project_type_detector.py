@@ -6,7 +6,6 @@ from pathlib import Path
 
 from agent_policykit.types import ProjectType
 
-
 # Heuristics for project type detection
 PROJECT_TYPE_SIGNALS: dict[ProjectType, dict[str, list[str]]] = {
     ProjectType.API_SERVICE: {

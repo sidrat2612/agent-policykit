@@ -5,8 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 
 from agent_policykit.adapters import get_adapter, list_adapters
-from agent_policykit.commands.common import console, dedupe_outputs, load_all_adapters
 from agent_policykit.analysis.detector import detect_project_context
+from agent_policykit.commands.common import console, dedupe_outputs, load_all_adapters
 from agent_policykit.core.diff_engine import compute_diff
 from agent_policykit.core.policy_engine import build_policy_bundle
 from agent_policykit.core.update_engine import apply_updates

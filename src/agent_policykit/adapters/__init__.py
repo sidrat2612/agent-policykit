@@ -45,7 +45,8 @@ def get_adapter(target: AgentTarget) -> Adapter:
     adapter_cls = _ADAPTER_REGISTRY.get(target)
     if adapter_cls is None:
         raise ValueError(f"No adapter registered for target: {target.value}")
-    return adapter_cls()
+    instance: Adapter = adapter_cls()
+    return instance
 
 
 def list_adapters() -> list[AgentTarget]:

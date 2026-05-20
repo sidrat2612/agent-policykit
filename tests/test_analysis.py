@@ -1,16 +1,14 @@
 """Tests for analysis/detection modules."""
 
-from pathlib import Path
 
-import pytest
 
 from agent_policykit.analysis.detector import detect_project_context
 from agent_policykit.analysis.framework_detector import detect_frameworks
 from agent_policykit.analysis.language_detector import detect_languages
 from agent_policykit.analysis.path_selector import (
     build_instruction_scopes,
-    detect_subproject_paths,
     detect_source_paths,
+    detect_subproject_paths,
     detect_test_paths,
     select_instruction_globs,
 )

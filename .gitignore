@@ -42,3 +42,6 @@ Thumbs.db
 tracely360-out/cache
 tracely360-out/.tracely360_uncached.txt
 tracely360-out/.tracely360_python
+
+# Internal planning docs (kept locally, not in repo)
+project-details.md

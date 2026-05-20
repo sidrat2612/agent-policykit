@@ -61,7 +61,7 @@ def _parse_rules(raw_rules: list[dict | str], category: RuleCategory, pack_id: s
 
 def load_pack_file(path: Path) -> RulePack:
     """Load a single YAML pack file and return a RulePack."""
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         data = yaml.safe_load(f)
 
     if not data or not isinstance(data, dict):
@@ -71,7 +71,7 @@ def load_pack_file(path: Path) -> RulePack:
     if not pack_id:
         raise ValueError(f"Pack file missing required 'id' field: {path}")
 
-    display_name = data.get("display_name", pack_id)
+    display_name: str = data.get("display_name") or pack_id
     category = _parse_category(data.get("category", "governance"))
     priority = data.get("priority", 0)
     applies_when = data.get("applies_when", {})

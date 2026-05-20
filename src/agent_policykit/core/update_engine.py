@@ -8,7 +8,11 @@ from pathlib import Path
 
 from agent_policykit.core.diff_engine import MANAGED_END, MANAGED_START
 from agent_policykit.core.models import AdapterOutput
-from agent_policykit.core.rule_metadata import extract_rule_ids_by_category, find_removed_rule_ids, summarize_removed_rule_ids
+from agent_policykit.core.rule_metadata import (
+    extract_rule_ids_by_category,
+    find_removed_rule_ids,
+    summarize_removed_rule_ids,
+)
 from agent_policykit.types import MergeStrategy
 
 

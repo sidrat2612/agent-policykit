@@ -6,8 +6,8 @@ import difflib
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from agent_policykit.core.rule_metadata import find_removed_rule_ids, summarize_removed_rule_ids
 from agent_policykit.core.models import AdapterOutput
+from agent_policykit.core.rule_metadata import find_removed_rule_ids, summarize_removed_rule_ids
 
 
 @dataclass

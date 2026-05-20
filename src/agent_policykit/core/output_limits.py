@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 import re
+from dataclasses import dataclass
 
 from agent_policykit.core.models import AdapterOutput
-
 
 _SECTION_HEADING_RE = re.compile(r"^(##+)")
 

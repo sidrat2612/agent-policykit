@@ -5,7 +5,12 @@ from __future__ import annotations
 from dataclasses import replace
 
 from agent_policykit.adapters import register_adapter
-from agent_policykit.core.models import AdapterOutput, InstructionScope, PolicyBundle, ProjectContext
+from agent_policykit.core.models import (
+    AdapterOutput,
+    InstructionScope,
+    PolicyBundle,
+    ProjectContext,
+)
 from agent_policykit.core.output_limits import apply_output_limits
 from agent_policykit.core.renderer import render_template
 from agent_policykit.types import AgentTarget, MergeStrategy

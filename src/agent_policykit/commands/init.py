@@ -10,7 +10,6 @@ from agent_policykit.analysis.detector import detect_project_context
 from agent_policykit.commands.common import console
 from agent_policykit.types import AgentTarget
 
-
 DEFAULT_INIT_TARGETS = [
     AgentTarget.COPILOT_REPO,
     AgentTarget.AGENTS_MD,

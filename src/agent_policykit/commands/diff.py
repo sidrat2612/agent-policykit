@@ -5,7 +5,12 @@ from __future__ import annotations
 from pathlib import Path
 
 from agent_policykit.adapters import list_adapters
-from agent_policykit.commands.common import console, detect_context_and_bundle, load_all_adapters, render_outputs
+from agent_policykit.commands.common import (
+    console,
+    detect_context_and_bundle,
+    load_all_adapters,
+    render_outputs,
+)
 
 
 def run_diff() -> None:

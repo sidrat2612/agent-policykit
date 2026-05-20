@@ -3,9 +3,8 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 import re
-
+from pathlib import Path
 
 # Framework markers: (framework_id, detection_files, detection_in_deps)
 FRAMEWORK_MARKERS: list[tuple[str, list[str], list[str]]] = [
