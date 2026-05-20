@@ -6,10 +6,13 @@ import pytest
 
 from agent_guardrails.adapters import get_adapter, list_adapters
 from agent_guardrails.adapters.agents_md import AgentsMdAdapter
+from agent_guardrails.adapters.aider import AiderAdapter
 from agent_guardrails.adapters.claude_code import ClaudeCodeAdapter
+from agent_guardrails.adapters.codex import CodexAdapter
 from agent_guardrails.adapters.copilot_path import CopilotPathAdapter
 from agent_guardrails.adapters.copilot_repo import CopilotRepoAdapter
 from agent_guardrails.adapters.cursor import CursorAdapter
+from agent_guardrails.adapters.gemini_cli import GeminiCliAdapter
 from agent_guardrails.core.models import PolicyBundle, ProjectContext, Rule
 from agent_guardrails.core.policy_engine import build_policy_bundle
 from agent_guardrails.types import AgentTarget, MergeStrategy, ProjectType, RuleCategory, Severity
@@ -40,14 +43,13 @@ class TestAdapterRegistry:
         assert AgentTarget.AGENTS_MD in targets
         assert AgentTarget.CURSOR in targets
         assert AgentTarget.CLAUDE_CODE in targets
+        assert AgentTarget.AIDER in targets
+        assert AgentTarget.CODEX in targets
+        assert AgentTarget.GEMINI_CLI in targets
 
     def test_get_adapter_returns_correct_type(self):
         adapter = get_adapter(AgentTarget.COPILOT_REPO)
         assert isinstance(adapter, CopilotRepoAdapter)
-
-    def test_get_adapter_unknown_raises(self):
-        with pytest.raises(ValueError, match="No adapter registered"):
-            get_adapter(AgentTarget.AIDER)
 
 
 class TestCopilotRepoAdapter:
@@ -112,6 +114,59 @@ class TestClaudeCodeAdapter:
         assert len(outputs) == 1
         assert outputs[0].path == "CLAUDE.md"
         assert "## Engineering Standards" in outputs[0].content
+
+
+class TestAiderAdapter:
+    """Tests for the Aider adapter."""
+
+    def test_render_produces_aider_conf(self, sample_bundle, sample_context):
+        adapter = AiderAdapter()
+        outputs = adapter.render(sample_bundle, sample_context)
+        assert len(outputs) == 1
+        assert outputs[0].path == ".aider.conf.yml"
+        assert outputs[0].merge_strategy == MergeStrategy.OVERWRITE
+
+    def test_render_contains_conventions(self, sample_bundle, sample_context):
+        adapter = AiderAdapter()
+        outputs = adapter.render(sample_bundle, sample_context)
+        content = outputs[0].content
+        assert "conventions:" in content
+
+
+class TestCodexAdapter:
+    """Tests for the Codex adapter."""
+
+    def test_render_produces_codex_instructions(self, sample_bundle, sample_context):
+        adapter = CodexAdapter()
+        outputs = adapter.render(sample_bundle, sample_context)
+        assert len(outputs) == 1
+        assert outputs[0].path == ".codex/instructions.md"
+        assert outputs[0].merge_strategy == MergeStrategy.OVERWRITE
+
+    def test_render_contains_sections(self, sample_bundle, sample_context):
+        adapter = CodexAdapter()
+        outputs = adapter.render(sample_bundle, sample_context)
+        content = outputs[0].content
+        assert "## Engineering Standards" in content
+        assert "## Security" in content
+
+
+class TestGeminiCliAdapter:
+    """Tests for the Gemini CLI adapter."""
+
+    def test_render_produces_gemini_instructions(self, sample_bundle, sample_context):
+        adapter = GeminiCliAdapter()
+        outputs = adapter.render(sample_bundle, sample_context)
+        assert len(outputs) == 1
+        assert outputs[0].path == ".gemini/instructions.md"
+        assert outputs[0].merge_strategy == MergeStrategy.OVERWRITE
+
+    def test_render_contains_sections(self, sample_bundle, sample_context):
+        adapter = GeminiCliAdapter()
+        outputs = adapter.render(sample_bundle, sample_context)
+        content = outputs[0].content
+        assert "## Engineering Standards" in content
+        assert "python" in content.lower()
 
 
 class TestAdapterOutputSizes:

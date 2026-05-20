@@ -95,6 +95,9 @@ def generate(ctx: click.Context, target: tuple[str, ...], dry_run: bool, mode: s
     import agent_guardrails.adapters.agents_md  # noqa: F401
     import agent_guardrails.adapters.cursor  # noqa: F401
     import agent_guardrails.adapters.claude_code  # noqa: F401
+    import agent_guardrails.adapters.aider  # noqa: F401
+    import agent_guardrails.adapters.codex  # noqa: F401
+    import agent_guardrails.adapters.gemini_cli  # noqa: F401
 
     from agent_guardrails.analysis.detector import detect_project_context
     from agent_guardrails.core.merger import filter_bundle_by_severity
@@ -163,6 +166,9 @@ def update(ctx: click.Context, force: bool, dry_run: bool) -> None:
     import agent_guardrails.adapters.agents_md  # noqa: F401
     import agent_guardrails.adapters.cursor  # noqa: F401
     import agent_guardrails.adapters.claude_code  # noqa: F401
+    import agent_guardrails.adapters.aider  # noqa: F401
+    import agent_guardrails.adapters.codex  # noqa: F401
+    import agent_guardrails.adapters.gemini_cli  # noqa: F401
 
     from agent_guardrails.adapters import get_adapter, list_adapters
     from agent_guardrails.analysis.detector import detect_project_context
@@ -217,6 +223,9 @@ def diff(ctx: click.Context) -> None:
     import agent_guardrails.adapters.agents_md  # noqa: F401
     import agent_guardrails.adapters.cursor  # noqa: F401
     import agent_guardrails.adapters.claude_code  # noqa: F401
+    import agent_guardrails.adapters.aider  # noqa: F401
+    import agent_guardrails.adapters.codex  # noqa: F401
+    import agent_guardrails.adapters.gemini_cli  # noqa: F401
 
     from agent_guardrails.adapters import get_adapter, list_adapters
     from agent_guardrails.analysis.detector import detect_project_context
