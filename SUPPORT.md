@@ -1,17 +1,32 @@
 # Support
 
-## How to get help
+Use the right channel so the project stays searchable and maintainable.
 
-- **Bug reports:** Open a [GitHub issue](https://github.com/sidrat2612/agent-policykit/issues/new?template=bug_report.md)
-- **Feature requests:** Open a [GitHub issue](https://github.com/sidrat2612/agent-policykit/issues/new?template=feature_request.md)
-- **Questions:** Open a [GitHub Discussion](https://github.com/sidrat2612/agent-policykit/discussions) or issue
+## Where to ask
 
-## Before opening an issue
+- Usage questions and troubleshooting: open a [GitHub issue](https://github.com/sidrat2612/agent-policykit/issues) with enough context to reproduce the problem.
+- Bug reports: use the [bug report template](https://github.com/sidrat2612/agent-policykit/issues/new?template=bug_report.md).
+- Feature ideas or project direction questions: use the [feature request template](https://github.com/sidrat2612/agent-policykit/issues/new?template=feature_request.md) and explain the use case.
+- Security issues: follow [SECURITY.md](SECURITY.md). Do not file public issues.
+- Code of conduct concerns: follow [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
-1. Check existing [issues](https://github.com/sidrat2612/agent-policykit/issues) for duplicates
-2. Include your Python version, OS, and `agent-policykit` version
-3. Provide a minimal reproducible example if possible
+## What to include
 
-## Security vulnerabilities
+- `agent-policykit` version (`agent-policykit --version` or `pip show agent-policykit`)
+- Python version
+- Operating system
+- Exact command you ran
+- A small reproduction or sample project
+- The relevant output or traceback
 
-**Do not open a public issue for security vulnerabilities.** See [SECURITY.md](SECURITY.md) for responsible disclosure instructions.
+## Response expectations
+
+- Support is best effort.
+- Public threads are preferred so future users can find the answer.
+- If there has been no response after 7 days, add a short follow-up to the same thread.
+
+## Not supported
+
+- Private debugging sessions for general usage questions
+- Requests without reproduction details
+- Security disclosures through public issues

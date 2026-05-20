@@ -10,7 +10,7 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"
 authors = [
-    { name = "siddharth Rathore", email = "siddharth.rathore2612@gmail.com" },
+    { name = "Siddharth Rathore" },
 ]
 keywords = ["ai", "coding-agents", "governance", "instructions", "security"]
 classifiers = [

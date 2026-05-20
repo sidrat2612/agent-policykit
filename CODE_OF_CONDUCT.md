@@ -1,52 +1,44 @@
-# Contributor Covenant Code of Conduct
+# Code of Conduct
 
-## Our Pledge
+agent-policykit aims to be a respectful, technically rigorous, and low-drama project. Participation in issues, pull requests, reviews, and other project spaces requires professional behavior.
 
-We as members, contributors, and leaders pledge to make participation in our
-community a harassment-free experience for everyone, regardless of age, body
-size, visible or invisible disability, ethnicity, sex characteristics, gender
-identity and expression, level of experience, education, socio-economic status,
-nationality, personal appearance, race, caste, color, religion, or sexual
-identity and orientation.
+This policy is intentionally concise and follows the spirit of https://opensource.guide/code-of-conduct/.
 
-## Our Standards
+## Expected behavior
 
-Examples of behavior that contributes to a positive environment:
+- Be respectful, specific, and constructive.
+- Critique ideas, code, and behavior without attacking people.
+- Share context, reproduction steps, and evidence when disagreeing.
+- Accept maintainer decisions on project scope and review priorities.
+- Help keep discussions public and searchable whenever possible.
 
-- Using welcoming and inclusive language
-- Being respectful of differing viewpoints and experiences
-- Gracefully accepting constructive criticism
-- Focusing on what is best for the community
-- Showing empathy towards other community members
+## Unacceptable behavior
 
-Examples of unacceptable behavior:
-
-- The use of sexualized language or imagery, and sexual attention or advances of any kind
-- Trolling, insulting or derogatory comments, and personal or political attacks
-- Public or private harassment
-- Publishing others' private information without explicit permission
-- Other conduct which could reasonably be considered inappropriate in a professional setting
-
-## Enforcement Responsibilities
-
-Community leaders are responsible for clarifying and enforcing our standards of
-acceptable behavior and will take appropriate and fair corrective action in
-response to any behavior that they deem inappropriate, threatening, offensive, or
-harmful.
+- Harassment, insults, threats, stalking, or doxxing
+- Discriminatory or sexualized language or imagery
+- Personal attacks, dogpiling, or repeated bad-faith arguments
+- Publishing private information without permission
+- Spamming, trolling, or derailing technical discussions
+- Pressuring maintainers for off-platform or private support, except for security or conduct reports
 
 ## Scope
 
-This Code of Conduct applies within all community spaces, and also applies when
-an individual is officially representing the community in public spaces.
+This code of conduct applies to GitHub issues, pull requests, code review, release discussions, and any other official project communication channel.
+
+## Reporting
+
+Report conduct issues via [GitHub Security Advisories](https://github.com/sidrat2612/agent-policykit/security/advisories). Include links, screenshots, or timestamps if available. Reports are reviewed as confidentially as practical. Security reports should follow [SECURITY.md](SECURITY.md) instead.
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the project maintainer at **siddharth.rathore2612@gmail.com**.
+Maintainers may take any action needed to protect the project, including:
 
-All complaints will be reviewed and investigated promptly and fairly.
+- Asking for a change in behavior
+- Editing, hiding, locking, or removing content
+- Closing issues or pull requests
+- Temporarily suspending participation
+- Permanently banning repeat or severe offenders
 
-## Attribution
+## Maintainer responsibilities
 
-This Code of Conduct is adapted from the [Contributor Covenant](https://www.contributor-covenant.org/),
-version 2.1, available at https://www.contributor-covenant.org/version/2/1/code_of_conduct.html.
+Maintainers will review reports fairly, act proportionately, and document public moderation decisions when appropriate.

@@ -139,12 +139,13 @@ Activates a strict reviewer persona across all generated instructions. Agents ar
 ## Development
 
 ```bash
-git clone https://github.com/rathoreSiddharth/agent-policykit.git
+git clone https://github.com/sidrat2612/agent-policykit.git
 cd agent-policykit
-python -m venv venv && source venv/bin/activate
+python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
-pytest
+pytest --cov=agent_policykit
 ruff check src/ tests/
+mypy src/agent_policykit --ignore-missing-imports
 ```
 
 ---
@@ -169,6 +170,13 @@ Working fixtures with validated detect/generate output:
 
 ---
 
+## Community
+
+- Read [CONTRIBUTING.md](CONTRIBUTING.md), [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md), [SUPPORT.md](SUPPORT.md), and [SECURITY.md](SECURITY.md).
+- Use public GitHub issues and pull requests for bugs, proposals, and design discussion.
+- Keep private contact for security reports or sensitive conduct matters only.
+- These community docs are aligned with guidance from [Open Source Guides](https://opensource.guide/).
+
 ## License
 
-MIT
+MIT. See [LICENSE](LICENSE).
