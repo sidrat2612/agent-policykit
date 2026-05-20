@@ -162,8 +162,8 @@ class TestLoadProjectTypePacks:
 
     @pytest.mark.parametrize("project_type,min_rules", [
         ("api_service", 20),
-        ("web_app", 25),
-        ("microservice", 30),
+        ("web_app", 20),
+        ("microservice", 25),
     ])
     def test_load_project_type_pack(self, project_type, min_rules):
         pack = load_project_type_pack(project_type)

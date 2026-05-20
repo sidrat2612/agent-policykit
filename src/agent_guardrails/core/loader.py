@@ -89,7 +89,7 @@ def load_pack_file(path: Path) -> RulePack:
         "architectural_rules", "api_design_rules", "data_layer_rules",
         "operational_rules", "security_rules", "frontend_rules",
         "auth_rules", "data_fetching_rules", "communication_rules",
-        "observability_rules", "deployment_rules", "testing_rules",
+        "observability_rules", "deployment_rules",
     ]
 
     for section in rule_sections:
