@@ -1,0 +1,26 @@
+id: monolith
+display_name: Monolith
+category: project_type
+priority: 40
+applies_when:
+  project_types: ["monolith"]
+
+architectural_rules:
+  - id: monolith.arch.modular_domains
+    text: "Preserve strong domain boundaries inside the monolith. Shared code must not become a dumping ground."
+    severity: high
+    tags: [architecture]
+  - id: monolith.arch.no_cross_domain_shortcuts
+    text: "Cross-domain workflows should go through explicit application services, not direct model or repository reach-through."
+    severity: high
+    tags: [architecture]
+
+operational_rules:
+  - id: monolith.ops.capacity_hotspots
+    text: "Track and test the performance hotspots that affect the whole deployable unit."
+    severity: medium
+    tags: [performance]
+  - id: monolith.ops.migration_safety
+    text: "Schema and config changes must be rollout-safe because they impact the entire application."
+    severity: high
+    tags: [operations]

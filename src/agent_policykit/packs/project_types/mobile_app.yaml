@@ -1,0 +1,36 @@
+id: mobile_app
+display_name: Mobile App
+category: project_type
+priority: 40
+applies_when:
+  project_types: ["mobile_app"]
+
+architectural_rules:
+  - id: mobile.arch.feature_modules
+    text: "Organize code by feature or screen flow, with shared UI, domain, and data modules kept explicit."
+    severity: medium
+    tags: [architecture]
+  - id: mobile.arch.offline_boundaries
+    text: "Keep sync, cache, and transport concerns isolated from presentation logic."
+    severity: high
+    tags: [architecture, reliability]
+
+operational_rules:
+  - id: mobile.ops.crash_reporting
+    text: "Capture crashes and critical client-side failures with release-aware crash reporting."
+    severity: high
+    tags: [observability]
+  - id: mobile.ops.feature_flags
+    text: "Guard risky rollouts behind remotely controllable flags or staged release controls."
+    severity: medium
+    tags: [operations]
+
+security_rules:
+  - id: mobile.sec.no_secrets_in_bundle
+    text: "Do not ship secrets, private keys, or privileged credentials in the client bundle."
+    severity: critical
+    tags: [security]
+  - id: mobile.sec.secure_storage
+    text: "Store tokens and sensitive identifiers in approved secure storage, not plain local storage."
+    severity: high
+    tags: [security]

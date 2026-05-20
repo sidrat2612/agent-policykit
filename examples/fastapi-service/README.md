@@ -1,12 +1,13 @@
 # FastAPI Service Example
 
-This directory is reserved for a worked example of generating instructions for a FastAPI API service.
+This directory contains a minimal FastAPI API service fixture used for detection and generation validation.
 
-Planned example outputs:
+Validated example outputs:
 
 - `.github/copilot-instructions.md`
 - `.github/instructions/project.instructions.md`
 - `AGENTS.md`
+- `AGENT_POLICY.md`
 - `CLAUDE.md`
 - `.cursor/rules/project.mdc`
 - `CONVENTIONS.md`
@@ -16,5 +17,6 @@ Planned example outputs:
 Suggested local command:
 
 ```bash
-agent-policykit generate --target copilot --target copilot-path --target agents-md --target claude-code --target cursor --target aider --target gemini-cli
+agent-policykit detect
+agent-policykit generate --target copilot --target copilot-path --target agents-md --target generic-markdown --target claude-code --target cursor --target aider --target gemini-cli --dry-run
 ```

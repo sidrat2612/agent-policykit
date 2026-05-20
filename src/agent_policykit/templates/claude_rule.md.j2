@@ -1,0 +1,61 @@
+---
+paths:
+{% for glob in scope.globs %}
+  - "{{ glob }}"
+{% endfor %}
+---
+
+{% from 'rule_metadata.md.j2' import render_rule_metadata with context %}
+{% from 'review_mode.md.j2' import render_review_overlay with context %}
+
+{{ render_rule_metadata() }}
+
+# {{ scope.display_name | title }}
+
+{% if scope.description %}
+{{ scope.description }}
+{% endif %}
+
+{{ render_review_overlay('##') }}
+
+{% if language_rules %}
+## Language Rules
+
+{% for rule in language_rules %}
+- {{ rule.text }}
+{% endfor %}
+{% endif %}
+
+{% if framework_rules %}
+## Framework Rules
+
+{% for rule in framework_rules %}
+- {{ rule.text }}
+{% endfor %}
+{% endif %}
+
+{% if project_type_rules %}
+## Project Type Rules
+
+{% for rule in project_type_rules %}
+- {{ rule.text }}
+{% endfor %}
+{% endif %}
+
+{% if security_rules %}
+## Security Focus
+
+{% for rule in security_rules %}
+{% if review_mode or rule.severity.value in ['critical', 'high'] %}
+- {{ rule.text }}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if output_contract %}
+## Output Contract
+
+{% for rule in output_contract %}
+- {{ rule.text }}
+{% endfor %}
+{% endif %}

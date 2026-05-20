@@ -1,0 +1,47 @@
+id: haskell
+display_name: Haskell
+category: language
+priority: 50
+applies_when:
+  languages: ["haskell"]
+
+api_rules:
+  - id: hs.api.explicit_types
+    text: "Expose explicit type signatures on public functions and keep boundary codecs explicit."
+    severity: high
+    tags: [typing]
+service_rules:
+  - id: hs.service.pure_core
+    text: "Keep pure business logic separate from IO, database, and network effects."
+    severity: high
+    tags: [design]
+data_rules:
+  - id: hs.data.safe_boundaries
+    text: "Validate and decode external input into domain types before effectful workflows consume it."
+    severity: high
+    tags: [validation]
+method_rules:
+  - id: hs.method.no_partials_in_core
+    text: "Avoid partial functions and unchecked pattern matches in core request or pipeline paths."
+    severity: high
+    tags: [reliability]
+error_handling_rules:
+  - id: hs.error.explicit_failure_types
+    text: "Use explicit error types or effect stacks instead of burying failures in runtime exceptions."
+    severity: medium
+    tags: [reliability]
+testing_rules:
+  - id: hs.test.quickcheck
+    text: "Combine unit tests with property-based tests for parsers, validators, and invariants."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: hs.sec.no_unsafe_perform_io
+    text: "Avoid unsafePerformIO and other unsafe escapes in application code unless a narrow invariant is documented and tested."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: hs.anti.effect_leakage
+    text: "ANTI-PATTERN: IO, logging, and persistence concerns leaking into otherwise pure domain modules."
+    severity: high
+    tags: [anti-pattern]

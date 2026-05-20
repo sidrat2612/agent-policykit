@@ -1,0 +1,47 @@
+id: javascript
+display_name: JavaScript
+category: language
+priority: 50
+applies_when:
+  languages: ["javascript"]
+
+api_rules:
+  - id: js.api.validate_boundary
+    text: "Validate HTTP, queue, and event payloads at the boundary with schemas. Do not trust raw objects from external input."
+    severity: high
+    tags: [validation]
+service_rules:
+  - id: js.service.business_logic
+    text: "Keep business logic in services or domain modules, not directly in route handlers or UI callbacks."
+    severity: high
+    tags: [layering]
+data_rules:
+  - id: js.data.safe_queries
+    text: "Use parameterized database access patterns. Never concatenate user input into SQL or shell commands."
+    severity: critical
+    tags: [security]
+method_rules:
+  - id: js.method.promise_discipline
+    text: "Always return or await Promises explicitly. Avoid implicit fire-and-forget async behavior."
+    severity: high
+    tags: [async]
+error_handling_rules:
+  - id: js.error.no_swallow
+    text: "Never swallow exceptions silently. Log with context and translate errors at the boundary."
+    severity: high
+    tags: [reliability]
+testing_rules:
+  - id: js.test.behavior_first
+    text: "Test observable behavior with clear assertions for outputs, side effects, and error paths."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: js.sec.no_eval
+    text: "Never use eval(), Function(), or load untrusted code dynamically."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: js.anti.god_callback
+    text: "ANTI-PATTERN: A single callback or handler that validates input, performs I/O, mutates state, and formats output."
+    severity: high
+    tags: [anti-pattern]

@@ -1,0 +1,47 @@
+id: fsharp
+display_name: F#
+category: language
+priority: 50
+applies_when:
+  languages: ["fsharp"]
+
+api_rules:
+  - id: fsharp.api.domain_types
+    text: "Model boundary inputs and outputs with discriminated unions and explicit record types."
+    severity: high
+    tags: [typing]
+service_rules:
+  - id: fsharp.service.pure_core
+    text: "Keep core domain logic pure and isolate I/O and infrastructure in thin adapters."
+    severity: high
+    tags: [design]
+data_rules:
+  - id: fsharp.data.safe_sql
+    text: "Use parameterized queries or safe data-access libraries. Never build SQL from unchecked strings."
+    severity: critical
+    tags: [security]
+method_rules:
+  - id: fsharp.method.result_types
+    text: "Use Result and option types deliberately instead of nulls or exception-driven control flow."
+    severity: medium
+    tags: [reliability]
+error_handling_rules:
+  - id: fsharp.error.boundary_translation
+    text: "Translate infrastructure errors into domain-aware failures at adapter boundaries."
+    severity: medium
+    tags: [reliability]
+testing_rules:
+  - id: fsharp.test.property_checks
+    text: "Use unit and property-based tests for domain transformations, parsing, and validation."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: fsharp.sec.no_dynamic_eval
+    text: "Do not evaluate untrusted expressions or code dynamically."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: fsharp.anti.mutable_shared_state
+    text: "ANTI-PATTERN: Shared mutable state bridging modules instead of explicit function inputs and outputs."
+    severity: high
+    tags: [anti-pattern]

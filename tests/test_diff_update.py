@@ -53,6 +53,29 @@ class TestDiffEngine:
         result = compute_diff(tmp_path, outputs)
         assert not result.has_changes
 
+    def test_diff_surfaces_non_security_rule_removals(self, tmp_path):
+        existing = (
+            "<!-- agent-policykit:managed -->\n"
+            "<!-- agent-policykit:rule-ids:governance=gov.alpha,gov.beta -->\n"
+            "## Governance\n"
+            "- Keep explicit boundaries\n"
+            "<!-- agent-policykit:end -->\n"
+        )
+        proposed = (
+            "<!-- agent-policykit:managed -->\n"
+            "<!-- agent-policykit:rule-ids:governance=gov.alpha -->\n"
+            "## Governance\n"
+            "- Keep explicit boundaries\n"
+            "<!-- agent-policykit:end -->\n"
+        )
+        (tmp_path / "test.md").write_text(existing)
+        outputs = [AdapterOutput(path="test.md", content=proposed)]
+
+        result = compute_diff(tmp_path, outputs)
+
+        assert result.modified_files[0].notes
+        assert "governance" in result.modified_files[0].notes[0]
+
 
 class TestExtractManagedSection:
     """Tests for managed section extraction."""
@@ -151,3 +174,65 @@ class TestUpdateEngine:
         result = apply_updates(tmp_path, outputs)
         assert len(result.skipped) == 1
         assert (tmp_path / "file.md").read_text() == existing
+
+    def test_allows_security_text_change_when_rule_ids_match(self, tmp_path):
+        existing = (
+            "<!-- agent-policykit:security-rule-ids=security.auth -->\n"
+            "## Security\n"
+            "- Keep authentication checks\n"
+        )
+        proposed = (
+            "<!-- agent-policykit:security-rule-ids=security.auth -->\n"
+            "## Security\n"
+            "- Keep strong authentication and session checks\n"
+        )
+        (tmp_path / "file.md").write_text(existing)
+        outputs = [AdapterOutput(path="file.md", content=proposed, merge_strategy=MergeStrategy.OVERWRITE)]
+
+        result = apply_updates(tmp_path, outputs)
+
+        assert len(result.updated) == 1
+        assert (tmp_path / "file.md").read_text() == proposed
+
+    def test_blocks_security_downgrade_when_rule_id_removed(self, tmp_path):
+        existing = (
+            "<!-- agent-policykit:security-rule-ids=security.auth,security.mfa -->\n"
+            "## Security\n"
+            "- Keep authentication checks\n"
+            "- Require MFA for admin paths\n"
+        )
+        proposed = (
+            "<!-- agent-policykit:security-rule-ids=security.auth -->\n"
+            "## Security\n"
+            "- Keep authentication checks\n"
+        )
+        (tmp_path / "file.md").write_text(existing)
+        outputs = [AdapterOutput(path="file.md", content=proposed, merge_strategy=MergeStrategy.OVERWRITE)]
+
+        result = apply_updates(tmp_path, outputs)
+
+        assert len(result.skipped) == 1
+        assert "downgraded" in result.skipped[0].message
+
+    def test_surfaces_non_security_rule_removals_on_update(self, tmp_path):
+        existing = (
+            "<!-- agent-policykit:managed -->\n"
+            "<!-- agent-policykit:rule-ids:governance=gov.alpha,gov.beta -->\n"
+            "## Governance\n"
+            "- Keep explicit boundaries\n"
+            "<!-- agent-policykit:end -->\n"
+        )
+        proposed = (
+            "<!-- agent-policykit:managed -->\n"
+            "<!-- agent-policykit:rule-ids:governance=gov.alpha -->\n"
+            "## Governance\n"
+            "- Keep explicit boundaries\n"
+            "<!-- agent-policykit:end -->\n"
+        )
+        (tmp_path / "file.md").write_text(existing)
+        outputs = [AdapterOutput(path="file.md", content=proposed, merge_strategy=MergeStrategy.SECTION_MERGE)]
+
+        result = apply_updates(tmp_path, outputs)
+
+        assert len(result.updated) == 1
+        assert "governance" in result.updated[0].message

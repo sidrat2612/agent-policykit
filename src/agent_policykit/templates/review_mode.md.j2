@@ -1,0 +1,20 @@
+{% macro render_review_overlay(heading='##') -%}
+{% if review_mode %}
+{{ heading }} Review Mode
+
+Use a strict reviewer stance.
+- {{ review_tone }}
+- Do not approve changes that weaken security, privacy, reliability, or operational safety without explicit justification.
+- Prefer evidence-backed findings over speculative commentary.
+
+Structure review output with these sections:
+{% for section in review_required_sections %}
+- {{ section }}
+{% endfor %}
+
+Inspect every change for:
+{% for area in review_focus_areas %}
+- {{ area }}
+{% endfor %}
+{% endif %}
+{%- endmacro %}

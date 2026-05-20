@@ -1,0 +1,37 @@
+id: gin
+display_name: Gin
+category: framework
+priority: 60
+extends_language: go
+applies_when:
+  frameworks: ["gin"]
+
+validation_approach:
+  - id: gin.val.binding_rules
+    text: "Use typed request structs with binding tags and explicit validation. Reject malformed input before handler logic runs."
+    severity: high
+    tags: [validation]
+
+controller_conventions:
+  - id: gin.ctrl_handlers_thin
+    text: "Gin handlers should decode input, call services, and write responses. Keep business logic out of handlers."
+    severity: high
+    tags: [layering]
+
+error_handling:
+  - id: gin.err.middleware_recovery
+    text: "Use recovery and error middleware to normalize failures and prevent panic details from leaking to clients."
+    severity: high
+    tags: [security, reliability]
+
+testing_conventions:
+  - id: gin.test_http_recorders
+    text: "Use httptest and explicit request/response assertions for handler tests."
+    severity: medium
+    tags: [testing]
+
+anti_patterns:
+  - id: gin.anti_global_context
+    text: "ANTI-PATTERN: Hiding application state in package globals instead of injecting dependencies into handlers and services."
+    severity: medium
+    tags: [anti-pattern]

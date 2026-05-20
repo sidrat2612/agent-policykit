@@ -1,0 +1,47 @@
+id: dart
+display_name: Dart
+category: language
+priority: 50
+applies_when:
+  languages: ["dart"]
+
+api_rules:
+  - id: dart.api.typed_models
+    text: "Use typed request, response, and persistence models. Avoid raw dynamic maps at architecture boundaries."
+    severity: high
+    tags: [typing]
+service_rules:
+  - id: dart.service.layered_boundaries
+    text: "Keep widgets or transport adapters separate from services, repositories, and state management logic."
+    severity: high
+    tags: [layering]
+data_rules:
+  - id: dart.data.safe_storage
+    text: "Isolate local storage, network clients, and serialization in dedicated data-layer modules."
+    severity: medium
+    tags: [architecture]
+method_rules:
+  - id: dart.method.await_futures
+    text: "Await Futures explicitly and model cancellation or disposal when async work outlives a UI or service scope."
+    severity: high
+    tags: [async]
+error_handling_rules:
+  - id: dart.error.typed_failures
+    text: "Translate platform or transport exceptions into typed failures before they reach UI code."
+    severity: medium
+    tags: [reliability]
+testing_rules:
+  - id: dart.test.widget_and_unit
+    text: "Combine unit tests for domain logic with widget or integration tests for stateful user flows."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: dart.sec.no_plaintext_tokens
+    text: "Do not store tokens or secrets in plaintext preferences or checked-in config."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: dart.anti.dynamic_everywhere
+    text: "ANTI-PATTERN: Pervasive use of dynamic and loosely structured maps instead of typed models."
+    severity: high
+    tags: [anti-pattern]

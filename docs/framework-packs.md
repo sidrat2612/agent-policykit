@@ -2,11 +2,21 @@
 
 ## Implemented packs
 
-The repository currently ships framework packs for:
+The repository currently ships framework packs for all frameworks listed in the current project specification:
 
 - FastAPI
+- Django
+- Flask
+- Express
+- NestJS
 - Next.js
 - Spring Boot
+- ASP.NET
+- Laravel
+- Rails
+- Gin
+- Echo
+- Chi
 
 Framework packs live in `src/agent_policykit/packs/frameworks/` and override or extend the baseline language rules.
 
@@ -23,6 +33,6 @@ Framework packs should cover:
 - testing conventions
 - framework-specific anti-patterns
 
-## Planned additions
+## Detection coverage
 
-The next packs expected by the project spec are Django, Flask, Express, NestJS, ASP.NET, Laravel, Rails, Gin, Echo, and Chi.
+Framework detection now covers the shipped pack set across `package.json`, `pyproject.toml`, `requirements.txt`, `go.mod`, `composer.json`, `Gemfile`, and `*.csproj` inputs.

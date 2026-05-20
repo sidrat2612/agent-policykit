@@ -12,6 +12,12 @@ class Adapter(Protocol):
     """Protocol that all output adapters must implement."""
 
     target: AgentTarget
+    max_bytes: int | None
+    max_lines: int | None
+
+    def output_paths(self, context: ProjectContext) -> list[str]:
+        """Return all output paths the adapter would generate for this context."""
+        ...
 
     def render(self, bundle: PolicyBundle, context: ProjectContext) -> list[AdapterOutput]:
         """Render the policy bundle into one or more output files."""

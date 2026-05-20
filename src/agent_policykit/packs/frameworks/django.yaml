@@ -1,0 +1,45 @@
+id: django
+display_name: Django
+category: framework
+priority: 60
+extends_language: python
+applies_when:
+  frameworks: ["django"]
+
+validation_approach:
+  - id: django.val.forms_or_serializers
+    text: "Validate request input with Django forms or DRF serializers at the boundary. Do not hand-parse request.POST or request.data."
+    severity: high
+    tags: [validation]
+  - id: django.val.separate_read_write_serializers
+    text: "Use separate serializers for write and read paths when the response shape differs from the input shape."
+    severity: medium
+    tags: [api, design]
+
+controller_conventions:
+  - id: django.ctrl.thin_views
+    text: "Views and viewsets should orchestrate only. Move business rules into services or domain modules."
+    severity: high
+    tags: [layering]
+  - id: django.ctrl.permissions_explicit
+    text: "Apply authentication and permission classes explicitly on every view or viewset."
+    severity: critical
+    tags: [auth, security]
+
+error_handling:
+  - id: django.err.no_debug_leaks
+    text: "Never expose DEBUG error pages in production. Return sanitized error responses and log the exception context."
+    severity: critical
+    tags: [security]
+
+testing_conventions:
+  - id: django.test.factory_usage
+    text: "Use factories or fixtures for model setup. Keep ORM-heavy setup out of individual test bodies."
+    severity: medium
+    tags: [testing]
+
+anti_patterns:
+  - id: django.anti.fat_models_or_views
+    text: "ANTI-PATTERN: Business logic split unpredictably across views, models, and signals with no clear service boundary."
+    severity: high
+    tags: [anti-pattern]

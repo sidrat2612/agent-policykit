@@ -1,0 +1,47 @@
+id: groovy
+display_name: Groovy
+category: language
+priority: 50
+applies_when:
+  languages: ["groovy"]
+
+api_rules:
+  - id: groovy.api.validate_boundary
+    text: "Validate external input explicitly. Do not rely on Groovy's dynamic coercion for security-sensitive boundaries."
+    severity: high
+    tags: [validation]
+service_rules:
+  - id: groovy.service.business_logic
+    text: "Keep business logic in services or domain modules, not controllers, scripts, or Gradle tasks."
+    severity: high
+    tags: [layering]
+data_rules:
+  - id: groovy.data.safe_queries
+    text: "Use parameterized SQL or ORM APIs. Never build queries from unchecked string interpolation."
+    severity: critical
+    tags: [security]
+method_rules:
+  - id: groovy.method.limit_dynamic_magic
+    text: "Use dynamic metaprogramming sparingly and keep boundary behavior explicit and testable."
+    severity: medium
+    tags: [design]
+error_handling_rules:
+  - id: groovy.error.no_silent_failures
+    text: "Do not hide exceptions behind logging-only handlers or false/empty return values."
+    severity: high
+    tags: [reliability]
+testing_rules:
+  - id: groovy.test.spock_or_junit
+    text: "Use Spock or JUnit with focused assertions for domain logic, validation, and error paths."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: groovy.sec.no_eval
+    text: "Do not execute untrusted Groovy scripts or expressions dynamically."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: groovy.anti.script_everything
+    text: "ANTI-PATTERN: Application behavior spread across ad hoc scripts with no service boundaries or tests."
+    severity: high
+    tags: [anti-pattern]

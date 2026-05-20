@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from agent_policykit.core.merger import filter_bundle_by_severity, merge_packs
+from agent_policykit.core.merger import build_review_bundle, filter_bundle_by_severity, merge_packs
 from agent_policykit.core.models import PolicyBundle, ProjectContext, Rule, RulePack
 from agent_policykit.core.policy_engine import build_policy_bundle, list_available_packs
 from agent_policykit.types import ProjectType, RuleCategory, Severity
@@ -103,6 +103,24 @@ class TestFilterBundleBySeverity:
         filtered = filter_bundle_by_severity(bundle, "critical")
         assert len(filtered.output_contract) == 1
 
+    def test_build_review_bundle_preserves_review_rules(self):
+        review_rule = Rule(
+            id="rev.1",
+            text="Review this carefully",
+            category=RuleCategory.REVIEW,
+            severity=Severity.INFO,
+        )
+        low_governance_rule = _make_rule("gov.1", Severity.LOW)
+        bundle = PolicyBundle(
+            governance_rules=[low_governance_rule],
+            review_rules=[review_rule],
+        )
+
+        review_bundle = build_review_bundle(bundle)
+        assert review_bundle.review_rules == [review_rule]
+        assert review_bundle.governance_rules == []
+        assert review_bundle.metadata["mode"] == "review"
+
 
 class TestBuildPolicyBundle:
     """Tests for the policy engine's build_policy_bundle."""
@@ -166,3 +184,21 @@ class TestListAvailablePacks:
         packs = list_available_packs()
         assert "python" in packs["languages"]
         assert "typescript" in packs["languages"]
+
+    def test_languages_include_expanded_targets(self):
+        packs = list_available_packs()
+        assert "javascript" in packs["languages"]
+        assert "rust" in packs["languages"]
+        assert "dart" in packs["languages"]
+
+    def test_frameworks_include_expanded_targets(self):
+        packs = list_available_packs()
+        assert "django" in packs["frameworks"]
+        assert "laravel" in packs["frameworks"]
+        assert "chi" in packs["frameworks"]
+
+    def test_project_types_include_expanded_targets(self):
+        packs = list_available_packs()
+        assert "worker" in packs["project_types"]
+        assert "cli_tool" in packs["project_types"]
+        assert "data_pipeline" in packs["project_types"]

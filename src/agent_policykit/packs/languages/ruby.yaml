@@ -1,0 +1,47 @@
+id: ruby
+display_name: Ruby
+category: language
+priority: 50
+applies_when:
+  languages: ["ruby"]
+
+api_rules:
+  - id: ruby.api.controllers_small
+    text: "Keep controllers small and orchestration-focused. Move business rules into services or domain objects."
+    severity: high
+    tags: [layering]
+service_rules:
+  - id: ruby.service.command_objects
+    text: "Use service or command objects for multi-step workflows instead of embedding them in models or controllers."
+    severity: medium
+    tags: [design]
+data_rules:
+  - id: ruby.data.safe_queries
+    text: "Use parameterized query APIs and scopes. Never build SQL or shell commands from string concatenation."
+    severity: critical
+    tags: [security]
+method_rules:
+  - id: ruby.method.explicit_side_effects
+    text: "Make side effects explicit in method names and keep pure computation separate from persistence or I/O."
+    severity: medium
+    tags: [design]
+error_handling_rules:
+  - id: ruby.error.no_rescue_all
+    text: "Do not rescue StandardError broadly without logging, re-raising, or translating to a specific boundary response."
+    severity: high
+    tags: [reliability]
+testing_rules:
+  - id: ruby.test.request_and_unit
+    text: "Combine request/integration tests with focused unit tests for services and policies."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: ruby.sec.no_yaml_unsafe
+    text: "Do not deserialize untrusted YAML or Marshal data. Prefer safe formats with explicit schemas."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: ruby.anti.callback_maze
+    text: "ANTI-PATTERN: Hidden business workflows split across callbacks with no explicit orchestration path."
+    severity: high
+    tags: [anti-pattern]

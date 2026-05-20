@@ -1,0 +1,28 @@
+id: sdk
+display_name: SDK
+category: project_type
+priority: 40
+applies_when:
+  project_types: ["sdk"]
+
+architectural_rules:
+  - id: sdk.arch.public_surface_control
+    text: "Keep the public API explicit and minimal. Internal helpers must not leak into exported contracts."
+    severity: high
+    tags: [architecture]
+  - id: sdk.arch.transport_abstraction
+    text: "Separate transport, serialization, retries, and resource models so clients can test and extend behavior safely."
+    severity: medium
+    tags: [design]
+
+operational_rules:
+  - id: sdk.ops.semantic_versioning
+    text: "Track breaking API changes explicitly and align releases with semantic versioning expectations."
+    severity: high
+    tags: [operations]
+
+testing_rules:
+  - id: sdk.test_contract_coverage
+    text: "Add tests for serialization, backwards compatibility, retry behavior, and error translation."
+    severity: high
+    tags: [testing]

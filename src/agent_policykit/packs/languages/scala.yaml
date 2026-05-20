@@ -1,0 +1,47 @@
+id: scala
+display_name: Scala
+category: language
+priority: 50
+applies_when:
+  languages: ["scala"]
+
+api_rules:
+  - id: scala.api.case_class_boundary
+    text: "Use case classes and explicit codecs for inputs and outputs at service boundaries."
+    severity: high
+    tags: [api]
+service_rules:
+  - id: scala.service.effect_boundary
+    text: "Keep pure domain logic separate from effectful code. Isolate database, HTTP, and filesystem access behind interfaces."
+    severity: high
+    tags: [design]
+data_rules:
+  - id: scala.data.parameterized
+    text: "Use safe query libraries or parameterized access. Never assemble SQL from unchecked strings."
+    severity: critical
+    tags: [security]
+method_rules:
+  - id: scala.method.total_functions
+    text: "Prefer total functions and explicit algebraic data types over nulls and sentinel values."
+    severity: medium
+    tags: [design]
+error_handling_rules:
+  - id: scala.error.no_throw_for_flow
+    text: "Do not use exceptions for expected control flow when Either, Try, or effect types express failures clearly."
+    severity: medium
+    tags: [reliability]
+testing_rules:
+  - id: scala.test.property_and_example
+    text: "Combine example-based tests with property-based tests for parsing, validation, and domain invariants."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: scala.sec.no_runtime_code_eval
+    text: "Do not evaluate untrusted code, templates, or expressions dynamically at runtime."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: scala.anti.effect_everywhere
+    text: "ANTI-PATTERN: Effectful code spread through domain models with no clear boundary between pure and impure logic."
+    severity: high
+    tags: [anti-pattern]

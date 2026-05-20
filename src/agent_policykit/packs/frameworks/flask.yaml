@@ -1,0 +1,41 @@
+id: flask
+display_name: Flask
+category: framework
+priority: 60
+extends_language: python
+applies_when:
+  frameworks: ["flask"]
+
+validation_approach:
+  - id: flask.val.schemas_required
+    text: "Use explicit schemas for request validation. Flask routes must not trust request.json without validation."
+    severity: high
+    tags: [validation]
+
+controller_conventions:
+  - id: flask.ctrl.blueprints_by_domain
+    text: "Organize routes into blueprints by domain. Do not keep all endpoints in app.py."
+    severity: medium
+    tags: [structure]
+  - id: flask.ctrl.app_factory
+    text: "Use the application factory pattern for configuration and dependency wiring."
+    severity: medium
+    tags: [design]
+
+error_handling:
+  - id: flask.err.register_handlers
+    text: "Register error handlers centrally for domain errors, validation errors, and 404/500 responses."
+    severity: medium
+    tags: [reliability]
+
+testing_conventions:
+  - id: flask.test_client_isolated
+    text: "Use Flask's test client with isolated app/test configuration. Mock external services at the boundary."
+    severity: medium
+    tags: [testing]
+
+anti_patterns:
+  - id: flask.anti_globals
+    text: "ANTI-PATTERN: Using global mutable state or implicit app context instead of explicit dependency wiring."
+    severity: high
+    tags: [anti-pattern]

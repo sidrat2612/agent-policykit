@@ -1,0 +1,32 @@
+id: data_pipeline
+display_name: Data Pipeline
+category: project_type
+priority: 40
+applies_when:
+  project_types: ["data_pipeline"]
+
+architectural_rules:
+  - id: pipeline.arch.stage_boundaries
+    text: "Keep extract, transform, load, and quality-check stages explicit and separately testable."
+    severity: high
+    tags: [architecture]
+  - id: pipeline.arch.schema_contracts
+    text: "Define schema contracts for inputs and outputs at every pipeline boundary."
+    severity: high
+    tags: [data, validation]
+
+operational_rules:
+  - id: pipeline.ops.replay_safe
+    text: "Pipeline stages must be replay-safe or have explicit deduplication and checkpointing strategy."
+    severity: critical
+    tags: [operations, reliability]
+  - id: pipeline.ops.lineage_observability
+    text: "Emit lineage, run metadata, and failure context for each pipeline execution."
+    severity: high
+    tags: [observability]
+
+security_rules:
+  - id: pipeline.sec.data_minimization
+    text: "Do not persist or log raw sensitive records unless explicitly required and protected."
+    severity: high
+    tags: [security, privacy]

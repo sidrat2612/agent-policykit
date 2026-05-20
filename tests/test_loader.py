@@ -59,7 +59,7 @@ class TestLoadPacksFromDirectory:
 
     def test_load_governance_directory(self):
         packs = load_packs_from_directory(PACKS_DIR / "governance")
-        assert len(packs) == 7
+        assert len(packs) == 8
         pack_ids = {p.id for p in packs}
         assert "governance_base" in pack_ids
         assert "governance_security" in pack_ids
@@ -68,6 +68,7 @@ class TestLoadPacksFromDirectory:
         assert "governance_architecture" in pack_ids
         assert "governance_testing" in pack_ids
         assert "governance_operations" in pack_ids
+        assert "governance_output_contract" in pack_ids
 
     def test_load_nonexistent_directory_returns_empty(self, tmp_path):
         packs = load_packs_from_directory(tmp_path / "nope")
@@ -79,7 +80,7 @@ class TestLoadGovernancePacks:
 
     def test_loads_all_governance_packs(self):
         packs = load_governance_packs()
-        assert len(packs) == 7
+        assert len(packs) == 8
         # All should be governance-adjacent categories
         valid_categories = {
             RuleCategory.GOVERNANCE,
@@ -89,6 +90,7 @@ class TestLoadGovernancePacks:
             RuleCategory.ARCHITECTURE,
             RuleCategory.TESTING,
             RuleCategory.OPERATIONS,
+            RuleCategory.OUTPUT_CONTRACT,
         }
         for pack in packs:
             assert pack.category in valid_categories
@@ -154,7 +156,7 @@ class TestLoadFrameworkPacks:
         assert len(pack.rules) >= min_rules
 
     def test_load_nonexistent_framework_returns_none(self):
-        assert load_framework_pack("django") is None
+        assert load_framework_pack("phoenix") is None
 
 
 class TestLoadProjectTypePacks:

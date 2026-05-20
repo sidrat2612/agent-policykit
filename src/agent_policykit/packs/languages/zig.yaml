@@ -1,0 +1,47 @@
+id: zig
+display_name: Zig
+category: language
+priority: 50
+applies_when:
+  languages: ["zig"]
+
+api_rules:
+  - id: zig.api.explicit_error_unions
+    text: "Model fallible APIs with explicit error unions and clear ownership of buffers and allocators."
+    severity: high
+    tags: [api]
+service_rules:
+  - id: zig.service.allocator_flow
+    text: "Thread allocator ownership explicitly through modules. Avoid hidden allocation policies."
+    severity: high
+    tags: [design]
+data_rules:
+  - id: zig.data.bounds_and_lifetimes
+    text: "Validate slice lengths, pointer lifetimes, and external input sizes before use."
+    severity: critical
+    tags: [security]
+method_rules:
+  - id: zig.method.no_global_mutation
+    text: "Keep mutable global state out of core logic unless synchronization and lifetime rules are explicit."
+    severity: medium
+    tags: [design]
+error_handling_rules:
+  - id: zig.error.handle_all
+    text: "Handle or propagate every error explicitly. Do not convert failures into silent undefined behavior."
+    severity: high
+    tags: [reliability]
+testing_rules:
+  - id: zig.test.inline_and_boundary
+    text: "Use Zig's built-in tests for unit logic and add boundary tests for parsing, allocation, and I/O flows."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: zig.sec.no_shell_concat
+    text: "Never build shell or process commands from unchecked string concatenation."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: zig.anti.allocator_confusion
+    text: "ANTI-PATTERN: Functions allocating memory with one allocator and freeing with another implicit policy."
+    severity: high
+    tags: [anti-pattern]

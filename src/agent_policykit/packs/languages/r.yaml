@@ -1,0 +1,47 @@
+id: r
+display_name: R
+category: language
+priority: 50
+applies_when:
+  languages: ["r"]
+
+api_rules:
+  - id: r.api.validate_frames
+    text: "Validate input schema, column names, and expected types before operating on data frames or tibbles."
+    severity: high
+    tags: [validation]
+service_rules:
+  - id: r.service.functions_over_scripts
+    text: "Prefer reusable functions or package modules over long stateful scripts."
+    severity: medium
+    tags: [design]
+data_rules:
+  - id: r.data.reproducible_inputs
+    text: "Make data sources, seeds, and transformation assumptions explicit for reproducibility."
+    severity: medium
+    tags: [data]
+method_rules:
+  - id: r.method_no_global_mutation
+    text: "Avoid hidden mutation of the global environment in production analysis or pipeline code."
+    severity: medium
+    tags: [reliability]
+error_handling_rules:
+  - id: r.error.boundary_checks
+    text: "Check file existence, package availability, and schema assumptions explicitly instead of failing deep in the pipeline."
+    severity: high
+    tags: [reliability]
+testing_rules:
+  - id: r.test.testthat
+    text: "Use testthat for reusable functions and pipeline validation helpers."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: r.sec.no_shell_concat
+    text: "Do not pass unchecked strings into shell(), system(), or external command calls."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: r.anti.hidden_stateful_notebook
+    text: "ANTI-PATTERN: Analysis logic that only works when cells are run in a specific hidden order."
+    severity: high
+    tags: [anti-pattern]

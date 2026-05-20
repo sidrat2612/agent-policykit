@@ -42,6 +42,7 @@ def _add_rule_to_bundle(bundle: PolicyBundle, rule: Rule, pack_category: RuleCat
         RuleCategory.LANGUAGE: bundle.language_rules,
         RuleCategory.FRAMEWORK: bundle.framework_rules,
         RuleCategory.PROJECT_TYPE: bundle.project_type_rules,
+        RuleCategory.OUTPUT_CONTRACT: bundle.output_contract,
     }
     target_list = category_map.get(pack_category)
     if target_list is not None:
@@ -77,3 +78,11 @@ def filter_bundle_by_severity(bundle: PolicyBundle, min_severity: str = "low") -
         output_contract=bundle.output_contract,
         metadata=bundle.metadata,
     )
+
+
+def build_review_bundle(bundle: PolicyBundle) -> PolicyBundle:
+    """Build a reviewer-focused bundle while preserving explicit review guidance."""
+    review_bundle = filter_bundle_by_severity(bundle, "high")
+    review_bundle.review_rules = list(bundle.review_rules)
+    review_bundle.metadata = {**bundle.metadata, "mode": "review"}
+    return review_bundle

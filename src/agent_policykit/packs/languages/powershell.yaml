@@ -1,0 +1,47 @@
+id: powershell
+display_name: PowerShell
+category: language
+priority: 50
+applies_when:
+  languages: ["powershell"]
+
+api_rules:
+  - id: ps.api.param_validation
+    text: "Use advanced functions with explicit parameter validation attributes and clear output contracts."
+    severity: high
+    tags: [validation]
+service_rules:
+  - id: ps.service.cmdlet_boundaries
+    text: "Keep orchestration logic separate from system mutation and remote-command execution paths."
+    severity: medium
+    tags: [design]
+data_rules:
+  - id: ps.data.secure_strings_not_enough
+    text: "Use approved secret stores rather than relying solely on SecureString or local files for credential protection."
+    severity: high
+    tags: [security]
+method_rules:
+  - id: ps.method.pipeline_clarity
+    text: "Design pipeline input/output explicitly and avoid cmdlets with surprising side effects."
+    severity: medium
+    tags: [design]
+error_handling_rules:
+  - id: ps.error.terminating_failures
+    text: "Promote critical failures to terminating errors and handle them with explicit try/catch blocks."
+    severity: high
+    tags: [reliability]
+testing_rules:
+  - id: ps.test.pester
+    text: "Use Pester for unit, script, and error-path tests."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: ps.sec.no_invoke_expression
+    text: "Avoid Invoke-Expression and other dynamic code execution paths on untrusted input."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: ps.anti.admin_script_sprawl
+    text: "ANTI-PATTERN: Privileged scripts with unchecked parameters, broad remoting, and no audit-friendly logging."
+    severity: high
+    tags: [anti-pattern]

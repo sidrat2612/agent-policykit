@@ -1,0 +1,47 @@
+id: swift
+display_name: Swift
+category: language
+priority: 50
+applies_when:
+  languages: ["swift"]
+
+api_rules:
+  - id: swift.api.dto_boundary
+    text: "Use explicit models for transport and persistence boundaries. Do not pass UI-facing types through service layers."
+    severity: high
+    tags: [architecture]
+service_rules:
+  - id: swift.service.protocol_boundaries
+    text: "Define protocol-based boundaries for services, storage, and network clients to preserve testability."
+    severity: medium
+    tags: [design]
+data_rules:
+  - id: swift.data.keychain_for_sensitive
+    text: "Store sensitive tokens and secrets in Keychain or approved secure storage, not plaintext files or UserDefaults."
+    severity: critical
+    tags: [security]
+method_rules:
+  - id: swift.method.value_types_first
+    text: "Prefer value types for immutable data and make mutation explicit through controlled APIs."
+    severity: medium
+    tags: [design]
+error_handling_rules:
+  - id: swift.error.result_or_throw
+    text: "Use throwing functions or Result consistently and translate failures at UI or transport boundaries."
+    severity: medium
+    tags: [reliability]
+testing_rules:
+  - id: swift.test.async_paths
+    text: "Test async/await flows, cancellation, and actor-isolation behavior explicitly."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: swift.sec.no_hardcoded_credentials
+    text: "Do not embed credentials, client secrets, or signing keys in source or app bundles."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: swift.anti.work_on_main_thread
+    text: "ANTI-PATTERN: Network, disk, or heavy compute work performed on the main thread."
+    severity: high
+    tags: [anti-pattern]

@@ -1,0 +1,32 @@
+id: worker
+display_name: Worker
+category: project_type
+priority: 40
+applies_when:
+  project_types: ["worker"]
+
+architectural_rules:
+  - id: worker.arch.idempotent_jobs
+    text: "All jobs must be idempotent or carry explicit deduplication keys."
+    severity: critical
+    tags: [reliability]
+  - id: worker.arch.boundary_adapters
+    text: "Separate queue handlers from business logic and persistence code."
+    severity: high
+    tags: [architecture]
+
+operational_rules:
+  - id: worker.ops.retry_policy
+    text: "Define retry limits, backoff strategy, and dead-letter handling for every job type."
+    severity: high
+    tags: [operations]
+  - id: worker.ops.visibility
+    text: "Emit metrics and logs for queue depth, retries, failures, and processing latency."
+    severity: high
+    tags: [observability]
+
+security_rules:
+  - id: worker.sec.input_trust_boundary
+    text: "Treat message payloads as untrusted input and validate schemas before processing."
+    severity: high
+    tags: [security, validation]

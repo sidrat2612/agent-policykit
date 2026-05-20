@@ -1,0 +1,47 @@
+id: clojure
+display_name: Clojure
+category: language
+priority: 50
+applies_when:
+  languages: ["clojure"]
+
+api_rules:
+  - id: clj.api.spec_boundary
+    text: "Validate external input with spec, Malli, or equivalent schema tools at the boundary."
+    severity: high
+    tags: [validation]
+service_rules:
+  - id: clj.service.pure_functions
+    text: "Keep pure transformations separate from database, HTTP, and messaging side effects."
+    severity: high
+    tags: [design]
+data_rules:
+  - id: clj.data.safe_queries
+    text: "Use safe query APIs and never compose SQL or shell commands from unchecked strings."
+    severity: critical
+    tags: [security]
+method_rules:
+  - id: clj.method.data_first
+    text: "Prefer data-first functions with explicit inputs over dynamic implicit state."
+    severity: medium
+    tags: [design]
+error_handling_rules:
+  - id: clj.error.ex_info_context
+    text: "Attach structured context to exceptions with ex-info and translate failures at the edge."
+    severity: medium
+    tags: [reliability]
+testing_rules:
+  - id: clj.test.behavior_and_generative
+    text: "Use behavior tests and generative testing for parsers, schemas, and domain invariants where useful."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: clj.sec.no_eval_on_input
+    text: "Never pass untrusted input into eval, read-string, or similar dynamic code paths."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: clj.anti.dynamic_var_abuse
+    text: "ANTI-PATTERN: Business logic depending on hidden dynamic vars instead of explicit function arguments."
+    severity: high
+    tags: [anti-pattern]

@@ -1,0 +1,47 @@
+id: cpp
+display_name: C++
+category: language
+priority: 50
+applies_when:
+  languages: ["cpp"]
+
+api_rules:
+  - id: cpp.api.header_contracts
+    text: "Expose minimal public headers and keep ownership semantics explicit in interfaces."
+    severity: medium
+    tags: [api]
+service_rules:
+  - id: cpp.service.raii_boundaries
+    text: "Use RAII and scoped resource ownership instead of ad hoc acquire/release flows."
+    severity: high
+    tags: [design]
+data_rules:
+  - id: cpp.data.parameterized_external_calls
+    text: "Validate and sanitize all inputs that reach SQL, shell, filesystem, or native API boundaries."
+    severity: critical
+    tags: [security]
+method_rules:
+  - id: cpp.method.smart_pointers
+    text: "Prefer smart pointers, references, and value semantics over raw owning pointers."
+    severity: high
+    tags: [safety]
+error_handling_rules:
+  - id: cpp.error.exception_policy
+    text: "Use a consistent exception or error-code policy. Do not mix both without explicit boundary translation."
+    severity: medium
+    tags: [reliability]
+testing_rules:
+  - id: cpp.test.sanitizers
+    text: "Run unit tests with sanitizers and cover memory, threading, and boundary-condition behavior."
+    severity: high
+    tags: [testing]
+security_checklist:
+  - id: cpp.sec.no_manual_new_delete
+    text: "Avoid manual new/delete ownership patterns in application code when safer RAII alternatives exist."
+    severity: high
+    tags: [security]
+anti_patterns:
+  - id: cpp.anti.shared_mutable_singletons
+    text: "ANTI-PATTERN: Shared mutable singletons controlling application flow and cross-thread state."
+    severity: high
+    tags: [anti-pattern]

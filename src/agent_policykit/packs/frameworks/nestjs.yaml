@@ -1,0 +1,43 @@
+id: nestjs
+display_name: NestJS
+category: framework
+priority: 60
+extends_language: typescript
+applies_when:
+  frameworks: ["nestjs"]
+
+validation_approach:
+  - id: nestjs.val.class_validator
+    text: "Use DTO classes with class-validator and ValidationPipe for all external input."
+    severity: high
+    tags: [validation]
+
+controller_conventions:
+  - id: nestjs.ctrl.controllers_thin
+    text: "Controllers should delegate immediately to providers/services. Avoid business logic in decorators or handlers."
+    severity: high
+    tags: [layering]
+
+dependency_injection:
+  - id: nestjs.di.providers_only
+    text: "Register dependencies through Nest providers and modules. Avoid ad hoc singleton imports."
+    severity: medium
+    tags: [design]
+
+auth_patterns:
+  - id: nestjs.auth.guards
+    text: "Use guards and interceptors for auth, permissions, and cross-cutting enforcement."
+    severity: high
+    tags: [auth]
+
+testing_conventions:
+  - id: nestjs.test_module_builder
+    text: "Build isolated testing modules and override providers rather than mocking internals directly."
+    severity: medium
+    tags: [testing]
+
+anti_patterns:
+  - id: nestjs.anti_god_module
+    text: "ANTI-PATTERN: A single module owning unrelated domains, providers, and transport concerns."
+    severity: high
+    tags: [anti-pattern]

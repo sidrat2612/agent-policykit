@@ -19,6 +19,16 @@ PROJECT_TYPE_SIGNALS: dict[ProjectType, dict[str, list[str]]] = {
         "dirs": ["pages", "app", "components", "views", "public"],
         "markers": [],
     },
+    ProjectType.MOBILE_APP: {
+        "files": ["app.json", "expo.json", "Podfile"],
+        "dirs": ["ios", "android"],
+        "markers": [],
+    },
+    ProjectType.WORKER: {
+        "files": ["celery.py", "rqworker.py"],
+        "dirs": ["workers", "jobs", "queues", "consumer"],
+        "markers": [],
+    },
     ProjectType.MICROSERVICE: {
         "files": ["Dockerfile", "docker-compose.yml", "docker-compose.yaml", "k8s.yaml"],
         "dirs": ["cmd", "internal"],
@@ -34,9 +44,24 @@ PROJECT_TYPE_SIGNALS: dict[ProjectType, dict[str, list[str]]] = {
         "dirs": ["src"],
         "markers": [],
     },
+    ProjectType.SDK: {
+        "files": ["openapi-generator-config.json"],
+        "dirs": ["examples", "samples"],
+        "markers": [],
+    },
+    ProjectType.MONOLITH: {
+        "files": ["manage.py", "config.ru", "artisan"],
+        "dirs": ["modules", "domains"],
+        "markers": [],
+    },
     ProjectType.MONOREPO: {
         "files": ["lerna.json", "pnpm-workspace.yaml", "nx.json", "turbo.json"],
         "dirs": ["packages", "apps"],
+        "markers": [],
+    },
+    ProjectType.DATA_PIPELINE: {
+        "files": ["airflow.cfg", "dbt_project.yml", "dagster.yaml"],
+        "dirs": ["dags", "pipelines", "etl"],
         "markers": [],
     },
 }
@@ -67,6 +92,16 @@ def detect_project_type(root: Path, frameworks: list[str] | None = None) -> Proj
         scores[ProjectType.WEB_APP] += 5
     if any(fw in api_frameworks for fw in frameworks):
         scores[ProjectType.API_SERVICE] += 4
+    if any(fw in {"django", "rails", "laravel"} for fw in frameworks):
+        scores[ProjectType.MONOLITH] += 4
+
+    # Some project types are often identified by a single strong directory signal.
+    if any((root / dirname).is_dir() for dirname in ["workers", "jobs", "queues", "consumer"]):
+        scores[ProjectType.WORKER] += 1
+    if any((root / dirname).is_dir() for dirname in ["dags", "pipelines", "etl"]):
+        scores[ProjectType.DATA_PIPELINE] += 1
+    if any((root / dirname).is_dir() for dirname in ["examples", "samples"]):
+        scores[ProjectType.SDK] += 1
 
     # Monorepo detection (strong signal)
     monorepo_files = ["lerna.json", "pnpm-workspace.yaml", "nx.json", "turbo.json"]

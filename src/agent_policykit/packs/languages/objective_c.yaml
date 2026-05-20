@@ -1,0 +1,47 @@
+id: objective_c
+display_name: Objective-C
+category: language
+priority: 50
+applies_when:
+  languages: ["objective_c"]
+
+api_rules:
+  - id: objc.api.header_minimal
+    text: "Keep public headers minimal and document ownership, nullability, and thread-safety expectations explicitly."
+    severity: medium
+    tags: [api]
+service_rules:
+  - id: objc.service.layering
+    text: "Keep business logic outside view controllers and transport adapters. Use dedicated service objects."
+    severity: high
+    tags: [layering]
+data_rules:
+  - id: objc.data.validate_lengths
+    text: "Validate lengths, encodings, and pointer ownership before passing external data into C or Objective-C APIs."
+    severity: critical
+    tags: [security]
+method_rules:
+  - id: objc.method.arc_first
+    text: "Prefer ARC-managed ownership and avoid manual retain/release in application code unless strictly necessary."
+    severity: medium
+    tags: [safety]
+error_handling_rules:
+  - id: objc.error.nserror_boundary
+    text: "Return NSError or explicit failure channels at boundaries rather than hiding errors in logs or state flags."
+    severity: medium
+    tags: [reliability]
+testing_rules:
+  - id: objc.test.boundary_cases
+    text: "Test selector dispatch, serialization, and boundary-condition behavior explicitly."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: objc.sec.no_untrusted_load
+    text: "Do not load code, selectors, or serialized objects from untrusted sources without validation."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: objc.anti.massive_view_controller
+    text: "ANTI-PATTERN: View controllers owning networking, persistence, validation, and business logic."
+    severity: high
+    tags: [anti-pattern]

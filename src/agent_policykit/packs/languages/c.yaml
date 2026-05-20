@@ -1,0 +1,47 @@
+id: c
+display_name: C
+category: language
+priority: 50
+applies_when:
+  languages: ["c"]
+
+api_rules:
+  - id: c.api.explicit_headers
+    text: "Keep module interfaces narrow and explicit through headers. Do not expose internal state unnecessarily."
+    severity: medium
+    tags: [api]
+service_rules:
+  - id: c.service.boundary_modules
+    text: "Separate parsing, business logic, and I/O into dedicated modules with explicit contracts."
+    severity: high
+    tags: [architecture]
+data_rules:
+  - id: c.data.bounds_checked
+    text: "Validate buffer sizes, lengths, and pointer ranges before reading or writing memory."
+    severity: critical
+    tags: [security]
+method_rules:
+  - id: c.method.error_codes
+    text: "Use explicit return codes or result structs for failures. Do not hide errors in global state."
+    severity: high
+    tags: [reliability]
+error_handling_rules:
+  - id: c.error.cleanup_paths
+    text: "Ensure every error path frees or unwinds owned resources deterministically."
+    severity: high
+    tags: [reliability]
+testing_rules:
+  - id: c.test.boundary_inputs
+    text: "Test boundary sizes, malformed inputs, and memory ownership behavior explicitly."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: c.sec.no_unsafe_string_funcs
+    text: "Avoid strcpy, strcat, sprintf, and similar unsafe string APIs in security-sensitive code."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: c.anti.hidden_globals
+    text: "ANTI-PATTERN: Shared mutable globals used as an implicit communication channel between modules."
+    severity: high
+    tags: [anti-pattern]

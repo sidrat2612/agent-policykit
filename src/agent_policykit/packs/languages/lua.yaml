@@ -1,0 +1,47 @@
+id: lua
+display_name: Lua
+category: language
+priority: 50
+applies_when:
+  languages: ["lua"]
+
+api_rules:
+  - id: lua.api.validate_tables
+    text: "Validate external table shapes and required keys before using them as trusted input."
+    severity: high
+    tags: [validation]
+service_rules:
+  - id: lua.service.local_modules
+    text: "Keep modules focused and prefer local scope over globals for state and dependencies."
+    severity: medium
+    tags: [design]
+data_rules:
+  - id: lua.data.safe_boundaries
+    text: "Validate strings, file paths, and command arguments before passing them to external systems."
+    severity: high
+    tags: [security]
+method_rules:
+  - id: lua.method.no_hidden_globals
+    text: "Use local variables and explicit module returns instead of implicit globals."
+    severity: medium
+    tags: [reliability]
+error_handling_rules:
+  - id: lua.error.pcall_where_needed
+    text: "Use pcall/xpcall deliberately around unsafe boundaries and propagate meaningful error context."
+    severity: medium
+    tags: [reliability]
+testing_rules:
+  - id: lua.test.boundary_cases
+    text: "Add tests for parsing, table-shape validation, and integration boundaries."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: lua.sec.no_loadstring_on_input
+    text: "Do not execute load, loadstring, or dynamic bytecode from untrusted input."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: lua.anti.script_sprawl
+    text: "ANTI-PATTERN: Global mutable state and implicit module loading driving application behavior."
+    severity: high
+    tags: [anti-pattern]

@@ -4,8 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-
-import yaml
+import re
 
 
 # Framework markers: (framework_id, detection_files, detection_in_deps)
@@ -23,9 +22,14 @@ FRAMEWORK_MARKERS: list[tuple[str, list[str], list[str]]] = [
     ("nestjs", ["nest-cli.json"], ["@nestjs/core"]),
     # Java frameworks
     ("spring_boot", [], ["spring-boot-starter"]),
+    # .NET / PHP / Ruby frameworks
+    ("aspnet", ["Program.cs", "Startup.cs"], ["microsoft.aspnetcore.app", "microsoft.aspnetcore.mvc"]),
+    ("laravel", ["artisan"], ["laravel/framework"]),
+    ("rails", [], ["rails"]),
     # Go frameworks
     ("gin", [], ["github.com/gin-gonic/gin"]),
     ("echo", [], ["github.com/labstack/echo"]),
+    ("chi", [], ["github.com/go-chi/chi", "github.com/go-chi/chi/v5"]),
 ]
 
 
@@ -109,9 +113,46 @@ def _collect_dependencies(root: Path) -> set[str]:
                 line = line.strip()
                 if line and not line.startswith("module") and not line.startswith("go "):
                     parts = line.split()
-                    if parts and not parts[0] in ("require", "(", ")"):
+                    if parts and parts[0] == "require" and len(parts) > 1:
+                        deps.add(parts[1])
+                    elif parts and parts[0] not in ("require", "(", ")"):
                         deps.add(parts[0])
         except OSError:
             pass
+
+    # composer.json
+    composer_json = root / "composer.json"
+    if composer_json.exists():
+        try:
+            data = json.loads(composer_json.read_text(encoding="utf-8"))
+            for section in ("require", "require-dev"):
+                if section in data and isinstance(data[section], dict):
+                    deps.update(name.lower() for name in data[section].keys())
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    # Gemfile
+    gemfile = root / "Gemfile"
+    if gemfile.exists():
+        try:
+            for line in gemfile.read_text(encoding="utf-8").splitlines():
+                match = re.match(r"\s*gem\s+['\"]([^'\"]+)['\"]", line)
+                if match:
+                    deps.add(match.group(1).lower())
+        except OSError:
+            pass
+
+    # .csproj
+    for csproj in root.glob("*.csproj"):
+        try:
+            content = csproj.read_text(encoding="utf-8")
+        except OSError:
+            continue
+
+        if "Microsoft.NET.Sdk.Web" in content or "AspNetCore" in content:
+            deps.add("microsoft.aspnetcore.app")
+
+        for package_name in re.findall(r'PackageReference\s+Include="([^"]+)"', content, flags=re.IGNORECASE):
+            deps.add(package_name.lower())
 
     return deps

@@ -1,0 +1,41 @@
+id: express
+display_name: Express
+category: framework
+priority: 60
+extends_language: typescript
+applies_when:
+  frameworks: ["express"]
+
+validation_approach:
+  - id: express.val.middleware_boundary
+    text: "Validate params, query, and body with middleware schemas before a controller executes."
+    severity: high
+    tags: [validation]
+
+controller_conventions:
+  - id: express.ctrl.router_controller_split
+    text: "Keep routers for route registration and controllers for orchestration. Business logic belongs in services."
+    severity: high
+    tags: [layering]
+  - id: express.ctrl.async_wrappers
+    text: "Wrap async handlers so rejected promises flow into centralized error middleware."
+    severity: high
+    tags: [reliability]
+
+auth_patterns:
+  - id: express.auth.middleware
+    text: "Authentication and authorization belong in explicit middleware or guards, not inline inside controllers."
+    severity: high
+    tags: [auth]
+
+testing_conventions:
+  - id: express.test_supertest_boundary
+    text: "Use Supertest or equivalent for HTTP-level tests and stub downstream integrations behind interfaces."
+    severity: medium
+    tags: [testing]
+
+anti_patterns:
+  - id: express.anti_inline_queries
+    text: "ANTI-PATTERN: Database queries and authorization checks embedded directly in route callbacks."
+    severity: high
+    tags: [anti-pattern]

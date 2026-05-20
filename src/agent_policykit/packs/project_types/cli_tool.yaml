@@ -1,0 +1,32 @@
+id: cli_tool
+display_name: CLI Tool
+category: project_type
+priority: 40
+applies_when:
+  project_types: ["cli_tool"]
+
+architectural_rules:
+  - id: cli.arch.command_handler_split
+    text: "Keep command parsing separate from execution logic. Commands should delegate to services or command handlers."
+    severity: medium
+    tags: [architecture]
+  - id: cli.arch.explicit_exit_codes
+    text: "Define and document explicit exit codes for user, validation, and runtime failures."
+    severity: high
+    tags: [ux, reliability]
+
+operational_rules:
+  - id: cli.ops.stderr_for_errors
+    text: "Write machine-readable or user-facing errors to stderr, not stdout."
+    severity: medium
+    tags: [operations]
+  - id: cli.ops.non_interactive_mode
+    text: "Support non-interactive usage for automation and CI where the tool performs state-changing actions."
+    severity: medium
+    tags: [operations]
+
+security_rules:
+  - id: cli.sec.shell_injection
+    text: "Never build shell commands through string concatenation from user input."
+    severity: critical
+    tags: [security, injection]

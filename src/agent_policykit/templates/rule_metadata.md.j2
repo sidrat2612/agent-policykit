@@ -1,0 +1,18 @@
+{% macro render_rule_metadata() -%}
+{% set categories = {
+  'governance': governance_rules,
+  'security': security_rules,
+  'compliance': compliance_rules,
+  'architecture': architecture_rules,
+  'review': review_rules,
+  'testing': testing_rules,
+  'operations': operations_rules,
+  'language': language_rules,
+  'framework': framework_rules,
+  'project_type': project_type_rules,
+  'output_contract': output_contract,
+} %}
+{% for category, category_rules in categories.items() if category_rules %}
+<!-- agent-policykit:rule-ids:{{ category }}={{ category_rules | map(attribute='id') | join(',') }} -->
+{% endfor %}
+{%- endmacro %}

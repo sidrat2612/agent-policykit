@@ -6,6 +6,7 @@ import difflib
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from agent_policykit.core.rule_metadata import find_removed_rule_ids, summarize_removed_rule_ids
 from agent_policykit.core.models import AdapterOutput
 
 
@@ -20,6 +21,7 @@ class FileDiff:
     unified_diff: str
     added_lines: int = 0
     removed_lines: int = 0
+    notes: list[str] = field(default_factory=list)
 
     @property
     def summary(self) -> str:
@@ -81,15 +83,29 @@ def compute_diff(root: Path, outputs: list[AdapterOutput]) -> DiffResult:
             existing = file_path.read_text(encoding="utf-8")
             existing_managed = _extract_managed_section(existing)
             proposed_managed = _extract_managed_section(proposed)
+            notes: list[str] = []
 
             if existing_managed is not None and proposed_managed is not None:
                 # Compare only managed sections
                 has_changes = existing_managed != proposed_managed
                 diff_text = _unified_diff(existing_managed, proposed_managed, output.path)
+                removed_rule_ids = find_removed_rule_ids(existing_managed, proposed_managed)
             else:
                 # Compare full content
                 has_changes = existing != proposed
                 diff_text = _unified_diff(existing, proposed, output.path)
+                removed_rule_ids = find_removed_rule_ids(existing, proposed)
+
+            if removed_rule_ids.get("security"):
+                notes.append("Security rule removals detected; update would require --force.")
+            non_security_removed = {
+                category: rule_ids
+                for category, rule_ids in removed_rule_ids.items()
+                if category != "security"
+            }
+            summary = summarize_removed_rule_ids(non_security_removed)
+            if summary:
+                notes.append(summary)
 
             added = sum(1 for line in diff_text.splitlines() if line.startswith("+") and not line.startswith("+++"))
             removed = sum(1 for line in diff_text.splitlines() if line.startswith("-") and not line.startswith("---"))
@@ -102,6 +118,7 @@ def compute_diff(root: Path, outputs: list[AdapterOutput]) -> DiffResult:
                 unified_diff=diff_text if has_changes else "",
                 added_lines=added,
                 removed_lines=removed,
+                notes=notes,
             ))
 
     return DiffResult(diffs=diffs)

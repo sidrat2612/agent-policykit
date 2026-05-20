@@ -1,0 +1,37 @@
+id: rails
+display_name: Rails
+category: framework
+priority: 60
+extends_language: ruby
+applies_when:
+  frameworks: ["rails"]
+
+validation_approach:
+  - id: rails.val.strong_params
+    text: "Use strong parameters and model/form validation for every write path. Reject unexpected attributes."
+    severity: high
+    tags: [validation]
+
+controller_conventions:
+  - id: rails.ctrl.skinny_controllers
+    text: "Keep controllers skinny. Move orchestration and business rules into services, jobs, or domain objects."
+    severity: high
+    tags: [layering]
+
+error_handling:
+  - id: rails.err.rescue_from_carefully
+    text: "Use rescue_from carefully at the controller boundary. Log with context and do not expose internal error details."
+    severity: medium
+    tags: [reliability]
+
+testing_conventions:
+  - id: rails.test_request_specs
+    text: "Use request specs for endpoint behavior and model/service tests for domain logic."
+    severity: medium
+    tags: [testing]
+
+anti_patterns:
+  - id: rails.anti_callbacks_everywhere
+    text: "ANTI-PATTERN: Hidden business workflows encoded in model callbacks with no explicit service orchestration."
+    severity: high
+    tags: [anti-pattern]

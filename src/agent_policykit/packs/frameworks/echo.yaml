@@ -1,0 +1,37 @@
+id: echo
+display_name: Echo
+category: framework
+priority: 60
+extends_language: go
+applies_when:
+  frameworks: ["echo"]
+
+validation_approach:
+  - id: echo.val.validator_hook
+    text: "Register a custom validator and typed request structs for every endpoint. Do not operate on raw maps."
+    severity: high
+    tags: [validation]
+
+controller_conventions:
+  - id: echo.ctrl_handlers_thin
+    text: "Echo handlers should remain orchestration-only. Delegate business logic to services with explicit interfaces."
+    severity: high
+    tags: [layering]
+
+error_handling:
+  - id: echo.err.http_error_handler
+    text: "Customize the HTTP error handler to sanitize responses and centralize logging."
+    severity: medium
+    tags: [reliability]
+
+testing_conventions:
+  - id: echo.test_context_builders
+    text: "Build Echo contexts with httptest utilities and assert status, body, and service interactions explicitly."
+    severity: medium
+    tags: [testing]
+
+anti_patterns:
+  - id: echo.anti_service_logic_in_handler
+    text: "ANTI-PATTERN: Handler methods performing database calls, authorization checks, and response shaping inline."
+    severity: high
+    tags: [anti-pattern]

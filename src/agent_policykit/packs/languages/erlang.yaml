@@ -1,0 +1,47 @@
+id: erlang
+display_name: Erlang
+category: language
+priority: 50
+applies_when:
+  languages: ["erlang"]
+
+api_rules:
+  - id: erlang.api.message_contracts
+    text: "Define and document message shapes and process protocols explicitly at every boundary."
+    severity: high
+    tags: [api]
+service_rules:
+  - id: erlang.service.supervision_tree
+    text: "Use supervisor boundaries to isolate fault domains and keep worker responsibilities narrow."
+    severity: high
+    tags: [architecture]
+data_rules:
+  - id: erlang.data.input_validation
+    text: "Validate external binaries, terms, and message payload sizes before processing."
+    severity: high
+    tags: [security]
+method_rules:
+  - id: erlang.method_no_hidden_state
+    text: "Keep process state explicit and versioned. Avoid hidden global side channels across processes."
+    severity: medium
+    tags: [design]
+error_handling_rules:
+  - id: erlang.error.let_it_crash_rightly
+    text: "Use let-it-crash only with supervisors that can recover safely and observably."
+    severity: medium
+    tags: [reliability]
+testing_rules:
+  - id: erlang.test.message_flows
+    text: "Test message protocols, supervision behavior, and malformed input explicitly."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: erlang.sec.no_atom_creation
+    text: "Never create atoms from untrusted input at runtime."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: erlang.anti_process_god_object
+    text: "ANTI-PATTERN: A single process owning unrelated business logic, I/O, and coordination responsibilities."
+    severity: high
+    tags: [anti-pattern]

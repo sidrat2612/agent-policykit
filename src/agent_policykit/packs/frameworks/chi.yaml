@@ -1,0 +1,37 @@
+id: chi
+display_name: Chi
+category: framework
+priority: 60
+extends_language: go
+applies_when:
+  frameworks: ["chi"]
+
+validation_approach:
+  - id: chi.val.explicit_decode_validate
+    text: "Decode request payloads into typed structs and validate them before calling services."
+    severity: high
+    tags: [validation]
+
+controller_conventions:
+  - id: chi.ctrl.middleware_chain
+    text: "Use middleware for cross-cutting concerns and keep route handlers small and domain-focused."
+    severity: medium
+    tags: [structure]
+
+auth_patterns:
+  - id: chi.auth.middleware
+    text: "Apply auth and tenancy checks in middleware close to the routing boundary."
+    severity: high
+    tags: [auth, security]
+
+testing_conventions:
+  - id: chi.test_router_level
+    text: "Test router behavior with httptest against the real middleware stack where practical."
+    severity: medium
+    tags: [testing]
+
+anti_patterns:
+  - id: chi.anti_context_values_everywhere
+    text: "ANTI-PATTERN: Passing most application state through request context values instead of typed dependencies."
+    severity: medium
+    tags: [anti-pattern]

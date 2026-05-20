@@ -1,0 +1,47 @@
+id: php
+display_name: PHP
+category: language
+priority: 50
+applies_when:
+  languages: ["php"]
+
+api_rules:
+  - id: php.api.controllers_thin
+    text: "Controllers should validate requests, delegate to services, and shape responses only."
+    severity: high
+    tags: [layering]
+service_rules:
+  - id: php.service.explicit_dependencies
+    text: "Inject repositories and clients explicitly. Avoid hidden global state or service locators in business logic."
+    severity: medium
+    tags: [design]
+data_rules:
+  - id: php.data.parameterized
+    text: "Use prepared statements or safe ORM/query builder APIs. Never interpolate user input into SQL."
+    severity: critical
+    tags: [security]
+method_rules:
+  - id: php.method.typed_properties
+    text: "Use typed properties, typed parameters, and explicit return types on public methods."
+    severity: medium
+    tags: [typing]
+error_handling_rules:
+  - id: php.error.domain_exceptions
+    text: "Throw explicit domain exceptions and translate them at the HTTP or CLI boundary."
+    severity: medium
+    tags: [reliability]
+testing_rules:
+  - id: php.test.phpunit_or_pest
+    text: "Use PHPUnit or Pest with focused unit, feature, and error-path tests."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: php.sec.no_eval
+    text: "Never use eval() or execute user-controlled PHP code."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: php.anti.fat_controller
+    text: "ANTI-PATTERN: Controllers performing validation, authorization, queries, and business logic inline."
+    severity: high
+    tags: [anti-pattern]

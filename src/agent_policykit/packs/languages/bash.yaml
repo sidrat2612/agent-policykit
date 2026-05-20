@@ -1,0 +1,47 @@
+id: bash
+display_name: Bash
+category: language
+priority: 50
+applies_when:
+  languages: ["bash"]
+
+api_rules:
+  - id: bash.api.validate_args
+    text: "Validate positional arguments, environment variables, and file paths before executing core logic."
+    severity: high
+    tags: [validation]
+service_rules:
+  - id: bash.service.small_functions
+    text: "Structure scripts as small functions with clear inputs and outputs instead of monolithic imperative flows."
+    severity: medium
+    tags: [design]
+data_rules:
+  - id: bash.data.quote_everything
+    text: "Quote variable expansions and paths consistently to avoid globbing, word splitting, and injection bugs."
+    severity: critical
+    tags: [security]
+method_rules:
+  - id: bash.method.strict_mode
+    text: "Use strict mode where appropriate (set -euo pipefail) and handle intentional exceptions explicitly."
+    severity: high
+    tags: [reliability]
+error_handling_rules:
+  - id: bash.error.check_exit_codes
+    text: "Handle and propagate command exit codes deliberately. Do not ignore failures in pipelines or subshells."
+    severity: high
+    tags: [reliability]
+testing_rules:
+  - id: bash.test.shellcheck_and_bats
+    text: "Run ShellCheck and add Bats or equivalent tests for script behavior and edge cases."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: bash.sec.no_eval
+    text: "Never use eval on user-controlled input."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: bash.anti.tempfile_races
+    text: "ANTI-PATTERN: Predictable temp file paths and unquoted command substitutions in privileged scripts."
+    severity: high
+    tags: [anti-pattern]

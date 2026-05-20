@@ -93,8 +93,21 @@ class PolicyBundle:
             RuleCategory.LANGUAGE: self.language_rules,
             RuleCategory.FRAMEWORK: self.framework_rules,
             RuleCategory.PROJECT_TYPE: self.project_type_rules,
+            RuleCategory.OUTPUT_CONTRACT: self.output_contract,
         }
         return category_map.get(category, [])
+
+
+@dataclass
+class InstructionScope:
+    """A path-scoped instruction target within a repository."""
+
+    slug: str
+    display_name: str
+    globs: list[str]
+    paths: list[str] = field(default_factory=list)
+    exclude_agent: str | None = None
+    description: str | None = None
 
 
 @dataclass
@@ -107,9 +120,12 @@ class ProjectContext:
     project_type: ProjectType | None = None
     source_paths: list[str] = field(default_factory=list)
     test_paths: list[str] = field(default_factory=list)
+    subproject_paths: list[str] = field(default_factory=list)
+    instruction_scopes: list[InstructionScope] = field(default_factory=list)
     instruction_globs: list[str] = field(default_factory=list)
     config_files: list[str] = field(default_factory=list)
     targets: list[AgentTarget] = field(default_factory=list)
+    render_mode: str = "generate"
 
 
 @dataclass

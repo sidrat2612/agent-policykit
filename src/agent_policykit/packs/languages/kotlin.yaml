@@ -1,0 +1,47 @@
+id: kotlin
+display_name: Kotlin
+category: language
+priority: 50
+applies_when:
+  languages: ["kotlin"]
+
+api_rules:
+  - id: kotlin.api.dto_boundary
+    text: "Use explicit request and response DTOs at service boundaries. Do not expose persistence models directly."
+    severity: high
+    tags: [layering]
+service_rules:
+  - id: kotlin.service.immutable_models
+    text: "Prefer immutable data classes and constructor injection for service dependencies."
+    severity: medium
+    tags: [design]
+data_rules:
+  - id: kotlin.data.safe_sql
+    text: "Use parameterized queries or ORM abstractions. Never interpolate user input into SQL strings."
+    severity: critical
+    tags: [security]
+method_rules:
+  - id: kotlin.method.null_safety
+    text: "Model nullability explicitly. Do not suppress null-safety with !! unless failure is intentional and justified."
+    severity: high
+    tags: [safety]
+error_handling_rules:
+  - id: kotlin.error.result_or_exceptions
+    text: "Use domain exceptions or Result-style return types consistently. Do not mix failure channels arbitrarily."
+    severity: medium
+    tags: [reliability]
+testing_rules:
+  - id: kotlin.test.coroutines
+    text: "Test suspend functions and coroutine behavior explicitly with structured test dispatchers."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: kotlin.sec.no_reflection_input
+    text: "Do not use reflection on untrusted input to instantiate classes or call methods dynamically."
+    severity: high
+    tags: [security]
+anti_patterns:
+  - id: kotlin.anti.blocking_in_coroutines
+    text: "ANTI-PATTERN: Blocking I/O or thread sleeps inside suspend functions or coroutine scopes."
+    severity: high
+    tags: [anti-pattern]

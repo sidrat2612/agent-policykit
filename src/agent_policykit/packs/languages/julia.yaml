@@ -1,0 +1,47 @@
+id: julia
+display_name: Julia
+category: language
+priority: 50
+applies_when:
+  languages: ["julia"]
+
+api_rules:
+  - id: julia.api.typed_boundaries
+    text: "Keep external boundaries typed and documented. Do not rely on ad hoc Any-heavy interfaces for production code."
+    severity: high
+    tags: [typing]
+service_rules:
+  - id: julia.service.modular_pipeline
+    text: "Separate orchestration, computation, and I/O so core algorithms remain reusable and testable."
+    severity: medium
+    tags: [design]
+data_rules:
+  - id: julia.data.reproducible_setup
+    text: "Track project environments and package versions explicitly through Project.toml and Manifest.toml."
+    severity: medium
+    tags: [operations]
+method_rules:
+  - id: julia.method.avoid_globals
+    text: "Avoid performance-critical global mutable state. Prefer explicit arguments and immutable structs."
+    severity: medium
+    tags: [performance]
+error_handling_rules:
+  - id: julia.error.boundary_context
+    text: "Translate parsing, I/O, and numerical failures with contextual error messages at the boundary."
+    severity: medium
+    tags: [reliability]
+testing_rules:
+  - id: julia.test.pkg_tests
+    text: "Use Julia's test framework for algorithm behavior, numerical edge cases, and I/O boundaries."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: julia.sec.no_eval_on_input
+    text: "Do not eval or include code paths based on untrusted input."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: julia.anti.notebook_only_logic
+    text: "ANTI-PATTERN: Critical logic existing only in notebooks with hidden global state and no tests."
+    severity: high
+    tags: [anti-pattern]

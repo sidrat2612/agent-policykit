@@ -1,0 +1,43 @@
+id: aspnet
+display_name: ASP.NET
+category: framework
+priority: 60
+extends_language: csharp
+applies_when:
+  frameworks: ["aspnet"]
+
+validation_approach:
+  - id: aspnet.val.model_binding
+    text: "Use model binding with typed request models and data annotations or FluentValidation. Reject invalid ModelState explicitly."
+    severity: high
+    tags: [validation]
+
+controller_conventions:
+  - id: aspnet.ctrl.controllers_thin
+    text: "Controllers should orchestrate only. Put business rules in services and data access in repositories."
+    severity: high
+    tags: [layering]
+
+dependency_injection:
+  - id: aspnet.di_builtin_container
+    text: "Register dependencies through the built-in DI container with explicit lifetimes."
+    severity: medium
+    tags: [design]
+
+auth_patterns:
+  - id: aspnet.auth.policies
+    text: "Use authorization policies or roles for sensitive endpoints. Never rely on frontend gating alone."
+    severity: high
+    tags: [auth, security]
+
+testing_conventions:
+  - id: aspnet.test_web_application_factory
+    text: "Use WebApplicationFactory or equivalent integration harnesses for endpoint tests."
+    severity: medium
+    tags: [testing]
+
+anti_patterns:
+  - id: aspnet.anti_service_locator
+    text: "ANTI-PATTERN: Pulling dependencies from IServiceProvider in arbitrary methods instead of constructor injection."
+    severity: medium
+    tags: [anti-pattern]

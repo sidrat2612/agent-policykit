@@ -1,0 +1,47 @@
+id: rust
+display_name: Rust
+category: language
+priority: 50
+applies_when:
+  languages: ["rust"]
+
+api_rules:
+  - id: rust.api.typed_boundary
+    text: "Use typed request/response structs and explicit serialization contracts at every external boundary."
+    severity: high
+    tags: [api]
+service_rules:
+  - id: rust.service.ownership_clear
+    text: "Make ownership and borrowing boundaries explicit. Avoid hiding shared mutable state behind global locks."
+    severity: high
+    tags: [design]
+data_rules:
+  - id: rust.data.sql_safe
+    text: "Use query macros or parameterized database drivers. Never format unchecked input into SQL."
+    severity: critical
+    tags: [security]
+method_rules:
+  - id: rust.method.no_unwrap_in_core
+    text: "Do not use unwrap() or expect() in core request paths without a deliberate invariant and justification."
+    severity: high
+    tags: [reliability]
+error_handling_rules:
+  - id: rust.error.result_context
+    text: "Return Result with contextual errors and translate failures at the boundary instead of panicking."
+    severity: high
+    tags: [reliability]
+testing_rules:
+  - id: rust.test.unit_and_integration
+    text: "Use unit tests for pure logic and integration tests for I/O, database, and API behavior."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: rust.sec.unsafe_justified
+    text: "Use unsafe only with a documented invariant and tests that protect the boundary."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: rust.anti.blocking_async
+    text: "ANTI-PATTERN: Blocking file, network, or CPU-heavy work directly inside async executors without isolation."
+    severity: high
+    tags: [anti-pattern]

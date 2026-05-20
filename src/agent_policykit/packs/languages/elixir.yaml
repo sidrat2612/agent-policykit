@@ -1,0 +1,47 @@
+id: elixir
+display_name: Elixir
+category: language
+priority: 50
+applies_when:
+  languages: ["elixir"]
+
+api_rules:
+  - id: elixir.api.changeset_boundary
+    text: "Validate external input with changesets or typed boundary modules before it reaches domain logic."
+    severity: high
+    tags: [validation]
+service_rules:
+  - id: elixir.service.context_modules
+    text: "Use context modules as the primary business boundary. Keep controllers, channels, and LiveViews thin."
+    severity: high
+    tags: [architecture]
+data_rules:
+  - id: elixir.data.explicit_repo_calls
+    text: "Keep Repo access explicit and isolated from presentation layers."
+    severity: medium
+    tags: [layering]
+method_rules:
+  - id: elixir.method.pattern_match_carefully
+    text: "Pattern match deliberately and handle error tuples explicitly rather than crashing on unexpected shapes."
+    severity: high
+    tags: [reliability]
+error_handling_rules:
+  - id: elixir.error.supervision
+    text: "Use supervision and explicit error tuples for expected failures. Reserve crashes for true process failures."
+    severity: medium
+    tags: [reliability]
+testing_rules:
+  - id: elixir.test.doctest_and_exunit
+    text: "Use ExUnit for domain logic, boundary validation, and process/message behavior."
+    severity: medium
+    tags: [testing]
+security_checklist:
+  - id: elixir.sec.no_atom_leaks
+    text: "Do not create atoms from untrusted input because atoms are not garbage collected."
+    severity: critical
+    tags: [security]
+anti_patterns:
+  - id: elixir.anti.contextless_logic
+    text: "ANTI-PATTERN: Business logic spread across controllers, schemas, and channels with no clear context boundary."
+    severity: high
+    tags: [anti-pattern]

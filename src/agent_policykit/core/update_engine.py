@@ -8,6 +8,7 @@ from pathlib import Path
 
 from agent_policykit.core.diff_engine import MANAGED_END, MANAGED_START
 from agent_policykit.core.models import AdapterOutput
+from agent_policykit.core.rule_metadata import extract_rule_ids_by_category, find_removed_rule_ids, summarize_removed_rule_ids
 from agent_policykit.types import MergeStrategy
 
 
@@ -81,7 +82,11 @@ def _write_single_output(file_path: Path, output: AdapterOutput, force: bool) ->
                 message="Security rules would be downgraded; rerun with --force to override",
             )
         file_path.write_text(output.content, encoding="utf-8")
-        return WriteResult(path=output.path, action="updated")
+        return WriteResult(
+            path=output.path,
+            action="updated",
+            message=_summarize_non_security_conflicts(existing, output.content),
+        )
 
     if output.merge_strategy == MergeStrategy.SECTION_MERGE:
         merged = _merge_managed_section(existing, output.content)
@@ -94,7 +99,11 @@ def _write_single_output(file_path: Path, output: AdapterOutput, force: bool) ->
                 message="Security rules would be downgraded; rerun with --force to override",
             )
         file_path.write_text(merged, encoding="utf-8")
-        return WriteResult(path=output.path, action="updated")
+        return WriteResult(
+            path=output.path,
+            action="updated",
+            message=_summarize_non_security_conflicts(existing, merged),
+        )
 
     if output.merge_strategy == MergeStrategy.APPEND:
         new_content = existing + "\n" + output.content
@@ -136,12 +145,29 @@ _MARKDOWN_HEADING_RE = re.compile(r"^(#{2,6})\s+")
 
 def _would_downgrade_security(existing: str, proposed: str) -> bool:
     """Return True when proposed content removes existing security guidance lines."""
+    existing_rule_ids = extract_rule_ids_by_category(existing)
+    proposed_rule_ids = extract_rule_ids_by_category(proposed)
+    if "security" in existing_rule_ids:
+        if "security" not in proposed_rule_ids:
+            return True
+        return not existing_rule_ids["security"].issubset(proposed_rule_ids["security"])
+
     existing_lines = _extract_security_lines(existing)
     if not existing_lines:
         return False
 
     proposed_lines = _extract_security_lines(proposed)
     return not existing_lines.issubset(proposed_lines)
+
+
+def _summarize_non_security_conflicts(existing: str, proposed: str) -> str:
+    removed_rule_ids = find_removed_rule_ids(existing, proposed)
+    non_security_removed = {
+        category: rule_ids
+        for category, rule_ids in removed_rule_ids.items()
+        if category != "security"
+    }
+    return summarize_removed_rule_ids(non_security_removed)
 
 
 def _extract_security_lines(content: str) -> set[str]:

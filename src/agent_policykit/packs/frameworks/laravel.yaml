@@ -1,0 +1,43 @@
+id: laravel
+display_name: Laravel
+category: framework
+priority: 60
+extends_language: php
+applies_when:
+  frameworks: ["laravel"]
+
+validation_approach:
+  - id: laravel.val.form_requests
+    text: "Validate input with FormRequest classes or explicit validator rules. Do not trust raw request payloads."
+    severity: high
+    tags: [validation]
+
+controller_conventions:
+  - id: laravel.ctrl.controllers_thin
+    text: "Controllers should coordinate requests and responses only. Business logic belongs in services or actions."
+    severity: high
+    tags: [layering]
+
+error_handling:
+  - id: laravel.err.handler_sanitized
+    text: "Centralize exception rendering in the exception handler and avoid leaking stack traces in production."
+    severity: high
+    tags: [security]
+
+auth_patterns:
+  - id: laravel.auth.policies_gates
+    text: "Use policies and gates for authorization. Do not scatter inline permission checks across controllers and views."
+    severity: high
+    tags: [auth]
+
+testing_conventions:
+  - id: laravel.test_feature_and_unit
+    text: "Use feature tests for HTTP/database flows and unit tests for isolated business logic."
+    severity: medium
+    tags: [testing]
+
+anti_patterns:
+  - id: laravel.anti_fat_models
+    text: "ANTI-PATTERN: Controllers and Eloquent models both owning overlapping business rules with no clear service boundary."
+    severity: medium
+    tags: [anti-pattern]

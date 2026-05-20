@@ -1,0 +1,25 @@
+id: governance_output_contract
+display_name: Output Contract Rules
+category: output_contract
+priority: 125
+
+rules:
+  - id: out.summary_first
+    text: "Lead meaningful work with a concise summary of what changed or what was found before optional details."
+    severity: medium
+    tags: [output]
+
+  - id: out.include_validation
+    text: "State what was validated, what could not be validated, and any residual uncertainty or risk."
+    severity: high
+    tags: [output, testing]
+
+  - id: out.review_findings_first
+    text: "For reviews, present findings before summaries and tie each issue to concrete evidence or missing safeguards."
+    severity: high
+    tags: [review, output]
+
+  - id: out.next_steps_real_only
+    text: "Offer next steps only when there are meaningful follow-ups. Prefer short numbered options when several distinct paths exist."
+    severity: low
+    tags: [output]

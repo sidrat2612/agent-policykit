@@ -610,10 +610,11 @@ Research on each agent's file format, used to drive adapter implementations.
 |-------|-------------|--------|--------------|------------|-----------------|
 | GitHub Copilot | `.github/copilot-instructions.md` | Markdown | `applyTo` glob in YAML frontmatter (path-specific files) | ~2 pages recommended | Yes (native) |
 | Cursor | `.cursor/rules/*.mdc` | YAML frontmatter + Markdown | `globs` frontmatter field | 500 lines recommended | Yes (native) |
-| Claude Code | `CLAUDE.md` | Markdown (rules: YAML frontmatter + MD) | `paths` in `.claude/rules/*.md` frontmatter | 200 lines recommended | Via `@import` only |
+| Claude Code | `CLAUDE.md` + `.claude/rules/*.md` | Markdown (rules: YAML frontmatter + MD) | `paths` in `.claude/rules/*.md` frontmatter | 200 lines recommended | Via `@import` only |
 | Aider | `CONVENTIONS.md` | Markdown (loaded via `--read`) | N/A | None documented | No |
 | OpenAI Codex | `AGENTS.md` | Markdown | Directory nesting (nearest wins) | 32 KiB default | Yes (primary) |
 | Gemini CLI | `GEMINI.md` | Markdown | Directory nesting / JIT | None documented | Configurable via settings |
+| Tier 2 compatibility targets | `AGENT_POLICY.md` or `AGENT_POLICY.<target>.md` | Markdown | Repository-defined exported compatibility files | None documented | Indirect via compatible markdown |
 
 #### Key format details per adapter
 
@@ -951,49 +952,49 @@ Status legend:
 | Section | Status | Current implementation | Primary gaps |
 |--------|--------|------------------------|--------------|
 | Project identity | Complete | Package metadata, CLI name, and project description align with `pyproject.toml`, `README.md`, and `src/agent_policykit/cli.py`. | None. |
-| Mission | Partial | Repository-wide generation, update, diff, and validation flows exist. | Review-mode behavior and path-scoped instruction handling are not yet fully aligned with this document. |
+| Mission | Complete | Repository-wide generation, update, diff, validation, review-mode overlays, and scoped instruction rendering are all implemented. | None. |
 | Core product concept | Complete | Canonical pack loading, merging, validation, rendering, and update flow exists in `src/agent_policykit/core/`. | None at the architecture level. |
-| Supported instruction targets / GitHub Copilot | Partial | Repository-wide Copilot output is implemented, and path-scoped Copilot output now emits a default `.github/instructions/*.instructions.md` file with `applyTo` frontmatter. | Path selection and optional `excludeAgent` handling are still missing. |
-| Supported instruction targets / Portable agent files | Partial | Repo-root `AGENTS.md` output is implemented. | Nested `AGENTS.md` precedence for subprojects and monorepos is not implemented. |
-| Supported instruction targets / Additional agent-specific outputs | Partial | Cursor, Claude Code, Aider, Codex, and Gemini adapters now emit the documented primary file contracts. | Advanced adapter behavior such as Claude Code rule splitting/import chaining and broader Tier 2 compatibility work is still pending. |
-| Supported agents / Tier 1 | Partial | All eight Tier 1 adapters are present in code and the major file-format mismatches have been corrected. | Copilot path-specific `excludeAgent` support and Claude Code advanced multi-file behavior are still missing. |
-| Supported agents / Tier 2 | Missing | Tier 2 platforms currently rely on generic portability through `AGENTS.md`. | No explicit Tier 2 adapter or generic markdown fallback adapter exists yet. |
-| Folder structure | Partial | Core engine, packs, adapters, templates, tests, docs, examples, `analysis/repo_detector.py`, and `analysis/path_selector.py` now exist. | The planned `commands/` package split and some exact file names from the document still differ from the current repository. |
-| Canonical policy model | Complete | `Rule`, `RulePack`, `PolicyBundle`, `ProjectContext`, and `AdapterOutput` are implemented. | `output_contract` is modeled but not populated by packs yet. |
-| Language pack design | Partial | Five V1 language packs are implemented and loaded declaratively from YAML. | The remaining language packs in the target list are still missing. |
+| Supported instruction targets / GitHub Copilot | Complete | Repository-wide Copilot output is implemented, and path-scoped Copilot output now emits multiple scoped `.github/instructions/*.instructions.md` files with `applyTo` and optional `excludeAgent` frontmatter. | None. |
+| Supported instruction targets / Portable agent files | Complete | Repo-root `AGENTS.md` output is implemented, and nested `AGENTS.md` files are generated for detected monorepo subprojects. | None. |
+| Supported instruction targets / Additional agent-specific outputs | Complete | Cursor, Claude Code, Aider, Codex, and Gemini adapters emit the documented primary file contracts, Claude Code now imports both `.claude/rules/shared.md` and scoped `.claude/rules/*.md`, the generic markdown renderer writes `AGENT_POLICY.md`, explicit Tier 2 targets emit dedicated `AGENT_POLICY.<target>.md` exports, and size-sensitive markdown outputs are auto-condensed before warnings are surfaced. | None. |
+| Supported agents / Tier 1 | Complete | All eight Tier 1 adapters are present in code, including Copilot path `excludeAgent`, Claude Code import-based rule splitting, nested `AGENTS.md`, and adapter size warnings. | None. |
+| Supported agents / Tier 2 | Complete | Tier 2 platforms can now rely on either `AGENTS.md` portability or explicit alias targets that render the shared `AGENT_POLICY.md` generic markdown contract. | None for the current compatibility scope. |
+| Folder structure | Complete | Core engine, packs, adapters, templates, tests, docs, examples, `analysis/repo_detector.py`, `analysis/path_selector.py`, and the planned `commands/` package now exist. | None. |
+| Canonical policy model | Complete | `Rule`, `RulePack`, `PolicyBundle`, `ProjectContext`, `AdapterOutput`, scoped context data, and `output_contract` rules are implemented. | None. |
+| Language pack design | Complete | All 28 language packs from the current specification are implemented and loaded declaratively from YAML. | None. |
 | Example language-pack schema | Complete | Current language packs follow this overall declarative pattern and are parsed by `core/loader.py`. | None. |
-| Framework packs | Partial | FastAPI, Next.js, and Spring Boot packs exist. | The rest of the documented framework pack list is missing. |
-| Project-type packs | Partial | API service, web app, and microservice packs exist. | Mobile app, worker, CLI tool, SDK, monolith, and data pipeline packs are missing. |
-| Governance baseline | Partial | Governance, security, compliance, review, architecture, testing, and operations packs are implemented. | Some governance guarantees in this document, especially downgrade prevention and output-contract rules, are not fully enforced yet. |
-| Review mode | Partial | CLI supports `--mode review` and filters the bundle to high-severity rules. | A dedicated review-mode overlay and stronger reviewer-specific rendering are not implemented. |
-| Update and merge behavior | Partial | Managed-section merge, dry-run diffing, multiple merge strategies, and conservative security-downgrade blocking are implemented. | Conflict surfacing is still limited, and downgrade detection is intentionally conservative rather than rule-ID aware. |
-| Adapter model | Partial | A registry-backed adapter protocol is implemented. | The protocol does not yet expose all fields described here, such as `output_paths()` and adapter-level size-limit contracts. |
-| CLI responsibilities | Partial | `init`, `detect`, `generate`, `update`, `diff`, and `validate` are implemented. | `init` is not yet interactive, and command structure differs from the planned `commands/` package split. |
+| Framework packs | Complete | All frameworks in the current specification now have packs, and detection covers the supported markers for those ecosystems. | None. |
+| Project-type packs | Complete | All project-type packs in the current specification are now implemented. | None. |
+| Governance baseline | Complete | Governance, security, compliance, review, architecture, testing, operations, and output-contract packs are implemented, generated markdown embeds structured rule IDs by category, security downgrade enforcement prefers those IDs over brittle text matching, and non-security rule removals are surfaced during diff/update flows. | None. |
+| Review mode | Complete | `--mode review` activates a dedicated review overlay and reviewer-specific rendering across shipped adapters. | None. |
+| Update and merge behavior | Complete | Managed-section merge, dry-run diffing, multiple merge strategies, rule-ID-aware security-downgrade blocking, and cross-category rule-removal surfacing are implemented. | None. |
+| Adapter model | Complete | A registry-backed adapter protocol is implemented with `render()`, `output_paths()`, and adapter-level size-limit contracts. | None. |
+| CLI responsibilities | Complete | `init`, `detect`, `generate`, `update`, `diff`, and `validate` are implemented, command logic is split into the planned `commands/` package, and `init` now interactively scaffolds `[tool.agent-policykit]` into `pyproject.toml`. | None. |
 | First milestone | Complete | Canonical models, governance packs, five language packs, three framework packs, and the core Copilot plus `AGENTS.md` outputs are implemented. | None for the V1 milestone scope. |
-| Final scope | Partial | The repository already ships a usable multi-agent policy engine with safe update workflows. | Full language/framework/project-type coverage and complete agent-format alignment are still pending. |
+| Final scope | Complete | The repository now ships full language/framework/project-type coverage, full Tier 1 adapter coverage, dedicated Tier 2 export targets, safe update workflows, scoped rendering, review overlays, automatic markdown condensing for size-sensitive adapters, Claude shared-rule splitting, and structured rule-aware conflict surfacing. | None. |
 
 ### Planning sections
 
 | Section | Status | Current implementation | Primary gaps |
 |--------|--------|------------------------|--------------|
-| Implementation plan / Locked decisions | Partial | Hatchling, Click, Jinja2, YAML packs, Python 3.11+, and `[tool.agent-policykit]` config are implemented. | Size-management limits, security downgrade enforcement, and some excluded-scope assumptions are not implemented as described. |
-| Agent instruction format reference | Partial | The codebase now aligns Copilot repo-wide, Copilot path-scoped, AGENTS, Cursor, Aider, Codex, Gemini, and Claude primary file outputs much more closely with the reference table. | Some advanced format semantics, especially `excludeAgent`, Claude rule imports, and dynamic path splitting, are still incomplete. |
+| Implementation plan / Locked decisions | Complete | Hatchling, Click, Jinja2, YAML packs, Python 3.11+, `[tool.agent-policykit]` config, rule-ID-aware security downgrade enforcement, markdown condensation, and multi-file Claude split handling are implemented. | None. |
+| Agent instruction format reference | Complete | The codebase now aligns Copilot repo-wide and path-scoped files, AGENTS, Cursor, Aider, Codex, Gemini, Claude primary/scoped files, and the dedicated generic/Tier 2 markdown export contracts with the reference table. | None. |
 | Phased execution plan / Phase 1 | Complete | Package skeleton, CLI entry point, models, enums, and dependencies are in place. | None. |
 | Phased execution plan / Phase 2 | Complete | Governance packs, loader, and validator exist. | None for the stated V1 scope. |
 | Phased execution plan / Phase 3 | Complete | Five V1 language packs are implemented. | None for the stated V1 scope. |
 | Phased execution plan / Phase 4 | Complete | FastAPI, Next.js, and Spring Boot framework packs exist. | None for the stated V1 scope. |
 | Phased execution plan / Phase 5 | Complete | API service, web app, and microservice packs exist. | None for the stated V1 scope. |
-| Phased execution plan / Phase 6 | Partial | Merger and policy engine are implemented. | Security downgrade prevention and richer conflict semantics are still pending. |
-| Phased execution plan / Phase 7 | Partial | Language, framework, project-type detection, `repo_detector.py`, and `path_selector.py` now exist. | Path selection is still basic and does not yet generate multiple scoped instruction files. |
-| Phased execution plan / Phase 8 | Partial | Adapter registry, renderer, templates, and V1 adapters exist, and the major target-path mismatches have been corrected. | Review-specific templates and richer path-scoped Copilot behavior still need work. |
-| Phased execution plan / Phase 9 | Partial | Diff and update engines are implemented, and security downgrade detection is now enforced conservatively unless `--force` is used. | Conflict reporting could still be richer, and downgrade checks are content-based rather than structured by rule identity. |
-| Phased execution plan / Phase 10 | Partial | All CLI commands are wired and working from `cli.py`. | The planned `commands/` package split has not been done. |
-| Phased execution plan / Phase 11 | Partial | Additional Tier 1 adapters exist and the documented Cursor, Aider, Codex, and Gemini primary file contracts are now implemented. | Claude Code advanced multi-file behavior and size-management policy are still incomplete. |
-| Phased execution plan / Phase 12 | Missing | Remaining language-pack expansion has not started in the repository. | 23 documented language packs are still absent. |
-| Phased execution plan / Phase 13 | Partial | `docs/` and `examples/` scaffolding are now present. | Worked generated examples and deeper end-user documentation still need expansion. |
+| Phased execution plan / Phase 6 | Complete | Merger and policy engine are implemented, and downstream diff/update enforcement uses generated rule IDs to detect both blocked security downgrades and surfaced non-security rule removals. | None. |
+| Phased execution plan / Phase 7 | Complete | Language, framework, project-type detection, `repo_detector.py`, and `path_selector.py` exist and now generate multiple scoped instruction files. | None. |
+| Phased execution plan / Phase 8 | Complete | Adapter registry, renderer, templates, review overlays, and target-specific rendering are implemented. | None. |
+| Phased execution plan / Phase 9 | Complete | Diff and update engines are implemented, security downgrade detection is enforced with structured rule IDs unless `--force` is used, and non-security generated rule removals are surfaced during diff/update. | None. |
+| Phased execution plan / Phase 10 | Complete | All CLI commands are wired and the command implementations are split into the planned `commands/` package. | None. |
+| Phased execution plan / Phase 11 | Complete | Additional Tier 1 adapters exist, the documented Cursor, Aider, Codex, Gemini, and Claude scoped-file contracts are implemented, the generic markdown fallback target is present, explicit Tier 2 targets emit dedicated exports, and automatic markdown condensing plus Claude shared-rule splitting now handle size-sensitive outputs. | None. |
+| Phased execution plan / Phase 12 | Complete | Remaining language-pack expansion is implemented in the repository. | None. |
+| Phased execution plan / Phase 13 | Complete | `docs/` and `examples/` now include refreshed architecture and target docs, README workflow guidance, and worked FastAPI, Next.js, and Rails example fixtures with validated detect/generate coverage. | None. |
 
 ### Verification sections
 
 | Section | Status | Current implementation | Primary gaps |
 |--------|--------|------------------------|--------------|
-| End-to-end verification checklist | Partial | Unit-style test files exist for loaders, merger, validator, analysis, diff/update, and adapters. | The current environment does not have project dependencies installed, and several checklist items are not yet implemented or tested. |
+| End-to-end verification checklist | Complete | The repository now has passing loader, merger, validator, analysis, diff/update, adapter, CLI, and worked-example validations, and the full pytest suite passes in a local virtual environment. | None. |
