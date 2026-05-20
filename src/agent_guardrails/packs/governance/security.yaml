@@ -1,0 +1,115 @@
+id: governance_security
+display_name: Security Governance
+category: security
+priority: 200
+
+rules:
+  - id: sec.auth_required
+    text: "Every endpoint handling user data or state changes must enforce authentication. No anonymous access to sensitive operations."
+    severity: critical
+    tags: [auth, owasp]
+
+  - id: sec.authz_explicit
+    text: "Authorization checks must be explicit at the operation level. Do not rely on URL obscurity or hidden endpoints."
+    severity: critical
+    tags: [auth, owasp]
+
+  - id: sec.least_privilege
+    text: "Grant minimum required permissions. Service accounts, IAM roles, and database users must follow least-privilege principle."
+    severity: high
+    tags: [access-control]
+
+  - id: sec.input_validation
+    text: "Validate and sanitize all external input at system boundaries. Use allow-lists over deny-lists. Reject unexpected input shapes."
+    severity: critical
+    tags: [owasp, injection]
+
+  - id: sec.output_encoding
+    text: "Encode all output appropriate to its context (HTML, SQL, shell, logs). Never trust that downstream will handle encoding."
+    severity: high
+    tags: [owasp, xss]
+
+  - id: sec.no_hardcoded_secrets
+    text: "Never hardcode secrets, API keys, tokens, passwords, or connection strings in source code, configs tracked in git, or logs."
+    severity: critical
+    tags: [secrets, owasp]
+
+  - id: sec.secrets_management
+    text: "Use dedicated secret managers (Vault, AWS Secrets Manager, etc.) or environment variables. Rotate secrets regularly."
+    severity: high
+    tags: [secrets, operations]
+
+  - id: sec.parameterized_queries
+    text: "Use parameterized queries or ORM safe methods for all database interactions. Never interpolate user input into SQL."
+    severity: critical
+    tags: [injection, owasp]
+
+  - id: sec.secure_defaults
+    text: "Default to deny. Opt-in to access, not opt-out. Default configurations must be secure."
+    severity: high
+    tags: [design]
+
+  - id: sec.no_sensitive_logging
+    text: "Never log secrets, tokens, passwords, PII, or full request bodies containing sensitive data. Mask or redact."
+    severity: critical
+    tags: [logging, privacy]
+
+  - id: sec.cryptography_standards
+    text: "Use established cryptographic libraries. No custom crypto. Use current algorithms (AES-256, SHA-256+, RSA-2048+, Ed25519)."
+    severity: critical
+    tags: [crypto]
+
+  - id: sec.tls_everywhere
+    text: "All network communication must use TLS. No plaintext HTTP for sensitive data. Verify certificates."
+    severity: high
+    tags: [transport]
+
+  - id: sec.rate_limiting
+    text: "Apply rate limiting to authentication endpoints, APIs, and any resource-intensive operations."
+    severity: high
+    tags: [availability, abuse]
+
+  - id: sec.csrf_protection
+    text: "State-changing operations via browsers must include CSRF protection tokens or use SameSite cookies."
+    severity: high
+    tags: [owasp, web]
+
+  - id: sec.cors_restrictive
+    text: "CORS policies must be restrictive. Never use wildcard origins for authenticated endpoints."
+    severity: high
+    tags: [web, owasp]
+
+  - id: sec.dependency_scanning
+    text: "Dependencies must be scanned for known vulnerabilities. Block deployment if critical CVEs are unresolved."
+    severity: high
+    tags: [supply-chain]
+
+  - id: sec.error_no_internals
+    text: "Error responses to clients must not expose stack traces, internal paths, database details, or infrastructure information."
+    severity: high
+    tags: [information-disclosure]
+
+  - id: sec.session_management
+    text: "Sessions must have expiry, be invalidated on logout, and use secure cookie flags (HttpOnly, Secure, SameSite)."
+    severity: high
+    tags: [auth, web]
+
+  - id: sec.prompt_injection_defense
+    text: "AI-enabled systems must validate and sanitize all user-provided prompts. Never pass raw user input directly to LLM system prompts without escaping or boundary enforcement."
+    severity: critical
+    tags: [ai, injection]
+
+  - id: sec.file_upload_safety
+    text: "File uploads must validate type, size, and content. Store outside webroot. Never execute uploaded files."
+    severity: high
+    tags: [owasp]
+
+  - id: sec.no_eval
+    text: "Never use eval(), exec(), or dynamic code execution with user-controlled input."
+    severity: critical
+    tags: [injection]
+
+  - id: sec.header_security
+    text: "Set security headers: Content-Security-Policy, X-Content-Type-Options, Strict-Transport-Security, X-Frame-Options."
+    severity: medium
+    tags: [web, headers]

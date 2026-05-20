@@ -1,0 +1,65 @@
+id: governance_testing
+display_name: Testing Governance
+category: testing
+priority: 130
+
+rules:
+  - id: test.unit_tests_required
+    text: "All business logic and service methods must have unit tests covering happy path, error path, and edge cases."
+    severity: high
+    tags: [unit-testing]
+
+  - id: test.integration_tests_required
+    text: "API endpoints, database operations, and external integrations must have integration tests."
+    severity: high
+    tags: [integration-testing]
+
+  - id: test.security_tests
+    text: "Authentication, authorization, and input validation must have dedicated security tests including negative cases."
+    severity: high
+    tags: [security-testing]
+
+  - id: test.no_flaky_tests
+    text: "Tests must be deterministic. No reliance on timing, external services, or random data without seeding."
+    severity: medium
+    tags: [reliability]
+
+  - id: test.test_isolation
+    text: "Tests must not depend on other tests' execution order or shared mutable state. Each test must set up and tear down its own state."
+    severity: medium
+    tags: [isolation]
+
+  - id: test.meaningful_assertions
+    text: "Tests must assert specific behavior, not just 'no exception thrown'. Check return values, side effects, and state changes."
+    severity: medium
+    tags: [quality]
+
+  - id: test.error_path_coverage
+    text: "Test error paths explicitly: invalid inputs, missing resources, permission denied, timeout, and rate-limit scenarios."
+    severity: high
+    tags: [robustness]
+
+  - id: test.no_mocking_internals
+    text: "Mock at boundaries (external services, databases), not internal implementation details. Tests should survive refactoring."
+    severity: medium
+    tags: [design]
+
+  - id: test.test_naming
+    text: "Test names must describe the scenario and expected outcome. Use format: test_[action]_[condition]_[expectation]."
+    severity: low
+    tags: [readability]
+
+  - id: test.regression_tests
+    text: "Every bug fix must include a regression test that would have caught the bug."
+    severity: medium
+    tags: [quality]
+
+  - id: test.performance_tests
+    text: "Performance-critical paths must have benchmark tests with defined thresholds."
+    severity: medium
+    tags: [performance]
+
+  - id: test.contract_tests
+    text: "APIs consumed by other services must have contract tests to prevent unintentional breaking changes."
+    severity: medium
+    tags: [integration, api]

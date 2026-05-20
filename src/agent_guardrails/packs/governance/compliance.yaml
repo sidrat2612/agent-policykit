@@ -1,0 +1,75 @@
+id: governance_compliance
+display_name: Compliance and Privacy Governance
+category: compliance
+priority: 180
+
+rules:
+  - id: comp.privacy_by_design
+    text: "Design systems to minimize personal data collection. Collect only what is needed, only for the stated purpose."
+    severity: high
+    tags: [privacy, gdpr]
+
+  - id: comp.data_minimization
+    text: "Do not store data beyond what is required for the feature. Avoid collecting 'just in case' fields."
+    severity: high
+    tags: [privacy, gdpr]
+
+  - id: comp.retention_policy
+    text: "All stored personal data must have a defined retention period. Implement automated deletion or anonymization."
+    severity: high
+    tags: [privacy, gdpr]
+
+  - id: comp.consent_explicit
+    text: "User consent must be explicit, informed, and revocable. Do not bundle consent. Record consent timestamps."
+    severity: high
+    tags: [privacy, gdpr]
+
+  - id: comp.right_to_deletion
+    text: "Systems must support data subject deletion requests. Implement hard-delete or cryptographic erasure paths."
+    severity: high
+    tags: [privacy, gdpr]
+
+  - id: comp.data_portability
+    text: "Provide data export in machine-readable formats when required by regulation."
+    severity: medium
+    tags: [privacy, gdpr]
+
+  - id: comp.audit_trail
+    text: "Security-relevant actions must produce immutable audit logs: who, what, when, from where."
+    severity: high
+    tags: [auditability, compliance]
+
+  - id: comp.tenant_isolation
+    text: "Multi-tenant systems must enforce strict data isolation. One tenant must never access another tenant's data."
+    severity: critical
+    tags: [isolation, security]
+
+  - id: comp.pii_handling
+    text: "PII must be encrypted at rest and in transit. Access must be logged and restricted to authorized services."
+    severity: critical
+    tags: [privacy, encryption]
+
+  - id: comp.data_classification
+    text: "Data must be classified by sensitivity. Apply controls proportional to classification level."
+    severity: medium
+    tags: [governance]
+
+  - id: comp.cross_border_awareness
+    text: "Be aware of data residency requirements. Do not transfer data across jurisdictions without legal basis."
+    severity: medium
+    tags: [gdpr, compliance]
+
+  - id: comp.breach_notification
+    text: "Design logging and alerting to detect and report breaches within regulatory timeframes."
+    severity: high
+    tags: [incident-response]
+
+  - id: comp.third_party_data
+    text: "Data shared with third parties must be governed by contracts. Minimize data shared. Audit third-party access."
+    severity: high
+    tags: [privacy, supply-chain]
+
+  - id: comp.anonymization
+    text: "Use anonymization or pseudonymization where full identity is not required for the operation."
+    severity: medium
+    tags: [privacy]

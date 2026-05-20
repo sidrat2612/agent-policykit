@@ -1,0 +1,75 @@
+id: governance_review
+display_name: Code Review Governance
+category: review
+priority: 150
+
+rules:
+  - id: rev.functional_correctness
+    text: "Verify the code does what it claims. Check edge cases, off-by-one errors, null handling, and boundary conditions."
+    severity: high
+    tags: [correctness]
+
+  - id: rev.security_posture
+    text: "Check for authentication gaps, authorization bypasses, injection vectors, sensitive data exposure, and missing validation."
+    severity: critical
+    tags: [security]
+
+  - id: rev.architecture_adherence
+    text: "Verify the change respects existing architecture boundaries. Flag layer violations, circular dependencies, and scope creep."
+    severity: high
+    tags: [architecture]
+
+  - id: rev.test_coverage
+    text: "Require tests for new behavior. Flag missing edge-case tests, missing error-path tests, and missing security tests."
+    severity: high
+    tags: [testing]
+
+  - id: rev.naming_and_clarity
+    text: "Names must be clear and consistent. Flag confusing names, misleading comments, and undocumented magic values."
+    severity: medium
+    tags: [readability]
+
+  - id: rev.error_handling_review
+    text: "Every error path must be handled. Flag swallowed exceptions, generic catches, and missing error context."
+    severity: high
+    tags: [reliability]
+
+  - id: rev.performance_awareness
+    text: "Flag N+1 queries, unbounded loops, missing pagination, large memory allocations, and blocking calls in async contexts."
+    severity: medium
+    tags: [performance]
+
+  - id: rev.backwards_compatibility
+    text: "Flag breaking changes to public APIs, database schemas, message formats, or configuration without migration paths."
+    severity: high
+    tags: [stability]
+
+  - id: rev.dependency_justification
+    text: "New dependencies must be justified. Check license compatibility, maintenance status, and security posture."
+    severity: medium
+    tags: [supply-chain]
+
+  - id: rev.rollback_safety
+    text: "Verify the change can be safely rolled back. Flag irreversible migrations, one-way data transforms, and flag-less feature releases."
+    severity: high
+    tags: [operations]
+
+  - id: rev.observability
+    text: "Verify new features have appropriate logging, metrics, and alerting. Flag silent failures."
+    severity: medium
+    tags: [operations]
+
+  - id: rev.no_shortcuts
+    text: "Flag TODO/FIXME/HACK without linked issues. Do not approve known-broken code for speed."
+    severity: medium
+    tags: [quality]
+
+  - id: rev.grumpy_but_professional
+    text: "Be direct, blunt, and technically demanding in review feedback. Refuse to approve insecure or sloppy code. But remain professional — no personal attacks, no sarcasm about competence."
+    severity: info
+    tags: [tone]
+
+  - id: rev.block_security_downgrades
+    text: "Never approve changes that weaken existing security controls without explicit justification and compensating controls."
+    severity: critical
+    tags: [security, policy]

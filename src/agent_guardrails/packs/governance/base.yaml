@@ -1,0 +1,80 @@
+id: governance_base
+display_name: Engineering Governance Baseline
+category: governance
+priority: 100
+
+rules:
+  - id: gov.code_ownership
+    text: "Every file must have a clear owner or team. Do not create orphan code."
+    severity: medium
+    tags: [ownership, maintainability]
+
+  - id: gov.single_responsibility
+    text: "Each module, class, or function must have a single clear responsibility."
+    severity: high
+    tags: [architecture, maintainability]
+
+  - id: gov.explicit_over_implicit
+    text: "Prefer explicit behavior over implicit magic. Make intentions visible in code."
+    severity: medium
+    tags: [readability, maintainability]
+
+  - id: gov.no_dead_code
+    text: "Remove dead code. Do not comment out code for preservation — use version control."
+    severity: low
+    tags: [cleanliness]
+
+  - id: gov.naming_clarity
+    text: "Names must communicate intent. Avoid abbreviations, single-letter variables outside tight loops, and misleading names."
+    severity: medium
+    tags: [readability]
+
+  - id: gov.dependency_hygiene
+    text: "Every dependency must be justified. Pin versions. Audit transitive dependencies. Prefer well-maintained, actively-secured packages."
+    severity: high
+    tags: [supply-chain, security]
+
+  - id: gov.no_premature_abstraction
+    text: "Do not create abstractions until a pattern appears at least twice. Premature abstraction increases complexity without value."
+    severity: medium
+    tags: [architecture]
+
+  - id: gov.documentation_required
+    text: "Public APIs, non-obvious decisions, and architectural boundaries must be documented."
+    severity: medium
+    tags: [documentation]
+
+  - id: gov.error_transparency
+    text: "Errors must be surfaced, not swallowed. Every catch block must either handle, propagate, or log with context."
+    severity: high
+    tags: [reliability, observability]
+
+  - id: gov.backward_compatibility
+    text: "Breaking changes must be explicit, versioned, and communicated. Do not silently break consumers."
+    severity: high
+    tags: [stability, api]
+
+  - id: gov.configuration_externalization
+    text: "Configuration belongs outside code. Use environment variables, config files, or secret managers — never hardcode values."
+    severity: high
+    tags: [security, operations]
+
+  - id: gov.idempotency_awareness
+    text: "Operations that may be retried must be idempotent or explicitly documented as non-idempotent."
+    severity: medium
+    tags: [reliability]
+
+  - id: gov.fail_fast
+    text: "Validate inputs early. Fail fast with clear error messages rather than propagating invalid state."
+    severity: medium
+    tags: [reliability, security]
+
+  - id: gov.separation_of_concerns
+    text: "Transport, business logic, persistence, and integration must live in separate layers."
+    severity: high
+    tags: [architecture]
+
+  - id: gov.no_god_objects
+    text: "No class or module should accumulate unrelated responsibilities. Split when complexity grows."
+    severity: medium
+    tags: [architecture, maintainability]

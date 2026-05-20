@@ -1,0 +1,65 @@
+id: governance_architecture
+display_name: Architecture Governance
+category: architecture
+priority: 140
+
+rules:
+  - id: arch.layer_separation
+    text: "Maintain strict separation between transport (HTTP/gRPC), business logic, and persistence layers. No layer may bypass another."
+    severity: high
+    tags: [layering]
+
+  - id: arch.dependency_direction
+    text: "Dependencies must flow inward: handlers → services → repositories. Inner layers must not depend on outer layers."
+    severity: high
+    tags: [layering, clean-architecture]
+
+  - id: arch.interface_boundaries
+    text: "Cross-module communication must happen through defined interfaces. Do not reach into another module's internals."
+    severity: high
+    tags: [encapsulation]
+
+  - id: arch.thin_controllers
+    text: "Route handlers and controllers must be thin orchestrators. Business logic belongs in service or use-case modules."
+    severity: high
+    tags: [layering]
+
+  - id: arch.no_circular_deps
+    text: "No circular dependencies between modules or packages. Use dependency inversion if two modules need each other."
+    severity: high
+    tags: [structure]
+
+  - id: arch.bounded_contexts
+    text: "Large systems must define bounded contexts with explicit interfaces. Do not create a single shared model for everything."
+    severity: medium
+    tags: [ddd]
+
+  - id: arch.api_versioning
+    text: "Public APIs must be versioned. Breaking changes require new versions, not silent modifications."
+    severity: high
+    tags: [api, stability]
+
+  - id: arch.database_per_service
+    text: "In microservice architectures, each service owns its data. No shared databases across service boundaries."
+    severity: high
+    tags: [microservices]
+
+  - id: arch.async_boundaries
+    text: "Long-running or unreliable operations must be handled asynchronously. Do not block request threads on external calls without timeouts."
+    severity: medium
+    tags: [reliability, performance]
+
+  - id: arch.feature_toggles
+    text: "New features in production should be behind feature flags to enable safe rollout and rollback."
+    severity: medium
+    tags: [operations, deployment]
+
+  - id: arch.contract_testing
+    text: "Service boundaries must have contract tests to prevent integration failures."
+    severity: medium
+    tags: [testing, microservices]
+
+  - id: arch.no_shared_mutable_state
+    text: "Avoid shared mutable state between components. Use message passing, events, or explicit state management."
+    severity: high
+    tags: [concurrency, reliability]

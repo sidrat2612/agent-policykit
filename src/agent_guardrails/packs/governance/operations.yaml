@@ -1,0 +1,80 @@
+id: governance_operations
+display_name: Operations and Observability Governance
+category: operations
+priority: 120
+
+rules:
+  - id: ops.structured_logging
+    text: "Use structured logging (JSON or key-value). Include request IDs, timestamps, severity, and context. No unstructured print statements in production."
+    severity: high
+    tags: [observability, logging]
+
+  - id: ops.health_checks
+    text: "Every deployable service must expose health check endpoints for liveness and readiness probes."
+    severity: high
+    tags: [deployment, reliability]
+
+  - id: ops.metrics_instrumentation
+    text: "Instrument key operations with metrics: request latency, error rates, queue depths, and business-critical counters."
+    severity: medium
+    tags: [observability, monitoring]
+
+  - id: ops.alerting_defined
+    text: "Every new service must define alerting rules before production deployment. SLOs must have corresponding alerts."
+    severity: medium
+    tags: [monitoring]
+
+  - id: ops.graceful_shutdown
+    text: "Services must handle SIGTERM gracefully: drain connections, finish in-flight work, then exit cleanly."
+    severity: high
+    tags: [deployment, reliability]
+
+  - id: ops.timeout_everywhere
+    text: "All external calls (HTTP, database, queue, cache) must have explicit timeouts. No unbounded waits."
+    severity: high
+    tags: [reliability]
+
+  - id: ops.retry_with_backoff
+    text: "Retries must use exponential backoff with jitter. Never retry without delay. Set max retry limits."
+    severity: medium
+    tags: [reliability]
+
+  - id: ops.circuit_breaker
+    text: "External dependencies must be wrapped in circuit breakers to prevent cascade failures."
+    severity: medium
+    tags: [reliability, resilience]
+
+  - id: ops.rollback_plan
+    text: "Every deployment must have a documented rollback plan. Database migrations must be reversible or forward-compatible."
+    severity: high
+    tags: [deployment]
+
+  - id: ops.blue_green_canary
+    text: "Production deployments should use canary or blue-green strategies. Do not deploy 100% at once without verification."
+    severity: medium
+    tags: [deployment]
+
+  - id: ops.resource_limits
+    text: "Container and service resource limits (CPU, memory, connections) must be configured. No unbounded resource consumption."
+    severity: high
+    tags: [reliability, cost]
+
+  - id: ops.distributed_tracing
+    text: "Multi-service calls must propagate trace context. Use correlation IDs across service boundaries."
+    severity: medium
+    tags: [observability]
+
+  - id: ops.runbook_required
+    text: "Production services must have runbooks for common failure scenarios before going live."
+    severity: medium
+    tags: [operations]
+
+  - id: ops.no_manual_prod_changes
+    text: "Production changes must go through CI/CD pipelines. No manual kubectl, SSH, or console changes except in documented emergency procedures."
+    severity: high
+    tags: [security, deployment]
+
+  - id: ops.capacity_planning
+    text: "Services must be designed with capacity limits in mind. Document expected load and scaling triggers."
+    severity: medium
+    tags: [scalability]
