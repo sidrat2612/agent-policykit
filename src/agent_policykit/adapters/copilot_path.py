@@ -18,9 +18,9 @@ class CopilotPathAdapter:
         content = render_template("copilot_path.md.j2", bundle, context)
         return [
             AdapterOutput(
-                path=".instructions.md",
+                path=".github/instructions/project.instructions.md",
                 content=content,
-                merge_strategy=MergeStrategy.SECTION_MERGE,
+                merge_strategy=MergeStrategy.OVERWRITE,
             )
         ]
 

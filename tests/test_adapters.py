@@ -84,7 +84,7 @@ class TestAgentsMdAdapter:
         adapter = AgentsMdAdapter()
         outputs = adapter.render(sample_bundle, sample_context)
         assert len(outputs) == 1
-        assert outputs[0].path == ".github/AGENTS.md"
+        assert outputs[0].path == "AGENTS.md"
 
     def test_render_has_sections(self, sample_bundle, sample_context):
         adapter = AgentsMdAdapter()
@@ -94,15 +94,40 @@ class TestAgentsMdAdapter:
         assert "### Security" in content
 
 
+class TestCopilotPathAdapter:
+    """Tests for the Copilot path-scoped adapter."""
+
+    def test_render_produces_scoped_output(self, sample_bundle, sample_context):
+        adapter = CopilotPathAdapter()
+        outputs = adapter.render(sample_bundle, sample_context)
+        assert len(outputs) == 1
+        assert outputs[0].path == ".github/instructions/project.instructions.md"
+        assert outputs[0].merge_strategy == MergeStrategy.OVERWRITE
+
+    def test_render_includes_applyto_frontmatter(self, sample_bundle, sample_context):
+        adapter = CopilotPathAdapter()
+        outputs = adapter.render(sample_bundle, sample_context)
+        content = outputs[0].content
+        assert content.startswith("---\napplyTo: \"**/*\"\n---\n")
+
+
 class TestCursorAdapter:
     """Tests for the Cursor adapter."""
 
-    def test_render_produces_cursorrules(self, sample_bundle, sample_context):
+    def test_render_produces_cursor_rule_file(self, sample_bundle, sample_context):
         adapter = CursorAdapter()
         outputs = adapter.render(sample_bundle, sample_context)
         assert len(outputs) == 1
-        assert outputs[0].path == ".cursorrules"
+        assert outputs[0].path == ".cursor/rules/project.mdc"
         assert outputs[0].merge_strategy == MergeStrategy.OVERWRITE
+
+    def test_render_includes_cursor_frontmatter(self, sample_bundle, sample_context):
+        adapter = CursorAdapter()
+        outputs = adapter.render(sample_bundle, sample_context)
+        content = outputs[0].content
+        assert content.startswith(
+            "---\ndescription: \"Repository-wide engineering rules\"\nglobs: \"**/*\"\nalwaysApply: true\n---\n"
+        )
 
 
 class TestClaudeCodeAdapter:
@@ -119,29 +144,37 @@ class TestClaudeCodeAdapter:
 class TestAiderAdapter:
     """Tests for the Aider adapter."""
 
-    def test_render_produces_aider_conf(self, sample_bundle, sample_context):
+    def test_render_produces_conventions_and_conf(self, sample_bundle, sample_context):
         adapter = AiderAdapter()
         outputs = adapter.render(sample_bundle, sample_context)
-        assert len(outputs) == 1
-        assert outputs[0].path == ".aider.conf.yml"
-        assert outputs[0].merge_strategy == MergeStrategy.OVERWRITE
+        assert len(outputs) == 2
+        output_paths = {output.path for output in outputs}
+        assert "CONVENTIONS.md" in output_paths
+        assert ".aider.conf.yml" in output_paths
 
-    def test_render_contains_conventions(self, sample_bundle, sample_context):
+        conventions = next(output for output in outputs if output.path == "CONVENTIONS.md")
+        config = next(output for output in outputs if output.path == ".aider.conf.yml")
+        assert conventions.merge_strategy == MergeStrategy.SECTION_MERGE
+        assert config.merge_strategy == MergeStrategy.OVERWRITE
+
+    def test_render_contains_conventions_reference(self, sample_bundle, sample_context):
         adapter = AiderAdapter()
         outputs = adapter.render(sample_bundle, sample_context)
-        content = outputs[0].content
-        assert "conventions:" in content
+        config = next(output for output in outputs if output.path == ".aider.conf.yml")
+        conventions = next(output for output in outputs if output.path == "CONVENTIONS.md")
+        assert "read: CONVENTIONS.md" in config.content
+        assert "## Engineering Standards" in conventions.content
 
 
 class TestCodexAdapter:
     """Tests for the Codex adapter."""
 
-    def test_render_produces_codex_instructions(self, sample_bundle, sample_context):
+    def test_render_produces_agents_md(self, sample_bundle, sample_context):
         adapter = CodexAdapter()
         outputs = adapter.render(sample_bundle, sample_context)
         assert len(outputs) == 1
-        assert outputs[0].path == ".codex/instructions.md"
-        assert outputs[0].merge_strategy == MergeStrategy.OVERWRITE
+        assert outputs[0].path == "AGENTS.md"
+        assert outputs[0].merge_strategy == MergeStrategy.SECTION_MERGE
 
     def test_render_contains_sections(self, sample_bundle, sample_context):
         adapter = CodexAdapter()
@@ -154,11 +187,11 @@ class TestCodexAdapter:
 class TestGeminiCliAdapter:
     """Tests for the Gemini CLI adapter."""
 
-    def test_render_produces_gemini_instructions(self, sample_bundle, sample_context):
+    def test_render_produces_gemini_md(self, sample_bundle, sample_context):
         adapter = GeminiCliAdapter()
         outputs = adapter.render(sample_bundle, sample_context)
         assert len(outputs) == 1
-        assert outputs[0].path == ".gemini/instructions.md"
+        assert outputs[0].path == "GEMINI.md"
         assert outputs[0].merge_strategy == MergeStrategy.OVERWRITE
 
     def test_render_contains_sections(self, sample_bundle, sample_context):

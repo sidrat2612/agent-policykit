@@ -6,6 +6,11 @@ from pathlib import Path
 
 from agent_policykit.analysis.framework_detector import detect_frameworks
 from agent_policykit.analysis.language_detector import detect_languages
+from agent_policykit.analysis.path_selector import (
+    detect_source_paths,
+    detect_test_paths,
+    select_instruction_globs,
+)
 from agent_policykit.analysis.project_type_detector import detect_project_type
 from agent_policykit.core.models import ProjectContext
 from agent_policykit.types import AgentTarget
@@ -14,13 +19,13 @@ from agent_policykit.types import AgentTarget
 # Known agent tool config file patterns
 AGENT_TARGET_MARKERS: dict[AgentTarget, list[str]] = {
     AgentTarget.COPILOT_REPO: [".github/copilot-instructions.md"],
-    AgentTarget.COPILOT_PATH: [".github/.copilot-*.md", ".instructions.md"],
-    AgentTarget.AGENTS_MD: [".github/AGENTS.md", "AGENTS.md"],
-    AgentTarget.CURSOR: [".cursorrules", ".cursor/rules"],
+    AgentTarget.COPILOT_PATH: [".github/instructions/*.instructions.md", ".instructions.md"],
+    AgentTarget.AGENTS_MD: ["AGENTS.md"],
+    AgentTarget.CURSOR: [".cursor/rules/*.mdc", ".cursorrules"],
     AgentTarget.CLAUDE_CODE: [".claude/CLAUDE.md", "CLAUDE.md"],
-    AgentTarget.AIDER: [".aider.conf.yml", ".aiderignore"],
-    AgentTarget.CODEX: [".codex/instructions.md", "AGENTS.md"],
-    AgentTarget.GEMINI_CLI: [".gemini/instructions.md", "GEMINI.md"],
+    AgentTarget.AIDER: [".aider.conf.yml", "CONVENTIONS.md", ".aiderignore"],
+    AgentTarget.CODEX: ["AGENTS.md", ".codex/instructions.md"],
+    AgentTarget.GEMINI_CLI: ["GEMINI.md", ".gemini/instructions.md"],
 }
 
 
@@ -38,6 +43,9 @@ def detect_project_context(root: Path) -> ProjectContext:
     languages = detect_languages(root)
     frameworks = detect_frameworks(root)
     project_type = detect_project_type(root, frameworks)
+    source_paths = detect_source_paths(root)
+    test_paths = detect_test_paths(root)
+    instruction_globs = select_instruction_globs(source_paths, test_paths)
     targets = _detect_existing_targets(root)
 
     return ProjectContext(
@@ -45,6 +53,9 @@ def detect_project_context(root: Path) -> ProjectContext:
         detected_languages=languages,
         detected_frameworks=frameworks,
         project_type=project_type,
+        source_paths=source_paths,
+        test_paths=test_paths,
+        instruction_globs=instruction_globs,
         targets=targets,
     )
 

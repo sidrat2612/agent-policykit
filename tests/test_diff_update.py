@@ -123,3 +123,31 @@ class TestUpdateEngine:
         outputs = [AdapterOutput(path="file.md", content=content, merge_strategy=MergeStrategy.OVERWRITE)]
         result = apply_updates(tmp_path, outputs)
         assert result.results[0].action == "unchanged"
+
+    def test_blocks_security_downgrade_on_overwrite(self, tmp_path):
+        existing = "## Security\n- Keep authentication checks\n\n## Other\n- Stable\n"
+        proposed = "## Security\n- Use validation\n\n## Other\n- Stable\n"
+        (tmp_path / "file.md").write_text(existing)
+        outputs = [AdapterOutput(path="file.md", content=proposed, merge_strategy=MergeStrategy.OVERWRITE)]
+        result = apply_updates(tmp_path, outputs)
+        assert len(result.skipped) == 1
+        assert "downgraded" in result.skipped[0].message
+        assert (tmp_path / "file.md").read_text() == existing
+
+    def test_force_allows_security_downgrade(self, tmp_path):
+        existing = "## Security\n- Keep authentication checks\n"
+        proposed = "## Security\n- Use validation\n"
+        (tmp_path / "file.md").write_text(existing)
+        outputs = [AdapterOutput(path="file.md", content=proposed, merge_strategy=MergeStrategy.OVERWRITE)]
+        result = apply_updates(tmp_path, outputs, force=True)
+        assert len(result.updated) == 1
+        assert (tmp_path / "file.md").read_text() == proposed
+
+    def test_blocks_security_downgrade_on_section_merge(self, tmp_path):
+        existing = "# Header\n\n<!-- agent-policykit:managed -->\n## Security\n- Keep authentication checks\n<!-- agent-policykit:end -->\n"
+        proposed = "<!-- agent-policykit:managed -->\n## Security\n- Use validation\n<!-- agent-policykit:end -->\n"
+        (tmp_path / "file.md").write_text(existing)
+        outputs = [AdapterOutput(path="file.md", content=proposed, merge_strategy=MergeStrategy.SECTION_MERGE)]
+        result = apply_updates(tmp_path, outputs)
+        assert len(result.skipped) == 1
+        assert (tmp_path / "file.md").read_text() == existing

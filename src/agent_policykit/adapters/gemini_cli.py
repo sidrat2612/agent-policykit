@@ -1,4 +1,4 @@
-"""Gemini CLI adapter — generates .gemini/instructions.md."""
+"""Gemini CLI adapter — generates GEMINI.md."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from agent_policykit.types import AgentTarget, MergeStrategy
 
 @register_adapter(AgentTarget.GEMINI_CLI)
 class GeminiCliAdapter:
-    """Generates .gemini/instructions.md for Google Gemini CLI."""
+    """Generates GEMINI.md for Google Gemini CLI."""
 
     target = AgentTarget.GEMINI_CLI
 
@@ -18,7 +18,7 @@ class GeminiCliAdapter:
         content = render_template("gemini_instructions.md.j2", bundle, context)
         return [
             AdapterOutput(
-                path=".gemini/instructions.md",
+                path="GEMINI.md",
                 content=content,
                 merge_strategy=MergeStrategy.OVERWRITE,
             )

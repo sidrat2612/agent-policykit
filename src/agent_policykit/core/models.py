@@ -107,6 +107,7 @@ class ProjectContext:
     project_type: ProjectType | None = None
     source_paths: list[str] = field(default_factory=list)
     test_paths: list[str] = field(default_factory=list)
+    instruction_globs: list[str] = field(default_factory=list)
     config_files: list[str] = field(default_factory=list)
     targets: list[AgentTarget] = field(default_factory=list)
 

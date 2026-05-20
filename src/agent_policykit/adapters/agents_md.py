@@ -18,7 +18,7 @@ class AgentsMdAdapter:
         content = render_template("agents_md.md.j2", bundle, context)
         return [
             AdapterOutput(
-                path=".github/AGENTS.md",
+                path="AGENTS.md",
                 content=content,
                 merge_strategy=MergeStrategy.SECTION_MERGE,
             )

@@ -7,7 +7,13 @@ import pytest
 from agent_policykit.analysis.detector import detect_project_context
 from agent_policykit.analysis.framework_detector import detect_frameworks
 from agent_policykit.analysis.language_detector import detect_languages
+from agent_policykit.analysis.path_selector import (
+    detect_source_paths,
+    detect_test_paths,
+    select_instruction_globs,
+)
 from agent_policykit.analysis.project_type_detector import detect_project_type
+from agent_policykit.analysis.repo_detector import detect_repository
 from agent_policykit.types import ProjectType
 
 
@@ -117,6 +123,24 @@ class TestProjectTypeDetector:
         assert pt is None
 
 
+class TestPathSelector:
+    """Tests for path selection helpers."""
+
+    def test_detect_source_and_test_paths(self, tmp_path):
+        (tmp_path / "src").mkdir()
+        (tmp_path / "tests").mkdir()
+
+        assert detect_source_paths(tmp_path) == ["src"]
+        assert detect_test_paths(tmp_path) == ["tests"]
+
+    def test_select_instruction_globs_uses_detected_paths(self):
+        globs = select_instruction_globs(["src", "app"], ["tests"])
+        assert globs == ["src/**/*", "app/**/*", "tests/**/*"]
+
+    def test_select_instruction_globs_falls_back_to_catch_all(self):
+        assert select_instruction_globs([], []) == ["**/*"]
+
+
 class TestDetectProjectContext:
     """Tests for the unified detector."""
 
@@ -133,6 +157,8 @@ class TestDetectProjectContext:
         assert "python" in ctx.detected_languages
         assert "fastapi" in ctx.detected_frameworks
         assert ctx.project_type is not None
+        assert "app" in ctx.source_paths
+        assert "app/**/*" in ctx.instruction_globs
 
     def test_detects_existing_copilot_target(self, tmp_path):
         github_dir = tmp_path / ".github"
@@ -142,3 +168,48 @@ class TestDetectProjectContext:
         ctx = detect_project_context(tmp_path)
         from agent_policykit.types import AgentTarget
         assert AgentTarget.COPILOT_REPO in ctx.targets
+
+    def test_detects_existing_copilot_path_target(self, tmp_path):
+        instructions_dir = tmp_path / ".github" / "instructions"
+        instructions_dir.mkdir(parents=True)
+        (instructions_dir / "project.instructions.md").write_text("---\napplyTo: \"**/*\"\n---\n")
+
+        ctx = detect_project_context(tmp_path)
+        from agent_policykit.types import AgentTarget
+        assert AgentTarget.COPILOT_PATH in ctx.targets
+
+    def test_detects_existing_cursor_target(self, tmp_path):
+        cursor_rules_dir = tmp_path / ".cursor" / "rules"
+        cursor_rules_dir.mkdir(parents=True)
+        (cursor_rules_dir / "project.mdc").write_text("---\ndescription: \"Rules\"\nglobs: \"**/*\"\nalwaysApply: true\n---\n")
+
+        ctx = detect_project_context(tmp_path)
+        from agent_policykit.types import AgentTarget
+        assert AgentTarget.CURSOR in ctx.targets
+
+    def test_detects_existing_aider_target(self, tmp_path):
+        (tmp_path / ".aider.conf.yml").write_text("read: CONVENTIONS.md\n")
+        (tmp_path / "CONVENTIONS.md").write_text("# Shared conventions\n")
+
+        ctx = detect_project_context(tmp_path)
+        from agent_policykit.types import AgentTarget
+        assert AgentTarget.AIDER in ctx.targets
+
+    def test_detects_existing_agents_target(self, tmp_path):
+        (tmp_path / "AGENTS.md").write_text("# Shared instructions")
+
+        ctx = detect_project_context(tmp_path)
+        from agent_policykit.types import AgentTarget
+        assert AgentTarget.AGENTS_MD in ctx.targets
+
+    def test_detects_existing_gemini_target(self, tmp_path):
+        (tmp_path / "GEMINI.md").write_text("# Gemini instructions")
+
+        ctx = detect_project_context(tmp_path)
+        from agent_policykit.types import AgentTarget
+        assert AgentTarget.GEMINI_CLI in ctx.targets
+
+    def test_repo_detector_wrapper(self, tmp_path):
+        (tmp_path / "src").mkdir()
+        ctx = detect_repository(tmp_path)
+        assert ctx.root_path == tmp_path.resolve()

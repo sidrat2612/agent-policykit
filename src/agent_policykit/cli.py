@@ -14,6 +14,32 @@ console = Console()
 err_console = Console(stderr=True)
 
 
+def _dedupe_outputs(outputs):
+    """Deduplicate identical outputs and fail fast on conflicting writes."""
+    deduped = []
+    seen_by_path = {}
+
+    for output in outputs:
+        existing = seen_by_path.get(output.path)
+        if existing is None:
+            seen_by_path[output.path] = output
+            deduped.append(output)
+            continue
+
+        if (
+            existing.content == output.content
+            and existing.merge_strategy == output.merge_strategy
+        ):
+            continue
+
+        raise click.ClickException(
+            f"Conflicting generated outputs for {output.path}. "
+            "Multiple adapters are trying to write different content to the same file."
+        )
+
+    return deduped
+
+
 @click.group()
 @click.version_option(version=__version__, prog_name="agent-policykit")
 @click.option("--verbose", "-v", is_flag=True, help="Enable verbose output.")
@@ -139,11 +165,12 @@ def generate(ctx: click.Context, target: tuple[str, ...], dry_run: bool, mode: s
         adapter = get_adapter(agent_target)
         outputs = adapter.render(bundle, context)
         all_outputs.extend(outputs)
-        for out in outputs:
-            console.print(f"  [green]✓[/green] {out.path} ({out.line_count} lines, {out.size_bytes} bytes)")
-            if out.warnings:
-                for warning in out.warnings:
-                    console.print(f"    [yellow]⚠ {warning}[/yellow]")
+    all_outputs = _dedupe_outputs(all_outputs)
+    for out in all_outputs:
+        console.print(f"  [green]✓[/green] {out.path} ({out.line_count} lines, {out.size_bytes} bytes)")
+        if out.warnings:
+            for warning in out.warnings:
+                console.print(f"    [yellow]⚠ {warning}[/yellow]")
 
     # Write or dry-run
     if dry_run:
@@ -152,7 +179,11 @@ def generate(ctx: click.Context, target: tuple[str, ...], dry_run: bool, mode: s
         result = apply_updates(root, all_outputs)
         created = len(result.created)
         updated = len(result.updated)
-        console.print(f"\n[bold green]Done![/bold green] {created} created, {updated} updated.")
+        skipped = len(result.skipped)
+        console.print(f"\n[bold green]Done![/bold green] {created} created, {updated} updated, {skipped} skipped.")
+        for item in result.skipped:
+            if item.message:
+                console.print(f"  [yellow]⚠ {item.path}: {item.message}[/yellow]")
 
 
 @main.command()
@@ -189,6 +220,7 @@ def update(ctx: click.Context, force: bool, dry_run: bool) -> None:
         for out in outputs:
             if (root / out.path).exists() or force:
                 all_outputs.append(out)
+    all_outputs = _dedupe_outputs(all_outputs)
 
     if not all_outputs:
         console.print("[yellow]No existing instruction files found. Run `generate` first.[/yellow]")
@@ -211,7 +243,12 @@ def update(ctx: click.Context, force: bool, dry_run: bool) -> None:
         return
 
     result = apply_updates(root, all_outputs, force=force)
-    console.print(f"\n[bold green]Updated![/bold green] {len(result.updated)} files changed.")
+    console.print(
+        f"\n[bold green]Updated![/bold green] {len(result.updated)} files changed, {len(result.skipped)} skipped."
+    )
+    for item in result.skipped:
+        if item.message:
+            console.print(f"  [yellow]⚠ {item.path}: {item.message}[/yellow]")
 
 
 @main.command()
@@ -241,6 +278,7 @@ def diff(ctx: click.Context) -> None:
     for agent_target in list_adapters():
         adapter = get_adapter(agent_target)
         all_outputs.extend(adapter.render(bundle, context))
+    all_outputs = _dedupe_outputs(all_outputs)
 
     diff_result = compute_diff(root, all_outputs)
 

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -73,6 +74,12 @@ def _write_single_output(file_path: Path, output: AdapterOutput, force: bool) ->
     if output.merge_strategy == MergeStrategy.OVERWRITE or force:
         if existing == output.content:
             return WriteResult(path=output.path, action="unchanged")
+        if not force and _would_downgrade_security(existing, output.content):
+            return WriteResult(
+                path=output.path,
+                action="skipped",
+                message="Security rules would be downgraded; rerun with --force to override",
+            )
         file_path.write_text(output.content, encoding="utf-8")
         return WriteResult(path=output.path, action="updated")
 
@@ -80,6 +87,12 @@ def _write_single_output(file_path: Path, output: AdapterOutput, force: bool) ->
         merged = _merge_managed_section(existing, output.content)
         if merged == existing:
             return WriteResult(path=output.path, action="unchanged")
+        if not force and _would_downgrade_security(existing, merged):
+            return WriteResult(
+                path=output.path,
+                action="skipped",
+                message="Security rules would be downgraded; rerun with --force to override",
+            )
         file_path.write_text(merged, encoding="utf-8")
         return WriteResult(path=output.path, action="updated")
 
@@ -115,3 +128,48 @@ def _merge_managed_section(existing: str, proposed: str) -> str:
     new_managed = proposed[proposed_start:proposed_end + len(MANAGED_END)]
     result = existing[:existing_start] + new_managed + existing[existing_end + len(MANAGED_END):]
     return result
+
+
+_SECURITY_HEADING_RE = re.compile(r"^(#{2,6})\s+.*security.*$", re.IGNORECASE)
+_MARKDOWN_HEADING_RE = re.compile(r"^(#{2,6})\s+")
+
+
+def _would_downgrade_security(existing: str, proposed: str) -> bool:
+    """Return True when proposed content removes existing security guidance lines."""
+    existing_lines = _extract_security_lines(existing)
+    if not existing_lines:
+        return False
+
+    proposed_lines = _extract_security_lines(proposed)
+    return not existing_lines.issubset(proposed_lines)
+
+
+def _extract_security_lines(content: str) -> set[str]:
+    """Extract normalized security-section content lines from markdown-like files."""
+    lines = content.splitlines()
+    collected: list[str] = []
+    index = 0
+
+    while index < len(lines):
+        match = _SECURITY_HEADING_RE.match(lines[index].strip())
+        if not match:
+            index += 1
+            continue
+
+        current_level = len(match.group(1))
+        index += 1
+        while index < len(lines):
+            stripped = lines[index].strip()
+            next_heading = _MARKDOWN_HEADING_RE.match(stripped)
+            if next_heading and len(next_heading.group(1)) <= current_level:
+                break
+            if stripped and not stripped.startswith("<!--"):
+                collected.append(stripped)
+            index += 1
+
+    normalized = {
+        re.sub(r"\s+", " ", line).strip()
+        for line in collected
+        if line.strip()
+    }
+    return normalized

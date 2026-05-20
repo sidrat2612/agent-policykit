@@ -1,4 +1,4 @@
-"""Cursor adapter — generates .cursorrules."""
+"""Cursor adapter — generates .cursor/rules/*.mdc files."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from agent_policykit.types import AgentTarget, MergeStrategy
 
 @register_adapter(AgentTarget.CURSOR)
 class CursorAdapter:
-    """Generates .cursorrules for Cursor IDE."""
+    """Generates Cursor rule files for Cursor IDE."""
 
     target = AgentTarget.CURSOR
 
@@ -18,7 +18,7 @@ class CursorAdapter:
         content = render_template("cursor_rules.md.j2", bundle, context)
         return [
             AdapterOutput(
-                path=".cursorrules",
+                path=".cursor/rules/project.mdc",
                 content=content,
                 merge_strategy=MergeStrategy.OVERWRITE,
             )

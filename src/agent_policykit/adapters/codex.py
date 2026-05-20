@@ -1,4 +1,4 @@
-"""Codex adapter — generates .codex/instructions.md."""
+"""Codex adapter — generates AGENTS.md."""
 
 from __future__ import annotations
 
@@ -10,17 +10,17 @@ from agent_policykit.types import AgentTarget, MergeStrategy
 
 @register_adapter(AgentTarget.CODEX)
 class CodexAdapter:
-    """Generates .codex/instructions.md for OpenAI Codex CLI."""
+    """Generates AGENTS.md for OpenAI Codex CLI."""
 
     target = AgentTarget.CODEX
 
     def render(self, bundle: PolicyBundle, context: ProjectContext) -> list[AdapterOutput]:
-        content = render_template("codex_instructions.md.j2", bundle, context)
+        content = render_template("agents_md.md.j2", bundle, context)
         return [
             AdapterOutput(
-                path=".codex/instructions.md",
+                path="AGENTS.md",
                 content=content,
-                merge_strategy=MergeStrategy.OVERWRITE,
+                merge_strategy=MergeStrategy.SECTION_MERGE,
             )
         ]
 
