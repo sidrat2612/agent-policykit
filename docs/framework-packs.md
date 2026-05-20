@@ -1,5 +1,9 @@
 # Framework Packs
 
+Framework packs sit on top of base language guidance so generated instructions reflect the conventions that actually matter in FastAPI, Next.js, Spring Boot, Rails, and similar frameworks.
+
+This is the layer that prevents every repository from getting the same generic framework-agnostic rules.
+
 ## Implemented packs
 
 The repository currently ships framework packs for all frameworks listed in the current project specification:

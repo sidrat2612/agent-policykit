@@ -1,5 +1,9 @@
 # Project Types
 
+Project-type packs add architecture and operational rules for the kind of system being built.
+
+This is how `agent-policykit` gives an API service, monolith, worker, CLI tool, or SDK different guidance instead of applying one generic instruction set everywhere.
+
 ## Implemented project-type packs
 
 The repository currently ships all project-type packs listed in the current project specification:

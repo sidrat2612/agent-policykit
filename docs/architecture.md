@@ -1,6 +1,8 @@
 # Architecture
 
-`agent-policykit` is organized around a canonical policy model and a thin adapter layer.
+This document is for maintainers and contributors who need to understand how `agent-policykit` turns one engineering policy into the exact instruction files different coding agents expect.
+
+The system is organized around a canonical policy model and a thin adapter layer so teams can define guidance once, then generate consistent agent-specific outputs without maintaining separate prompts by hand.
 
 ## Core flow
 

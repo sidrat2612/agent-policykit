@@ -18,7 +18,7 @@ from agent_policykit.commands.validate import run_validate
 @click.option("--verbose", "-v", is_flag=True, help="Enable verbose output.")
 @click.pass_context
 def main(ctx: click.Context, verbose: bool) -> None:
-    """Universal instruction compiler for coding agents."""
+    """Generate and safely update agent-specific instruction files from one policy source."""
     ctx.ensure_object(dict)
     ctx.obj["verbose"] = verbose
 

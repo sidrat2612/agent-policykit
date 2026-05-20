@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "agent-policykit"
 version = "0.1.0"
-description = "Universal instruction compiler for coding agents"
+description = "Generate and safely update agent-specific instruction files from one engineering policy"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"

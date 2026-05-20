@@ -1,18 +1,35 @@
 # agent-policykit
 
-**Universal instruction compiler for coding agents.**
+**Generate and safely maintain agent-specific instruction files from one shared engineering policy.**
 
-Define engineering governance once. Generate compliant instruction files for every coding agent in your repository — Copilot, Claude Code, Cursor, Codex, Aider, Gemini CLI, and 15+ more.
+`agent-policykit` is for engineering teams, platform teams, consultancies, and open-source maintainers who use more than one AI coding agent in the same repository. It detects the stack in a repo, merges governance with language, framework, and project-type rules, and writes the exact instruction files each agent expects — Copilot, Claude Code, Cursor, Codex, Aider, Gemini CLI, and 15+ more.
 
 ---
 
-## Why
+## What it does
 
-Teams running multiple AI coding agents end up maintaining separate prompt/rule files for each one. When security or architecture standards change, every file must be updated manually. `agent-policykit` fixes this:
+1. Detects languages, frameworks, project type, and existing instruction surfaces in a repository.
+2. Compiles declarative YAML packs into a single policy bundle.
+3. Renders that bundle into the file format each coding agent expects.
+4. Updates existing generated files safely, without silently dropping security guidance or overwriting user-owned sections.
 
-1. You define policy once — through declarative YAML packs (governance, language, framework, project-type).
-2. The tool detects your stack and generates target-specific instruction files.
-3. Updates are safe — security rules are never silently weakened, user-owned sections are preserved, and diffs are shown before writes.
+---
+
+## Who it is for
+
+- Engineering teams standardizing AI coding assistants across multiple repositories
+- Platform and enablement teams that need one policy source instead of per-agent prompt drift
+- Consultancies and tech leads supporting different client stacks and different agent tools
+- Open-source maintainers who want contributors using different agents to follow the same repo rules
+
+---
+
+## Why teams use it
+
+- **Remove prompt drift** — change governance once instead of editing Copilot, Cursor, Claude, Codex, and other files by hand.
+- **Keep guidance stack-aware** — generated rules include language, framework, and project-type context instead of one generic prompt.
+- **Update safely** — security rules are not silently weakened, user-owned sections stay intact, and diffs are visible before writes.
+- **Onboard faster** — new repositories get a working instruction baseline quickly instead of rebuilding conventions from scratch.
 
 ---
 

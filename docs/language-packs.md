@@ -1,5 +1,9 @@
 # Language Packs
 
+This page is for teams checking stack coverage before adopting `agent-policykit`.
+
+Language packs inject language-specific coding rules into the shared policy bundle so generated instructions stay relevant to Python, TypeScript, Java, Go, and the rest of the supported catalog.
+
 ## Implemented packs
 
 The repository currently ships all 28 language packs listed in the project specification:

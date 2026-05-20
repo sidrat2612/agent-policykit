@@ -1,5 +1,9 @@
 # Supported Agents
 
+This page is for teams checking whether `agent-policykit` covers the coding agents already used in their workflow.
+
+Each adapter takes the same merged policy bundle and renders the file shape that agent expects, so teams can standardize guidance across tools instead of hand-maintaining separate instruction files.
+
 ## Tier 1 targets implemented
 
 - GitHub Copilot repository-wide: `.github/copilot-instructions.md`
