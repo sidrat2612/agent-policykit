@@ -1,0 +1,125 @@
+"""Tests for the diff and update engines."""
+
+from pathlib import Path
+
+import pytest
+
+from agent_guardrails.core.diff_engine import compute_diff, _extract_managed_section
+from agent_guardrails.core.models import AdapterOutput
+from agent_guardrails.core.update_engine import apply_updates
+from agent_guardrails.types import MergeStrategy
+
+
+class TestDiffEngine:
+    """Tests for diff computation."""
+
+    def test_new_file_diff(self, tmp_path):
+        outputs = [AdapterOutput(path="test.md", content="# Hello\nWorld\n")]
+        result = compute_diff(tmp_path, outputs)
+        assert result.has_changes
+        assert len(result.new_files) == 1
+        assert result.new_files[0].path == "test.md"
+
+    def test_unchanged_file(self, tmp_path):
+        content = "# Hello\nWorld\n"
+        (tmp_path / "test.md").write_text(content)
+        outputs = [AdapterOutput(path="test.md", content=content)]
+        result = compute_diff(tmp_path, outputs)
+        assert not result.has_changes
+        assert len(result.unchanged_files) == 1
+
+    def test_modified_file(self, tmp_path):
+        (tmp_path / "test.md").write_text("# Old\n")
+        outputs = [AdapterOutput(path="test.md", content="# New\n")]
+        result = compute_diff(tmp_path, outputs)
+        assert result.has_changes
+        assert len(result.modified_files) == 1
+        assert result.modified_files[0].added_lines > 0
+
+    def test_managed_section_diff(self, tmp_path):
+        existing = "# My Notes\n\n<!-- agent-guardrails:managed -->\nOld rules\n<!-- agent-guardrails:end -->\n\n# Custom\n"
+        proposed = "<!-- agent-guardrails:managed -->\nNew rules\n<!-- agent-guardrails:end -->\n"
+        (tmp_path / "test.md").write_text(existing)
+        outputs = [AdapterOutput(path="test.md", content=proposed)]
+        result = compute_diff(tmp_path, outputs)
+        assert result.has_changes
+
+    def test_managed_section_unchanged(self, tmp_path):
+        managed = "<!-- agent-guardrails:managed -->\nRules\n<!-- agent-guardrails:end -->"
+        existing = f"# Header\n\n{managed}\n\n# Custom\n"
+        proposed = f"{managed}\n"
+        (tmp_path / "test.md").write_text(existing)
+        outputs = [AdapterOutput(path="test.md", content=proposed)]
+        result = compute_diff(tmp_path, outputs)
+        assert not result.has_changes
+
+
+class TestExtractManagedSection:
+    """Tests for managed section extraction."""
+
+    def test_extract_present(self):
+        content = "header\n<!-- agent-guardrails:managed -->\nstuff\n<!-- agent-guardrails:end -->\nfooter"
+        section = _extract_managed_section(content)
+        assert section is not None
+        assert "stuff" in section
+
+    def test_extract_absent(self):
+        content = "no markers here"
+        assert _extract_managed_section(content) is None
+
+
+class TestUpdateEngine:
+    """Tests for applying updates to disk."""
+
+    def test_creates_new_file(self, tmp_path):
+        outputs = [AdapterOutput(path="new.md", content="# New")]
+        result = apply_updates(tmp_path, outputs)
+        assert len(result.created) == 1
+        assert (tmp_path / "new.md").read_text() == "# New"
+
+    def test_creates_nested_directories(self, tmp_path):
+        outputs = [AdapterOutput(path=".github/copilot-instructions.md", content="# Rules")]
+        result = apply_updates(tmp_path, outputs)
+        assert len(result.created) == 1
+        assert (tmp_path / ".github" / "copilot-instructions.md").exists()
+
+    def test_skip_if_exists(self, tmp_path):
+        (tmp_path / "existing.md").write_text("# Keep me")
+        outputs = [AdapterOutput(path="existing.md", content="# Replace", merge_strategy=MergeStrategy.SKIP_IF_EXISTS)]
+        result = apply_updates(tmp_path, outputs)
+        assert len(result.skipped) == 1
+        assert (tmp_path / "existing.md").read_text() == "# Keep me"
+
+    def test_skip_if_exists_with_force(self, tmp_path):
+        (tmp_path / "existing.md").write_text("# Keep me")
+        outputs = [AdapterOutput(path="existing.md", content="# Replace", merge_strategy=MergeStrategy.SKIP_IF_EXISTS)]
+        result = apply_updates(tmp_path, outputs, force=True)
+        assert len(result.updated) == 1
+        assert (tmp_path / "existing.md").read_text() == "# Replace"
+
+    def test_overwrite_strategy(self, tmp_path):
+        (tmp_path / "file.md").write_text("old")
+        outputs = [AdapterOutput(path="file.md", content="new", merge_strategy=MergeStrategy.OVERWRITE)]
+        result = apply_updates(tmp_path, outputs)
+        assert len(result.updated) == 1
+        assert (tmp_path / "file.md").read_text() == "new"
+
+    def test_section_merge_preserves_user_content(self, tmp_path):
+        existing = "# My Custom Header\n\n<!-- agent-guardrails:managed -->\nOld rules\n<!-- agent-guardrails:end -->\n\n# My Custom Footer\n"
+        proposed = "<!-- agent-guardrails:managed -->\nNew rules\n<!-- agent-guardrails:end -->\n"
+        (tmp_path / "file.md").write_text(existing)
+        outputs = [AdapterOutput(path="file.md", content=proposed, merge_strategy=MergeStrategy.SECTION_MERGE)]
+        result = apply_updates(tmp_path, outputs)
+        assert len(result.updated) == 1
+        content = (tmp_path / "file.md").read_text()
+        assert "My Custom Header" in content
+        assert "My Custom Footer" in content
+        assert "New rules" in content
+        assert "Old rules" not in content
+
+    def test_unchanged_content_not_written(self, tmp_path):
+        content = "unchanged"
+        (tmp_path / "file.md").write_text(content)
+        outputs = [AdapterOutput(path="file.md", content=content, merge_strategy=MergeStrategy.OVERWRITE)]
+        result = apply_updates(tmp_path, outputs)
+        assert result.results[0].action == "unchanged"
