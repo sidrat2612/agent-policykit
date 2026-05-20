@@ -59,6 +59,8 @@ class ProjectType(str, Enum):
     WORKER = "worker"
     CLI_TOOL = "cli_tool"
     SDK = "sdk"
+    LIBRARY = "library"
     MONOLITH = "monolith"
+    MONOREPO = "monorepo"
     MICROSERVICE = "microservice"
     DATA_PIPELINE = "data_pipeline"
