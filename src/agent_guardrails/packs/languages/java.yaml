@@ -1,0 +1,183 @@
+id: java
+display_name: Java
+category: language
+priority: 50
+applies_when:
+  languages: ["java"]
+
+structure:
+  source_roots: ["src/main/java"]
+  tests_root: ["src/test/java"]
+  preferred_layers:
+    - controller
+    - dto
+    - service
+    - repository
+    - model
+    - config
+    - integration
+    - exception
+
+api_rules:
+  - id: java.api.controller_layer
+    text: "Place HTTP endpoints in @Controller or @RestController classes. Controllers must not contain business logic."
+    severity: high
+    tags: [layering]
+  - id: java.api.dto_validation
+    text: "Validate request bodies using Jakarta Validation annotations (@Valid, @NotNull, @Size). Reject invalid input at the boundary."
+    severity: high
+    tags: [validation, security]
+  - id: java.api.response_types
+    text: "Define explicit DTO classes for API responses. Do not expose JPA entities directly."
+    severity: high
+    tags: [layering, security]
+  - id: java.api.exception_handler
+    text: "Use @ControllerAdvice for centralized exception-to-HTTP-response mapping. No try-catch in every controller method."
+    severity: medium
+    tags: [design]
+
+service_rules:
+  - id: java.svc.interface_based
+    text: "Define service interfaces. Inject by interface, not concrete class, to enable testing and swapping."
+    severity: medium
+    tags: [design, testing]
+  - id: java.svc.transactional_boundaries
+    text: "Place @Transactional on service methods, not on repository methods or controllers."
+    severity: high
+    tags: [data, reliability]
+  - id: java.svc.no_http_deps
+    text: "Service classes must not import HttpServletRequest, HttpServletResponse, or web-layer annotations."
+    severity: high
+    tags: [layering]
+  - id: java.svc.single_responsibility
+    text: "Each service class handles one domain concept. Avoid god-services that orchestrate everything."
+    severity: medium
+    tags: [design]
+
+data_rules:
+  - id: java.data.repository_interface
+    text: "Define repository interfaces extending JpaRepository or CrudRepository. Place custom queries in separate implementations."
+    severity: medium
+    tags: [structure]
+  - id: java.data.no_native_sql_injection
+    text: "Use JPQL with named parameters or Spring Data method naming. Never concatenate user input into @Query strings."
+    severity: critical
+    tags: [security, injection]
+  - id: java.data.entity_boundaries
+    text: "JPA entities must not cross service boundaries in their raw form. Map to DTOs before returning."
+    severity: medium
+    tags: [layering]
+  - id: java.data.flyway_or_liquibase
+    text: "Manage database migrations with Flyway or Liquibase. No manual schema changes."
+    severity: high
+    tags: [operations]
+
+method_rules:
+  - id: java.method.naming_conventions
+    text: "Follow Java naming: camelCase methods, PascalCase classes, SCREAMING_CASE constants. Be descriptive."
+    severity: low
+    tags: [style]
+  - id: java.method.null_safety
+    text: "Use Optional for return values that may be absent. Use @Nullable annotations where Optional is not practical."
+    severity: medium
+    tags: [reliability]
+  - id: java.method.immutable_dtos
+    text: "Use records or final fields for DTOs and value objects. Prefer immutability by default."
+    severity: medium
+    tags: [design]
+  - id: java.method.small_methods
+    text: "Methods should not exceed 20-30 lines. Extract sub-operations into well-named private methods."
+    severity: medium
+    tags: [readability]
+
+error_handling_rules:
+  - id: java.error.custom_exceptions
+    text: "Define a domain exception hierarchy. Do not throw generic RuntimeException for domain errors."
+    severity: medium
+    tags: [design]
+  - id: java.error.no_empty_catch
+    text: "Never leave catch blocks empty. At minimum, log the exception with context."
+    severity: high
+    tags: [reliability]
+  - id: java.error.specific_catch
+    text: "Catch specific exception types. Avoid catch(Exception e) unless at the top-level handler."
+    severity: medium
+    tags: [design]
+  - id: java.error.checked_exceptions_sparingly
+    text: "Prefer unchecked exceptions for domain errors. Use checked exceptions only for truly recoverable external failures."
+    severity: medium
+    tags: [design]
+
+logging_rules:
+  - id: java.log.slf4j
+    text: "Use SLF4J facade for logging. Use parameterized messages: log.info(\"User {} logged in\", userId)."
+    severity: low
+    tags: [observability]
+  - id: java.log.no_sensitive_data
+    text: "Never log passwords, tokens, credit card numbers, or PII. Use toString() overrides that mask sensitive fields."
+    severity: critical
+    tags: [security, privacy]
+  - id: java.log.mdc_context
+    text: "Use MDC (Mapped Diagnostic Context) for request-scoped context like correlation IDs."
+    severity: medium
+    tags: [observability]
+
+concurrency_rules:
+  - id: java.conc.thread_safety
+    text: "Document thread-safety guarantees. Use @ThreadSafe or @NotThreadSafe annotations."
+    severity: medium
+    tags: [concurrency]
+  - id: java.conc.prefer_executors
+    text: "Use ExecutorService and CompletableFuture over raw Thread creation. Use virtual threads on Java 21+."
+    severity: medium
+    tags: [concurrency]
+  - id: java.conc.immutable_shared_state
+    text: "Shared state must be immutable or protected by synchronization. Prefer immutable data structures."
+    severity: high
+    tags: [concurrency]
+
+testing_rules:
+  - id: java.test.junit5
+    text: "Use JUnit 5 with AssertJ for assertions. Use @ParameterizedTest for input variations."
+    severity: low
+    tags: [testing]
+  - id: java.test.mockito_boundaries
+    text: "Use Mockito to mock external dependencies (repositories, clients). Do not mock domain logic."
+    severity: medium
+    tags: [testing]
+  - id: java.test.integration_testcontainers
+    text: "Use Testcontainers for integration tests with real databases and message brokers."
+    severity: medium
+    tags: [testing]
+  - id: java.test.naming_convention
+    text: "Test methods should read as specifications: shouldReturnUser_whenValidIdProvided()."
+    severity: low
+    tags: [readability]
+
+security_checklist:
+  - id: java.sec.deserialization
+    text: "Never deserialize untrusted data without validation. Disable default typing in Jackson. Avoid Java native serialization."
+    severity: critical
+    tags: [injection]
+  - id: java.sec.xxe_prevention
+    text: "Disable external entity resolution in XML parsers. Set FEATURE_SECURE_PROCESSING."
+    severity: high
+    tags: [injection]
+  - id: java.sec.dependency_check
+    text: "Use OWASP Dependency-Check or Snyk to scan for known vulnerabilities in dependencies."
+    severity: high
+    tags: [supply-chain]
+
+anti_patterns:
+  - id: java.anti.anemic_domain
+    text: "ANTI-PATTERN: Domain objects with only getters/setters and no behavior. Put behavior where the data is."
+    severity: medium
+    tags: [anti-pattern]
+  - id: java.anti.service_god_class
+    text: "ANTI-PATTERN: A single service class with 50+ methods handling unrelated domain operations."
+    severity: high
+    tags: [anti-pattern]
+  - id: java.anti.spring_everywhere
+    text: "ANTI-PATTERN: Spring annotations in domain model classes. Keep domain objects framework-free."
+    severity: medium
+    tags: [anti-pattern]

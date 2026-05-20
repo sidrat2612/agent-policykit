@@ -1,0 +1,141 @@
+id: spring_boot
+display_name: Spring Boot
+category: framework
+priority: 60
+extends_language: java
+applies_when:
+  frameworks: ["spring_boot", "spring-boot"]
+
+folder_layout:
+  - "src/main/java/com/company/project/"
+  - "  controller/ — REST controllers"
+  - "  dto/ — request/response DTOs"
+  - "  service/ — business logic interfaces and implementations"
+  - "  repository/ — Spring Data JPA repositories"
+  - "  model/ or entity/ — JPA entities"
+  - "  config/ — @Configuration classes"
+  - "  security/ — auth filters, providers"
+  - "  exception/ — custom exceptions and handlers"
+  - "  integration/ — external service clients"
+
+validation_approach:
+  - id: spring.val.bean_validation
+    text: "Use Jakarta Bean Validation (@Valid, @NotNull, @Size, @Pattern) on DTO fields. Spring auto-validates with @Valid."
+    severity: high
+    tags: [validation]
+  - id: spring.val.custom_validators
+    text: "Create custom constraint annotations for complex business validation rules."
+    severity: medium
+    tags: [validation, design]
+  - id: spring.val.error_response
+    text: "Handle MethodArgumentNotValidException in @ControllerAdvice to return structured validation error responses."
+    severity: medium
+    tags: [api]
+
+controller_conventions:
+  - id: spring.ctrl.rest_controller
+    text: "Use @RestController for API endpoints. Use @Controller only for server-rendered views."
+    severity: low
+    tags: [structure]
+  - id: spring.ctrl.request_mapping
+    text: "Use specific @GetMapping, @PostMapping, @PutMapping, @DeleteMapping instead of generic @RequestMapping."
+    severity: low
+    tags: [readability]
+  - id: spring.ctrl.thin_controllers
+    text: "Controllers must only: validate → call service → return response. No business logic."
+    severity: high
+    tags: [layering]
+  - id: spring.ctrl.response_entity
+    text: "Return ResponseEntity<T> for explicit control of status codes and headers."
+    severity: medium
+    tags: [api]
+  - id: spring.ctrl.path_variable_validation
+    text: "Validate @PathVariable and @RequestParam inputs. Use @Validated at class level for method parameter validation."
+    severity: high
+    tags: [validation, security]
+
+dependency_injection:
+  - id: spring.di.constructor_injection
+    text: "Use constructor injection exclusively. Do not use @Autowired on fields. Use final fields."
+    severity: high
+    tags: [design, testing]
+  - id: spring.di.interface_programming
+    text: "Inject interfaces, not concrete implementations. Enables testing and future flexibility."
+    severity: medium
+    tags: [design]
+  - id: spring.di.profiles
+    text: "Use @Profile to conditionally load beans. Use separate configurations for dev/test/prod."
+    severity: medium
+    tags: [operations]
+
+error_handling:
+  - id: spring.err.controller_advice
+    text: "Use @ControllerAdvice with @ExceptionHandler for centralized error handling. Map exceptions to HTTP responses."
+    severity: high
+    tags: [design]
+  - id: spring.err.problem_detail
+    text: "Return RFC 7807 Problem Detail responses for API errors. Include type, title, status, detail."
+    severity: medium
+    tags: [api, standards]
+  - id: spring.err.no_stack_traces
+    text: "Never expose stack traces in production error responses. Log them server-side only."
+    severity: high
+    tags: [security]
+  - id: spring.err.domain_exceptions
+    text: "Define domain exceptions (ResourceNotFoundException, BusinessRuleViolation) mapped to appropriate HTTP status codes."
+    severity: medium
+    tags: [design]
+
+auth_patterns:
+  - id: spring.auth.spring_security
+    text: "Use Spring Security for authentication and authorization. Configure SecurityFilterChain beans."
+    severity: high
+    tags: [auth]
+  - id: spring.auth.method_security
+    text: "Use @PreAuthorize or @Secured on service methods for fine-grained access control."
+    severity: high
+    tags: [auth]
+  - id: spring.auth.stateless_jwt
+    text: "For APIs, use stateless JWT authentication. Validate tokens in a OncePerRequestFilter."
+    severity: medium
+    tags: [auth]
+  - id: spring.auth.password_encoding
+    text: "Use BCryptPasswordEncoder or Argon2PasswordEncoder. Never store plaintext passwords."
+    severity: critical
+    tags: [auth, security]
+
+testing_conventions:
+  - id: spring.test.spring_boot_test
+    text: "Use @SpringBootTest for integration tests. Use @WebMvcTest for controller-only tests."
+    severity: medium
+    tags: [testing]
+  - id: spring.test.test_slices
+    text: "Use test slices (@DataJpaTest, @WebMvcTest) to load only relevant context. Faster and more focused."
+    severity: medium
+    tags: [testing, performance]
+  - id: spring.test.testcontainers
+    text: "Use Testcontainers for integration tests with real PostgreSQL, Redis, Kafka instances."
+    severity: medium
+    tags: [testing]
+  - id: spring.test.mock_mvc
+    text: "Use MockMvc for testing controllers without starting full server. Verify status codes, headers, and bodies."
+    severity: medium
+    tags: [testing]
+
+anti_patterns:
+  - id: spring.anti.field_injection
+    text: "ANTI-PATTERN: @Autowired on private fields. Cannot test without reflection. Use constructor injection."
+    severity: high
+    tags: [anti-pattern]
+  - id: spring.anti.transaction_everywhere
+    text: "ANTI-PATTERN: @Transactional on controllers or repositories. Place on service methods only."
+    severity: high
+    tags: [anti-pattern]
+  - id: spring.anti.catch_all
+    text: "ANTI-PATTERN: try-catch in every controller method. Use @ControllerAdvice instead."
+    severity: medium
+    tags: [anti-pattern]
+  - id: spring.anti.entity_as_dto
+    text: "ANTI-PATTERN: Returning JPA entities directly from controllers. Always map to DTOs."
+    severity: high
+    tags: [anti-pattern, security]

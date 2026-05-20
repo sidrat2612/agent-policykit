@@ -1,0 +1,108 @@
+id: api_service
+display_name: API Service
+category: project_type
+priority: 40
+applies_when:
+  project_types: ["api_service"]
+
+architectural_rules:
+  - id: apiservice.arch.layered_structure
+    text: "Organize code in layers: routes/controllers → services → repositories → models. No layer may skip levels."
+    severity: high
+    tags: [architecture]
+  - id: apiservice.arch.domain_modules
+    text: "Group by domain (users/, orders/, payments/) not by type (controllers/, services/). Each domain has its own layers."
+    severity: medium
+    tags: [structure]
+  - id: apiservice.arch.shared_kernel
+    text: "Place truly shared code (auth, middleware, config, errors) in a shared/ or core/ module."
+    severity: medium
+    tags: [structure]
+  - id: apiservice.arch.versioning
+    text: "Version your API from day one. Use URL prefixes (/v1/) or header-based versioning."
+    severity: medium
+    tags: [api]
+
+api_design_rules:
+  - id: apiservice.api.consistent_naming
+    text: "Use consistent resource naming: plural nouns for collections, nested paths for relationships."
+    severity: medium
+    tags: [api, consistency]
+  - id: apiservice.api.pagination
+    text: "All list endpoints must support pagination. Use cursor-based or offset-limit with sensible defaults."
+    severity: high
+    tags: [api, performance]
+  - id: apiservice.api.filtering
+    text: "Support filtering and sorting on list endpoints via query parameters."
+    severity: medium
+    tags: [api]
+  - id: apiservice.api.idempotency
+    text: "POST/PUT operations should be idempotent where possible. Accept idempotency keys for payment-like operations."
+    severity: high
+    tags: [reliability]
+  - id: apiservice.api.rate_limiting
+    text: "Implement rate limiting on all public endpoints. Return 429 with Retry-After header."
+    severity: high
+    tags: [security, availability]
+  - id: apiservice.api.content_negotiation
+    text: "Support and enforce Content-Type and Accept headers. Return 415 for unsupported media types."
+    severity: medium
+    tags: [api]
+
+data_layer_rules:
+  - id: apiservice.data.connection_pooling
+    text: "Configure database connection pools with appropriate min/max connections, timeout, and idle settings."
+    severity: high
+    tags: [performance, reliability]
+  - id: apiservice.data.read_replicas
+    text: "Use read replicas for read-heavy queries. Route writes to primary, reads to replicas."
+    severity: medium
+    tags: [performance, scalability]
+  - id: apiservice.data.soft_deletes
+    text: "Prefer soft deletes (deleted_at timestamp) over hard deletes for auditable entities."
+    severity: medium
+    tags: [data, compliance]
+
+operational_rules:
+  - id: apiservice.ops.health_endpoint
+    text: "Expose /health (liveness) and /ready (readiness) endpoints. Check dependencies in readiness probe."
+    severity: critical
+    tags: [operations]
+  - id: apiservice.ops.structured_logging
+    text: "All logs must be structured JSON with: timestamp, level, service, request_id, message, and context."
+    severity: high
+    tags: [observability]
+  - id: apiservice.ops.metrics
+    text: "Expose Prometheus-compatible metrics: request count, latency histogram, error rate, active connections."
+    severity: high
+    tags: [observability]
+  - id: apiservice.ops.graceful_shutdown
+    text: "Handle SIGTERM gracefully. Stop accepting new requests, finish in-flight ones, close connections."
+    severity: high
+    tags: [operations, reliability]
+  - id: apiservice.ops.correlation_id
+    text: "Generate or propagate X-Request-ID / X-Correlation-ID through all service calls and log entries."
+    severity: high
+    tags: [observability, debugging]
+  - id: apiservice.ops.openapi_spec
+    text: "Maintain an up-to-date OpenAPI specification. Auto-generate where possible."
+    severity: medium
+    tags: [documentation, api]
+
+security_rules:
+  - id: apiservice.sec.auth_required
+    text: "All endpoints must require authentication unless explicitly marked as public."
+    severity: critical
+    tags: [auth, security]
+  - id: apiservice.sec.input_validation
+    text: "Validate all input at the API boundary. Reject unknown fields, enforce types and bounds."
+    severity: high
+    tags: [security, validation]
+  - id: apiservice.sec.cors_config
+    text: "Configure CORS with explicit allowed origins. Never use Access-Control-Allow-Origin: * in production."
+    severity: high
+    tags: [security]
+  - id: apiservice.sec.response_headers
+    text: "Set security headers: Strict-Transport-Security, X-Content-Type-Options, X-Frame-Options."
+    severity: high
+    tags: [security]

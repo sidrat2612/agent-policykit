@@ -1,0 +1,199 @@
+id: python
+display_name: Python
+category: language
+priority: 50
+applies_when:
+  languages: ["python"]
+
+structure:
+  source_roots: ["app", "src"]
+  tests_root: ["tests"]
+  preferred_layers:
+    - api
+    - schemas
+    - services
+    - repositories
+    - models
+    - integrations
+    - tasks
+    - utils
+
+api_rules:
+  - id: python.api.router_modules
+    text: "Create HTTP routes in dedicated router or endpoint modules, not in business-logic modules."
+    severity: high
+    tags: [structure, layering]
+  - id: python.api.thin_handlers
+    text: "Keep route handlers thin. They should validate input, call a service, and format the response — nothing else."
+    severity: high
+    tags: [layering]
+  - id: python.api.schema_validation
+    text: "Validate all request payloads at the boundary using Pydantic models, dataclasses, or typed schemas."
+    severity: high
+    tags: [validation, security]
+  - id: python.api.no_db_in_routes
+    text: "Do not write database queries directly inside route handlers. Delegate to repository or service layer."
+    severity: high
+    tags: [layering]
+  - id: python.api.typed_responses
+    text: "Define explicit response models. Do not return raw dicts from API endpoints."
+    severity: medium
+    tags: [typing, api]
+
+service_rules:
+  - id: python.svc.business_logic_placement
+    text: "Place all business logic in service or use-case modules under services/."
+    severity: high
+    tags: [structure]
+  - id: python.svc.explicit_io
+    text: "Service methods must have explicit typed inputs and outputs. No implicit reliance on request objects."
+    severity: medium
+    tags: [typing, design]
+  - id: python.svc.no_transport
+    text: "Service modules must not import HTTP/transport-layer objects (Request, Response, headers)."
+    severity: high
+    tags: [layering]
+  - id: python.svc.dependency_injection
+    text: "Inject dependencies (repositories, clients) into services rather than importing singletons."
+    severity: medium
+    tags: [testing, design]
+
+data_rules:
+  - id: python.data.repository_pattern
+    text: "Place persistence code in repository modules. Expose domain-oriented methods, not raw query builders."
+    severity: high
+    tags: [structure]
+  - id: python.data.parameterized_queries
+    text: "Always use parameterized queries or ORM methods. Never interpolate user input into SQL strings."
+    severity: critical
+    tags: [security, injection]
+  - id: python.data.no_orm_leak
+    text: "Do not pass ORM model instances across service boundaries. Convert to domain objects or DTOs."
+    severity: medium
+    tags: [layering]
+  - id: python.data.migration_required
+    text: "All schema changes must have migration scripts. No manual DDL in production."
+    severity: high
+    tags: [operations]
+
+method_rules:
+  - id: python.method.single_purpose
+    text: "Each function or method must do one thing. If you need 'and' to describe it, split it."
+    severity: medium
+    tags: [design]
+  - id: python.method.explicit_names
+    text: "Use descriptive verb-noun names. Avoid generic names like process(), handle(), do_stuff()."
+    severity: medium
+    tags: [readability]
+  - id: python.method.no_side_effects
+    text: "Functions that compute values should not have side effects. Separate queries from commands."
+    severity: medium
+    tags: [design]
+  - id: python.method.type_hints
+    text: "Add type hints to all function signatures. Use modern syntax (X | None, list[str])."
+    severity: medium
+    tags: [typing]
+  - id: python.method.max_params
+    text: "Functions with more than 5 parameters should accept a dataclass or typed dict instead."
+    severity: low
+    tags: [design]
+
+error_handling_rules:
+  - id: python.error.no_bare_except
+    text: "Never use bare except: or except Exception: without re-raising or explicit handling."
+    severity: high
+    tags: [reliability]
+  - id: python.error.specific_exceptions
+    text: "Catch specific exceptions. Define custom exception hierarchies for domain errors."
+    severity: medium
+    tags: [design]
+  - id: python.error.context_in_errors
+    text: "Include context when raising exceptions: what operation failed, what input caused it."
+    severity: medium
+    tags: [debugging]
+  - id: python.error.no_silent_failures
+    text: "Never swallow exceptions silently. At minimum, log with full context before continuing."
+    severity: high
+    tags: [reliability, observability]
+
+logging_rules:
+  - id: python.log.structured
+    text: "Use structured logging (structlog or logging with JSON formatter). Include request_id and context."
+    severity: medium
+    tags: [observability]
+  - id: python.log.no_pii
+    text: "Never log passwords, tokens, PII, or full request bodies. Mask sensitive fields."
+    severity: critical
+    tags: [security, privacy]
+  - id: python.log.levels
+    text: "Use appropriate log levels: DEBUG for dev, INFO for flow, WARNING for recoverable issues, ERROR for failures."
+    severity: low
+    tags: [observability]
+
+concurrency_rules:
+  - id: python.async.await_all
+    text: "In async code, always await coroutines. Never fire-and-forget without explicit task management."
+    severity: high
+    tags: [concurrency]
+  - id: python.async.no_blocking
+    text: "Do not call blocking I/O in async handlers. Use run_in_executor or async libraries."
+    severity: high
+    tags: [performance, concurrency]
+  - id: python.async.cancellation
+    text: "Handle task cancellation gracefully. Clean up resources in finally blocks."
+    severity: medium
+    tags: [reliability]
+
+testing_rules:
+  - id: python.test.pytest_preferred
+    text: "Use pytest as the test framework. Use fixtures for setup, parametrize for variations."
+    severity: low
+    tags: [testing]
+  - id: python.test.mirror_structure
+    text: "Mirror source directory structure in tests/. test_services/, test_api/, test_repositories/."
+    severity: low
+    tags: [organization]
+  - id: python.test.mock_boundaries
+    text: "Mock at system boundaries (HTTP clients, databases, external APIs). Do not mock internal logic."
+    severity: medium
+    tags: [testing, design]
+  - id: python.test.assert_specific
+    text: "Assert specific values, not just truthiness. Check response bodies, status codes, side effects."
+    severity: medium
+    tags: [quality]
+
+security_checklist:
+  - id: python.sec.no_eval
+    text: "Never use eval(), exec(), or compile() with user-controlled input."
+    severity: critical
+    tags: [injection]
+  - id: python.sec.no_pickle_untrusted
+    text: "Never unpickle data from untrusted sources. Use JSON or other safe serialization."
+    severity: critical
+    tags: [injection]
+  - id: python.sec.subprocess_shell_false
+    text: "When using subprocess, always use shell=False and pass arguments as a list."
+    severity: critical
+    tags: [injection]
+  - id: python.sec.path_traversal
+    text: "Validate and sanitize file paths. Never use user input directly in file operations without restricting to allowed directories."
+    severity: high
+    tags: [security]
+
+anti_patterns:
+  - id: python.anti.fat_controller
+    text: "ANTI-PATTERN: Route handler with business logic, DB queries, and response formatting all mixed together."
+    severity: high
+    tags: [anti-pattern]
+  - id: python.anti.god_module
+    text: "ANTI-PATTERN: Single module with 1000+ lines handling multiple unrelated concerns."
+    severity: medium
+    tags: [anti-pattern]
+  - id: python.anti.wildcard_import
+    text: "ANTI-PATTERN: Using 'from module import *'. Always import explicitly."
+    severity: low
+    tags: [anti-pattern]
+  - id: python.anti.mutable_defaults
+    text: "ANTI-PATTERN: Using mutable default arguments (list, dict) in function signatures."
+    severity: medium
+    tags: [anti-pattern]

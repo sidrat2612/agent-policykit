@@ -1,0 +1,188 @@
+id: typescript
+display_name: TypeScript
+category: language
+priority: 50
+applies_when:
+  languages: ["typescript"]
+
+structure:
+  source_roots: ["src", "app", "lib"]
+  tests_root: ["tests", "__tests__", "test"]
+  preferred_layers:
+    - routes
+    - controllers
+    - middleware
+    - services
+    - repositories
+    - models
+    - types
+    - utils
+    - integrations
+
+api_rules:
+  - id: ts.api.typed_routes
+    text: "Define request and response types for every API route. Use Zod, io-ts, or class-validator for runtime validation."
+    severity: high
+    tags: [typing, validation]
+  - id: ts.api.thin_handlers
+    text: "Route handlers must validate input, delegate to services, and return typed responses — no business logic."
+    severity: high
+    tags: [layering]
+  - id: ts.api.error_responses
+    text: "Return consistent error response shapes. Define an ErrorResponse type and use it everywhere."
+    severity: medium
+    tags: [api, consistency]
+  - id: ts.api.no_any_in_handlers
+    text: "Never use 'any' type in route handlers or API boundaries. Use unknown + type narrowing if type is uncertain."
+    severity: high
+    tags: [typing, security]
+
+service_rules:
+  - id: ts.svc.pure_business_logic
+    text: "Services contain business logic only. No HTTP objects, no framework-specific imports."
+    severity: high
+    tags: [layering]
+  - id: ts.svc.interface_driven
+    text: "Define service interfaces (abstract classes or TypeScript interfaces) for dependency injection."
+    severity: medium
+    tags: [design, testing]
+  - id: ts.svc.explicit_returns
+    text: "Service methods must declare return types explicitly. Never rely on type inference for public APIs."
+    severity: medium
+    tags: [typing]
+
+data_rules:
+  - id: ts.data.repository_layer
+    text: "Database access goes in repository modules. Services call repositories, not ORMs directly."
+    severity: high
+    tags: [layering]
+  - id: ts.data.parameterized
+    text: "Use parameterized queries or ORM query builders. Never concatenate user input into query strings."
+    severity: critical
+    tags: [security, injection]
+  - id: ts.data.migrations
+    text: "Schema changes require versioned migration files. No runtime DDL."
+    severity: high
+    tags: [operations]
+  - id: ts.data.no_orm_in_routes
+    text: "ORM entities must not appear in route handler signatures or response bodies directly."
+    severity: medium
+    tags: [layering]
+
+method_rules:
+  - id: ts.method.no_any
+    text: "Avoid 'any' type. Use 'unknown' with type guards, generics, or explicit union types."
+    severity: high
+    tags: [typing]
+  - id: ts.method.explicit_return_types
+    text: "Always declare return types on exported functions and class methods."
+    severity: medium
+    tags: [typing]
+  - id: ts.method.small_functions
+    text: "Functions should do one thing. If a function exceeds 30 lines, consider splitting."
+    severity: medium
+    tags: [readability]
+  - id: ts.method.no_side_effects_in_getters
+    text: "Getter functions and computed properties must not produce side effects."
+    severity: medium
+    tags: [design]
+  - id: ts.method.prefer_const
+    text: "Use const by default. Only use let when reassignment is necessary. Never use var."
+    severity: low
+    tags: [style]
+
+error_handling_rules:
+  - id: ts.error.typed_errors
+    text: "Define typed error classes or discriminated union error types. Do not throw plain strings."
+    severity: medium
+    tags: [design]
+  - id: ts.error.catch_specific
+    text: "In catch blocks, narrow the error type before accessing properties. Use instanceof or type guards."
+    severity: medium
+    tags: [reliability]
+  - id: ts.error.async_error_handling
+    text: "Always handle Promise rejections. Use try/catch with async/await or .catch() — never leave unhandled rejections."
+    severity: high
+    tags: [reliability]
+  - id: ts.error.error_boundaries
+    text: "In React apps, use Error Boundaries. In server apps, use middleware-level error handlers."
+    severity: medium
+    tags: [reliability]
+
+logging_rules:
+  - id: ts.log.structured
+    text: "Use structured logging libraries (pino, winston with JSON). Include correlation IDs."
+    severity: medium
+    tags: [observability]
+  - id: ts.log.no_console_in_prod
+    text: "Do not use console.log in production code. Use a proper logging library with levels."
+    severity: medium
+    tags: [operations]
+  - id: ts.log.no_sensitive_data
+    text: "Never log tokens, passwords, PII, or full request/response bodies in production."
+    severity: critical
+    tags: [security, privacy]
+
+concurrency_rules:
+  - id: ts.async.always_await
+    text: "Always await async operations or explicitly handle the returned Promise. No fire-and-forget."
+    severity: high
+    tags: [concurrency]
+  - id: ts.async.parallel_when_possible
+    text: "Use Promise.all() or Promise.allSettled() for independent async operations instead of sequential awaits."
+    severity: medium
+    tags: [performance]
+  - id: ts.async.abort_signals
+    text: "Long-running operations should accept AbortSignal for cancellation support."
+    severity: low
+    tags: [reliability]
+
+testing_rules:
+  - id: ts.test.type_safe_tests
+    text: "Tests should be type-checked. Do not disable TypeScript in test files."
+    severity: medium
+    tags: [testing, typing]
+  - id: ts.test.mock_at_boundaries
+    text: "Mock external services and I/O boundaries. Do not mock internal type transformations."
+    severity: medium
+    tags: [testing]
+  - id: ts.test.snapshot_sparingly
+    text: "Use snapshot tests sparingly. Prefer explicit assertions for behavior verification."
+    severity: low
+    tags: [testing]
+
+security_checklist:
+  - id: ts.sec.no_eval
+    text: "Never use eval(), Function(), or new Function() with user input."
+    severity: critical
+    tags: [injection]
+  - id: ts.sec.sanitize_html
+    text: "Sanitize all user-provided HTML/content before rendering. Use DOMPurify or equivalent."
+    severity: high
+    tags: [xss]
+  - id: ts.sec.no_prototype_pollution
+    text: "Guard against prototype pollution in object merging. Use Object.create(null) or validated schemas."
+    severity: high
+    tags: [security]
+  - id: ts.sec.strict_mode
+    text: "Enable strict TypeScript compiler options: strict, noUncheckedIndexedAccess, exactOptionalPropertyTypes."
+    severity: medium
+    tags: [typing, security]
+
+anti_patterns:
+  - id: ts.anti.any_everywhere
+    text: "ANTI-PATTERN: Using 'any' to silence type errors instead of fixing the underlying type issue."
+    severity: high
+    tags: [anti-pattern]
+  - id: ts.anti.callback_hell
+    text: "ANTI-PATTERN: Deeply nested callbacks or .then() chains. Use async/await."
+    severity: medium
+    tags: [anti-pattern]
+  - id: ts.anti.barrel_files
+    text: "ANTI-PATTERN: Barrel index.ts files that re-export everything, causing circular deps and slow builds."
+    severity: medium
+    tags: [anti-pattern]
+  - id: ts.anti.enum_abuse
+    text: "ANTI-PATTERN: Using TypeScript enums for complex mappings. Prefer const objects with 'as const'."
+    severity: low
+    tags: [anti-pattern]

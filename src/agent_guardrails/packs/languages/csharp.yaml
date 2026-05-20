@@ -1,0 +1,186 @@
+id: csharp
+display_name: "C#"
+category: language
+priority: 50
+applies_when:
+  languages: ["csharp"]
+
+structure:
+  source_roots: ["src"]
+  tests_root: ["tests"]
+  preferred_layers:
+    - Controllers
+    - DTOs
+    - Services
+    - Repositories
+    - Models
+    - Infrastructure
+    - Middleware
+
+api_rules:
+  - id: csharp.api.controller_conventions
+    text: "Place HTTP endpoints in Controller classes. Use [ApiController] attribute for automatic model validation."
+    severity: medium
+    tags: [structure]
+  - id: csharp.api.action_results
+    text: "Return ActionResult<T> or IActionResult with proper HTTP status codes. Use typed responses."
+    severity: medium
+    tags: [api]
+  - id: csharp.api.model_validation
+    text: "Use DataAnnotations or FluentValidation for input validation. Reject invalid models at the boundary."
+    severity: high
+    tags: [validation, security]
+  - id: csharp.api.no_business_in_controllers
+    text: "Controllers must delegate to services immediately. No business logic, no database calls in controllers."
+    severity: high
+    tags: [layering]
+
+service_rules:
+  - id: csharp.svc.interface_injection
+    text: "Define IService interfaces. Register in DI container. Inject via constructor parameters."
+    severity: high
+    tags: [design, testing]
+  - id: csharp.svc.single_responsibility
+    text: "Each service class handles one bounded context or domain aggregate."
+    severity: medium
+    tags: [design]
+  - id: csharp.svc.no_httpcontext
+    text: "Services must not access HttpContext directly. Pass needed values as parameters."
+    severity: high
+    tags: [layering]
+  - id: csharp.svc.async_all_the_way
+    text: "Use async/await consistently through the call stack. Do not mix sync and async calls."
+    severity: high
+    tags: [concurrency]
+
+data_rules:
+  - id: csharp.data.repository_pattern
+    text: "Use repository interfaces for data access. Implement with EF Core or Dapper behind the interface."
+    severity: medium
+    tags: [structure]
+  - id: csharp.data.ef_parameterized
+    text: "Use LINQ queries or parameterized raw SQL. Never use string interpolation for SQL with user input."
+    severity: critical
+    tags: [security, injection]
+  - id: csharp.data.migrations
+    text: "Use EF Core Migrations or a migration tool. Track migration files in version control."
+    severity: high
+    tags: [operations]
+  - id: csharp.data.no_tracking_queries
+    text: "Use AsNoTracking() for read-only queries to improve performance and prevent accidental modifications."
+    severity: medium
+    tags: [performance]
+
+method_rules:
+  - id: csharp.method.nullable_annotations
+    text: "Enable nullable reference types. Annotate nullability explicitly. Treat warnings as errors."
+    severity: high
+    tags: [typing, reliability]
+  - id: csharp.method.naming
+    text: "Use PascalCase for public members, camelCase for private fields with _ prefix. Follow .NET naming guidelines."
+    severity: low
+    tags: [style]
+  - id: csharp.method.records_for_dtos
+    text: "Use record types for immutable DTOs and value objects."
+    severity: medium
+    tags: [design]
+  - id: csharp.method.cancellation_tokens
+    text: "Pass CancellationToken to async methods. Respect cancellation in long-running operations."
+    severity: high
+    tags: [reliability, concurrency]
+
+error_handling_rules:
+  - id: csharp.error.custom_exceptions
+    text: "Define domain-specific exception types. Do not throw base Exception for business errors."
+    severity: medium
+    tags: [design]
+  - id: csharp.error.global_handler
+    text: "Use exception handling middleware for consistent error responses. Do not catch-and-rethrow without adding context."
+    severity: medium
+    tags: [design]
+  - id: csharp.error.no_empty_catch
+    text: "Never leave catch blocks empty. Log, handle, or rethrow with context."
+    severity: high
+    tags: [reliability]
+  - id: csharp.error.result_pattern
+    text: "Consider Result<T> pattern for expected failures instead of exceptions for control flow."
+    severity: medium
+    tags: [design]
+
+logging_rules:
+  - id: csharp.log.ilogger
+    text: "Use ILogger<T> from Microsoft.Extensions.Logging. Use structured log messages with named parameters."
+    severity: medium
+    tags: [observability]
+  - id: csharp.log.no_sensitive
+    text: "Never log secrets, connection strings, tokens, or PII. Use log scrubbing if needed."
+    severity: critical
+    tags: [security, privacy]
+  - id: csharp.log.scopes
+    text: "Use ILogger.BeginScope for request-scoped logging context like correlation IDs."
+    severity: medium
+    tags: [observability]
+
+concurrency_rules:
+  - id: csharp.async.no_async_void
+    text: "Never use async void except for event handlers. Always return Task or Task<T>."
+    severity: high
+    tags: [concurrency]
+  - id: csharp.async.configure_await
+    text: "Use ConfigureAwait(false) in library code. Use ConfigureAwait(true) only in UI code."
+    severity: medium
+    tags: [concurrency]
+  - id: csharp.async.no_blocking
+    text: "Never call .Result or .Wait() on tasks. Use await instead to prevent deadlocks."
+    severity: critical
+    tags: [concurrency, reliability]
+
+testing_rules:
+  - id: csharp.test.xunit_or_nunit
+    text: "Use xUnit or NUnit with FluentAssertions. Use [Theory] for parameterized tests."
+    severity: low
+    tags: [testing]
+  - id: csharp.test.mock_interfaces
+    text: "Mock via interfaces using Moq or NSubstitute. Do not mock concrete classes."
+    severity: medium
+    tags: [testing]
+  - id: csharp.test.webapplicationfactory
+    text: "Use WebApplicationFactory for integration tests. Test real HTTP pipeline."
+    severity: medium
+    tags: [testing]
+  - id: csharp.test.arrange_act_assert
+    text: "Structure tests as Arrange-Act-Assert. One logical assertion per test."
+    severity: low
+    tags: [testing]
+
+security_checklist:
+  - id: csharp.sec.antiforgery
+    text: "Enable anti-forgery tokens for form submissions. Use [ValidateAntiForgeryToken] attribute."
+    severity: high
+    tags: [csrf, web]
+  - id: csharp.sec.output_encoding
+    text: "Use HtmlEncoder, UrlEncoder for dynamic content in views. Razor auto-encodes but be explicit with raw content."
+    severity: high
+    tags: [xss]
+  - id: csharp.sec.secrets_configuration
+    text: "Use Secret Manager for development, Azure Key Vault or environment variables for production. Never appsettings.json for secrets."
+    severity: critical
+    tags: [secrets]
+  - id: csharp.sec.authorization_policies
+    text: "Use policy-based authorization with [Authorize(Policy = \"...\")] rather than role-only checks."
+    severity: high
+    tags: [auth]
+
+anti_patterns:
+  - id: csharp.anti.service_locator
+    text: "ANTI-PATTERN: Using ServiceLocator or manually resolving from IServiceProvider inside services."
+    severity: high
+    tags: [anti-pattern]
+  - id: csharp.anti.static_helpers
+    text: "ANTI-PATTERN: Static helper classes with business logic that cannot be tested in isolation."
+    severity: medium
+    tags: [anti-pattern]
+  - id: csharp.anti.over_abstraction
+    text: "ANTI-PATTERN: Creating IRepository<T>, IService<T>, IHandler<T> for every single entity without genuine reuse."
+    severity: medium
+    tags: [anti-pattern]

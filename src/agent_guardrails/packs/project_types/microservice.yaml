@@ -1,0 +1,136 @@
+id: microservice
+display_name: Microservice
+category: project_type
+priority: 40
+applies_when:
+  project_types: ["microservice"]
+
+architectural_rules:
+  - id: micro.arch.single_domain
+    text: "Each microservice owns exactly one bounded context. If it needs data from another domain, use APIs or events."
+    severity: critical
+    tags: [architecture]
+  - id: micro.arch.independent_deployment
+    text: "Services must be independently deployable. No shared databases, no shared libraries with business logic."
+    severity: critical
+    tags: [architecture, operations]
+  - id: micro.arch.api_contract
+    text: "Define and version API contracts (OpenAPI, Protobuf, AsyncAPI). Changes must be backward-compatible."
+    severity: high
+    tags: [api, reliability]
+  - id: micro.arch.event_driven
+    text: "Use async messaging (events) for cross-service communication where real-time response is not needed."
+    severity: high
+    tags: [architecture, scalability]
+  - id: micro.arch.database_per_service
+    text: "Each service owns its database. No direct database access from other services."
+    severity: critical
+    tags: [architecture, data]
+
+communication_rules:
+  - id: micro.comm.sync_carefully
+    text: "Minimize synchronous inter-service calls. Each sync call adds latency and a failure point."
+    severity: high
+    tags: [reliability, performance]
+  - id: micro.comm.circuit_breaker
+    text: "Implement circuit breakers for all outgoing service calls. Define fallback behavior."
+    severity: high
+    tags: [reliability]
+  - id: micro.comm.timeout_config
+    text: "Configure timeouts for all external calls. No call should wait indefinitely."
+    severity: high
+    tags: [reliability]
+  - id: micro.comm.retry_with_backoff
+    text: "Implement retry with exponential backoff and jitter for transient failures. Cap retry count."
+    severity: high
+    tags: [reliability]
+  - id: micro.comm.idempotent_consumers
+    text: "Message consumers must be idempotent. Process the same message twice without side effects."
+    severity: critical
+    tags: [reliability, events]
+
+observability_rules:
+  - id: micro.obs.distributed_tracing
+    text: "Propagate trace context (W3C Trace Context) across all service boundaries. Every request must be traceable."
+    severity: critical
+    tags: [observability]
+  - id: micro.obs.structured_logs
+    text: "Use structured JSON logs with: service_name, trace_id, span_id, timestamp, level, message."
+    severity: high
+    tags: [observability]
+  - id: micro.obs.sli_slo
+    text: "Define SLIs (latency, error rate, throughput) and SLOs for each service. Monitor and alert on breaches."
+    severity: high
+    tags: [operations]
+  - id: micro.obs.health_probes
+    text: "Implement liveness and readiness probes. Readiness must check critical dependencies."
+    severity: critical
+    tags: [operations]
+
+data_rules:
+  - id: micro.data.eventual_consistency
+    text: "Accept eventual consistency across services. Design for it explicitly with compensation mechanisms."
+    severity: high
+    tags: [data, design]
+  - id: micro.data.saga_pattern
+    text: "Use sagas (choreography or orchestration) for distributed transactions. Implement compensating actions."
+    severity: high
+    tags: [data, reliability]
+  - id: micro.data.event_sourcing_optional
+    text: "Consider event sourcing for services that need full audit trails or complex state transitions."
+    severity: low
+    tags: [data, design]
+  - id: micro.data.schema_evolution
+    text: "Design schemas and messages for forward compatibility. Add fields optionally, never remove required fields."
+    severity: high
+    tags: [api, reliability]
+
+deployment_rules:
+  - id: micro.deploy.containerized
+    text: "Package services as containers. Use multi-stage builds for minimal production images."
+    severity: high
+    tags: [operations]
+  - id: micro.deploy.config_externalized
+    text: "Externalize all configuration. Use environment variables or config services. No config in container images."
+    severity: high
+    tags: [operations, security]
+  - id: micro.deploy.graceful_shutdown
+    text: "Handle SIGTERM: stop accepting new work, finish in-flight requests, close connections, then exit."
+    severity: high
+    tags: [operations, reliability]
+  - id: micro.deploy.rolling_updates
+    text: "Deploy with rolling updates or blue-green. Maintain at least 2 replicas during deployment."
+    severity: high
+    tags: [operations, availability]
+
+security_rules:
+  - id: micro.sec.service_auth
+    text: "Authenticate all inter-service communication. Use mTLS or service tokens."
+    severity: critical
+    tags: [security, auth]
+  - id: micro.sec.least_privilege
+    text: "Each service has minimal permissions. Database user can only access its own schema."
+    severity: high
+    tags: [security]
+  - id: micro.sec.secrets_management
+    text: "Use a secrets manager (Vault, AWS Secrets Manager). Never hardcode secrets or commit them."
+    severity: critical
+    tags: [security]
+  - id: micro.sec.network_policies
+    text: "Define network policies. Services can only communicate with known dependencies."
+    severity: high
+    tags: [security, network]
+
+testing_rules:
+  - id: micro.test.contract_testing
+    text: "Use contract tests (Pact, Spring Cloud Contract) to verify inter-service API compatibility."
+    severity: high
+    tags: [testing]
+  - id: micro.test.integration_in_isolation
+    text: "Integration tests run against the single service with mocked dependencies. Not the full system."
+    severity: medium
+    tags: [testing]
+  - id: micro.test.chaos_engineering
+    text: "Test resilience by injecting failures: network partitions, slow responses, dependency outages."
+    severity: medium
+    tags: [testing, reliability]

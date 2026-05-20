@@ -1,0 +1,131 @@
+id: nextjs
+display_name: Next.js
+category: framework
+priority: 60
+extends_language: typescript
+applies_when:
+  frameworks: ["nextjs"]
+
+folder_layout:
+  - "app/ — App Router pages and layouts (Next.js 13+)"
+  - "app/api/ — API route handlers"
+  - "components/ — reusable UI components"
+  - "lib/ — shared utilities, database clients, auth helpers"
+  - "services/ — server-side business logic"
+  - "types/ — shared TypeScript type definitions"
+  - "middleware.ts — Edge Middleware for auth, redirects"
+  - "public/ — static assets"
+
+validation_approach:
+  - id: nextjs.val.server_validation
+    text: "Always validate on the server side in API routes and Server Actions. Client validation is UX only."
+    severity: critical
+    tags: [validation, security]
+  - id: nextjs.val.zod_schemas
+    text: "Use Zod for runtime validation in API routes and Server Actions. Share schemas between client and server."
+    severity: high
+    tags: [validation]
+  - id: nextjs.val.form_actions
+    text: "Server Actions must validate FormData before processing. Never trust client-submitted data."
+    severity: high
+    tags: [security]
+
+controller_conventions:
+  - id: nextjs.ctrl.route_handlers
+    text: "Use Route Handlers (app/api/) for REST APIs. Export named functions: GET, POST, PUT, DELETE."
+    severity: medium
+    tags: [structure]
+  - id: nextjs.ctrl.server_actions
+    text: "Use Server Actions for form mutations. Mark with 'use server'. Keep them in separate files."
+    severity: medium
+    tags: [structure]
+  - id: nextjs.ctrl.no_business_in_components
+    text: "React components must not contain business logic or direct database calls. Delegate to services."
+    severity: high
+    tags: [layering]
+  - id: nextjs.ctrl.server_components_default
+    text: "Default to Server Components. Only add 'use client' when interactivity is needed."
+    severity: medium
+    tags: [performance]
+  - id: nextjs.ctrl.page_data_fetching
+    text: "Fetch data in Server Components or route segment configs. Do not use useEffect for initial data loads."
+    severity: medium
+    tags: [performance, design]
+
+dependency_injection:
+  - id: nextjs.di.service_modules
+    text: "Create service modules in lib/ or services/. Import them in route handlers and server actions."
+    severity: medium
+    tags: [structure]
+  - id: nextjs.di.database_client
+    text: "Create a singleton database client in lib/db.ts. Do not create connections per request."
+    severity: high
+    tags: [performance, reliability]
+
+error_handling:
+  - id: nextjs.err.error_boundaries
+    text: "Create error.tsx files in route segments for granular error handling. Show user-friendly messages."
+    severity: medium
+    tags: [ux, reliability]
+  - id: nextjs.err.not_found
+    text: "Use notFound() for missing resources. Create not-found.tsx pages for custom 404 experiences."
+    severity: medium
+    tags: [ux]
+  - id: nextjs.err.api_error_responses
+    text: "API routes must return proper HTTP status codes with consistent error response shapes."
+    severity: medium
+    tags: [api]
+  - id: nextjs.err.no_client_error_details
+    text: "Never expose stack traces or internal errors to the client. Log details server-side only."
+    severity: high
+    tags: [security]
+
+auth_patterns:
+  - id: nextjs.auth.middleware_protection
+    text: "Use Edge Middleware for route protection. Check auth tokens before reaching page components."
+    severity: high
+    tags: [auth]
+  - id: nextjs.auth.server_side_check
+    text: "Always verify authentication server-side. Never rely solely on client-side route guards."
+    severity: critical
+    tags: [auth, security]
+  - id: nextjs.auth.session_management
+    text: "Use httpOnly cookies for session tokens. Never store tokens in localStorage."
+    severity: high
+    tags: [auth, security]
+  - id: nextjs.auth.csrf_protection
+    text: "Protect Server Actions and API routes against CSRF. Use Origin header checks or tokens."
+    severity: high
+    tags: [security]
+
+testing_conventions:
+  - id: nextjs.test.component_testing
+    text: "Test components with React Testing Library. Test user interactions, not implementation details."
+    severity: medium
+    tags: [testing]
+  - id: nextjs.test.api_route_testing
+    text: "Test API routes with direct function calls or HTTP test clients. Verify status codes and bodies."
+    severity: medium
+    tags: [testing]
+  - id: nextjs.test.server_action_testing
+    text: "Test Server Actions as regular async functions. Mock database and external services."
+    severity: medium
+    tags: [testing]
+
+anti_patterns:
+  - id: nextjs.anti.client_fetch_waterfall
+    text: "ANTI-PATTERN: Nested useEffect data fetching creating request waterfalls. Use server-side data fetching."
+    severity: high
+    tags: [anti-pattern, performance]
+  - id: nextjs.anti.use_client_everywhere
+    text: "ANTI-PATTERN: Adding 'use client' to every component. Default to Server Components."
+    severity: medium
+    tags: [anti-pattern]
+  - id: nextjs.anti.env_in_client
+    text: "ANTI-PATTERN: Exposing server secrets via NEXT_PUBLIC_ prefix. Only public values use NEXT_PUBLIC_."
+    severity: critical
+    tags: [anti-pattern, security]
+  - id: nextjs.anti.api_routes_for_server_actions
+    text: "ANTI-PATTERN: Creating API routes for simple mutations that Server Actions can handle directly."
+    severity: low
+    tags: [anti-pattern]

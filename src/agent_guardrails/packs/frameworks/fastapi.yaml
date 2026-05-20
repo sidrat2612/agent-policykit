@@ -1,0 +1,125 @@
+id: fastapi
+display_name: FastAPI
+category: framework
+priority: 60
+extends_language: python
+applies_when:
+  frameworks: ["fastapi"]
+
+folder_layout:
+  - "app/ or src/ as root"
+  - "app/api/ — route definitions organized by domain"
+  - "app/api/deps.py — shared FastAPI dependencies"
+  - "app/schemas/ — Pydantic request/response models"
+  - "app/services/ — business logic"
+  - "app/repositories/ — database access"
+  - "app/models/ — SQLAlchemy or ORM models"
+  - "app/core/ — config, security utilities, exceptions"
+  - "app/integrations/ — external service clients"
+  - "app/tasks/ — background tasks and Celery/ARQ jobs"
+
+validation_approach:
+  - id: fastapi.val.pydantic_models
+    text: "Use Pydantic BaseModel for all request and response schemas. Leverage Field validators and model_validator."
+    severity: high
+    tags: [validation]
+  - id: fastapi.val.separate_create_update
+    text: "Define separate schemas for create, update, and response (UserCreate, UserUpdate, UserResponse)."
+    severity: medium
+    tags: [api, design]
+  - id: fastapi.val.no_optional_everything
+    text: "Be explicit about required vs optional fields. Do not make everything Optional by default."
+    severity: medium
+    tags: [typing]
+
+controller_conventions:
+  - id: fastapi.ctrl.router_modules
+    text: "Define routes using APIRouter in separate modules. Include in main app with app.include_router()."
+    severity: medium
+    tags: [structure]
+  - id: fastapi.ctrl.path_operations
+    text: "Use appropriate HTTP methods: GET for reads, POST for creates, PUT/PATCH for updates, DELETE for deletes."
+    severity: medium
+    tags: [api]
+  - id: fastapi.ctrl.status_codes
+    text: "Specify response status codes explicitly: status_code=201 for creation, 204 for no content."
+    severity: medium
+    tags: [api]
+  - id: fastapi.ctrl.dependency_injection
+    text: "Use Depends() for authentication, database sessions, and shared logic. Keep handlers thin."
+    severity: high
+    tags: [design]
+  - id: fastapi.ctrl.no_business_logic
+    text: "Route functions must: parse input → call service → return response. No SQL, no complex logic."
+    severity: high
+    tags: [layering]
+
+dependency_injection:
+  - id: fastapi.di.depends_pattern
+    text: "Use FastAPI's Depends() for injecting database sessions, auth state, and services into routes."
+    severity: high
+    tags: [design]
+  - id: fastapi.di.session_lifecycle
+    text: "Database sessions must be created per-request via a dependency that yields and closes on completion."
+    severity: high
+    tags: [data, reliability]
+  - id: fastapi.di.auth_dependencies
+    text: "Create reusable auth dependencies (get_current_user, require_admin) and compose them."
+    severity: medium
+    tags: [auth]
+
+error_handling:
+  - id: fastapi.err.exception_handlers
+    text: "Register custom exception handlers with @app.exception_handler for domain exceptions."
+    severity: medium
+    tags: [design]
+  - id: fastapi.err.http_exceptions
+    text: "Use HTTPException for known error responses. Include detail messages for debugging."
+    severity: medium
+    tags: [api]
+  - id: fastapi.err.no_500_leaks
+    text: "Unhandled exceptions must return generic 500 responses. Never expose tracebacks to clients."
+    severity: high
+    tags: [security]
+
+auth_patterns:
+  - id: fastapi.auth.oauth2_scheme
+    text: "Use OAuth2PasswordBearer or HTTPBearer security scheme. Document in OpenAPI."
+    severity: medium
+    tags: [auth]
+  - id: fastapi.auth.jwt_validation
+    text: "Validate JWT tokens in a dependency. Check signature, expiry, issuer, and required claims."
+    severity: critical
+    tags: [auth, security]
+  - id: fastapi.auth.permission_checks
+    text: "Implement permission checks in dependencies or service layer. Do not scatter auth logic across routes."
+    severity: high
+    tags: [auth]
+
+testing_conventions:
+  - id: fastapi.test.test_client
+    text: "Use httpx.AsyncClient with ASGITransport for testing async FastAPI apps. Avoid deprecated TestClient for async."
+    severity: medium
+    tags: [testing]
+  - id: fastapi.test.dependency_overrides
+    text: "Use app.dependency_overrides to inject test doubles for database, auth, and external services."
+    severity: medium
+    tags: [testing]
+  - id: fastapi.test.test_validation
+    text: "Test that invalid payloads return 422 with clear error messages."
+    severity: medium
+    tags: [testing, validation]
+
+anti_patterns:
+  - id: fastapi.anti.global_db_session
+    text: "ANTI-PATTERN: Module-level database session. Always use request-scoped sessions via dependencies."
+    severity: critical
+    tags: [anti-pattern]
+  - id: fastapi.anti.sync_in_async
+    text: "ANTI-PATTERN: Calling synchronous blocking I/O in async route handlers without run_in_executor."
+    severity: high
+    tags: [anti-pattern]
+  - id: fastapi.anti.giant_main
+    text: "ANTI-PATTERN: All routes defined in a single main.py file. Split into domain-specific router modules."
+    severity: medium
+    tags: [anti-pattern]

@@ -1,0 +1,114 @@
+id: web_app
+display_name: Web Application
+category: project_type
+priority: 40
+applies_when:
+  project_types: ["web_app"]
+
+architectural_rules:
+  - id: webapp.arch.separation
+    text: "Separate frontend rendering from backend API logic. Use API routes or BFF pattern for data access."
+    severity: high
+    tags: [architecture]
+  - id: webapp.arch.component_structure
+    text: "Organize components by feature or domain. Place shared/reusable components in a components/shared/ directory."
+    severity: medium
+    tags: [structure]
+  - id: webapp.arch.state_management
+    text: "Co-locate state with components that use it. Lift to server-side state or global store only when necessary."
+    severity: medium
+    tags: [design]
+
+frontend_rules:
+  - id: webapp.fe.accessibility
+    text: "All interactive elements must be keyboard accessible. Use semantic HTML and ARIA attributes where needed."
+    severity: high
+    tags: [accessibility, ux]
+  - id: webapp.fe.responsive_design
+    text: "Support mobile, tablet, and desktop viewports. Use responsive design patterns, not separate mobile sites."
+    severity: high
+    tags: [ux]
+  - id: webapp.fe.performance_budget
+    text: "Keep initial bundle under 200KB gzipped. Use code splitting, lazy loading, and tree shaking."
+    severity: high
+    tags: [performance]
+  - id: webapp.fe.xss_prevention
+    text: "Never use dangerouslySetInnerHTML or equivalent without sanitization. Framework auto-escaping must remain enabled."
+    severity: critical
+    tags: [security, xss]
+  - id: webapp.fe.no_secrets_client
+    text: "Never include API keys, secrets, or internal URLs in client-side bundles."
+    severity: critical
+    tags: [security]
+  - id: webapp.fe.error_states
+    text: "Every data-loading component must handle loading, error, and empty states explicitly."
+    severity: medium
+    tags: [ux, reliability]
+
+auth_rules:
+  - id: webapp.auth.httponly_cookies
+    text: "Store session tokens in httpOnly, Secure, SameSite cookies. Never in localStorage or sessionStorage."
+    severity: critical
+    tags: [auth, security]
+  - id: webapp.auth.csrf_protection
+    text: "Protect state-changing operations with CSRF tokens or SameSite cookie attribute."
+    severity: high
+    tags: [security]
+  - id: webapp.auth.session_timeout
+    text: "Implement session timeout and idle timeout. Prompt re-authentication after inactivity."
+    severity: medium
+    tags: [auth, security]
+  - id: webapp.auth.logout_cleanup
+    text: "On logout, invalidate server-side session, clear cookies, and redirect to login."
+    severity: high
+    tags: [auth]
+
+data_fetching_rules:
+  - id: webapp.data.server_side_preferred
+    text: "Prefer server-side data fetching (SSR, RSC, getServerSideProps). Client-side fetch only for interactive updates."
+    severity: medium
+    tags: [performance, design]
+  - id: webapp.data.loading_states
+    text: "Show loading indicators for async operations. Use skeleton screens over spinners for page loads."
+    severity: medium
+    tags: [ux]
+  - id: webapp.data.optimistic_updates
+    text: "Use optimistic updates for user mutations to reduce perceived latency. Reconcile on server response."
+    severity: low
+    tags: [ux, performance]
+  - id: webapp.data.cache_strategy
+    text: "Implement appropriate caching: stale-while-revalidate for lists, cache-first for static content."
+    severity: medium
+    tags: [performance]
+
+operational_rules:
+  - id: webapp.ops.csp_headers
+    text: "Set Content-Security-Policy headers. Restrict script-src, style-src, and connect-src to known origins."
+    severity: high
+    tags: [security]
+  - id: webapp.ops.error_monitoring
+    text: "Integrate client-side error monitoring (Sentry, Bugsnag). Capture unhandled errors and rejections."
+    severity: high
+    tags: [observability]
+  - id: webapp.ops.analytics_consent
+    text: "Implement analytics only with user consent. Respect Do Not Track and privacy regulations."
+    severity: high
+    tags: [privacy, compliance]
+  - id: webapp.ops.cdn_assets
+    text: "Serve static assets through a CDN with cache-busting filenames (hash-based)."
+    severity: medium
+    tags: [performance]
+
+testing_rules:
+  - id: webapp.test.user_flows
+    text: "Write end-to-end tests for critical user flows: login, checkout, signup, key CRUD operations."
+    severity: high
+    tags: [testing]
+  - id: webapp.test.visual_regression
+    text: "Use visual regression testing for key pages to catch unintended UI changes."
+    severity: medium
+    tags: [testing]
+  - id: webapp.test.accessibility_tests
+    text: "Include automated accessibility checks (axe-core) in CI pipeline."
+    severity: medium
+    tags: [testing, accessibility]

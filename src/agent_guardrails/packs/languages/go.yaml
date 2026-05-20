@@ -1,0 +1,190 @@
+id: go
+display_name: Go
+category: language
+priority: 50
+applies_when:
+  languages: ["go"]
+
+structure:
+  source_roots: ["cmd", "internal", "pkg"]
+  tests_root: ["*_test.go files alongside source"]
+  preferred_layers:
+    - cmd
+    - internal/handler
+    - internal/service
+    - internal/repository
+    - internal/model
+    - internal/middleware
+    - pkg
+
+api_rules:
+  - id: go.api.handler_functions
+    text: "HTTP handlers should be functions or methods on a handler struct. Inject dependencies via struct fields."
+    severity: medium
+    tags: [structure]
+  - id: go.api.validate_input
+    text: "Validate all request input immediately in the handler. Return 400 with clear error messages for invalid input."
+    severity: high
+    tags: [validation, security]
+  - id: go.api.no_business_logic
+    text: "Handlers must not contain business logic. Decode request, call service, encode response."
+    severity: high
+    tags: [layering]
+  - id: go.api.context_propagation
+    text: "Pass context.Context as the first parameter. Use it for cancellation, timeouts, and request-scoped values."
+    severity: high
+    tags: [reliability, concurrency]
+
+service_rules:
+  - id: go.svc.interface_defined
+    text: "Define small interfaces at the consumer site (where they are used), not at the implementation site."
+    severity: medium
+    tags: [design]
+  - id: go.svc.no_http_imports
+    text: "Service packages must not import net/http. They operate on domain types only."
+    severity: high
+    tags: [layering]
+  - id: go.svc.explicit_errors
+    text: "Return explicit error values. Do not panic for recoverable errors."
+    severity: high
+    tags: [reliability]
+  - id: go.svc.struct_injection
+    text: "Inject dependencies as struct fields. Construct fully-wired services in main or a wire function."
+    severity: medium
+    tags: [design, testing]
+
+data_rules:
+  - id: go.data.repository_interface
+    text: "Define repository interfaces in the service package. Implement in a separate package (e.g., internal/postgres)."
+    severity: medium
+    tags: [structure, testing]
+  - id: go.data.prepared_statements
+    text: "Use parameterized queries or prepared statements. Never fmt.Sprintf user input into SQL."
+    severity: critical
+    tags: [security, injection]
+  - id: go.data.scan_errors
+    text: "Always check errors from database Scan, Exec, and Query operations."
+    severity: high
+    tags: [reliability]
+  - id: go.data.connection_pooling
+    text: "Configure connection pool limits (MaxOpenConns, MaxIdleConns, ConnMaxLifetime)."
+    severity: medium
+    tags: [reliability, performance]
+
+method_rules:
+  - id: go.method.error_first
+    text: "Return (result, error) tuple. Check errors immediately. Do not ignore returned errors."
+    severity: critical
+    tags: [reliability]
+  - id: go.method.short_functions
+    text: "Functions should be short and focused. Extract complex logic into well-named helper functions."
+    severity: medium
+    tags: [readability]
+  - id: go.method.receiver_naming
+    text: "Use short, consistent receiver names (1-2 chars). Do not use 'this' or 'self'."
+    severity: low
+    tags: [style]
+  - id: go.method.exported_documented
+    text: "All exported functions, types, and methods must have godoc comments starting with the name."
+    severity: medium
+    tags: [documentation]
+  - id: go.method.accept_interfaces_return_structs
+    text: "Accept interfaces as parameters, return concrete types. Keep interfaces small."
+    severity: medium
+    tags: [design]
+
+error_handling_rules:
+  - id: go.error.wrap_context
+    text: "Wrap errors with context using fmt.Errorf(\"%w\", err) or errors.Join. Include what operation failed."
+    severity: high
+    tags: [debugging]
+  - id: go.error.no_ignore
+    text: "Never assign errors to _ unless explicitly justified with a comment explaining why."
+    severity: high
+    tags: [reliability]
+  - id: go.error.sentinel_errors
+    text: "Define package-level sentinel errors for expected conditions. Use errors.Is() for comparison."
+    severity: medium
+    tags: [design]
+  - id: go.error.no_panic
+    text: "Do not panic in library code. Reserve panic for truly unrecoverable programmer errors."
+    severity: high
+    tags: [reliability]
+
+logging_rules:
+  - id: go.log.structured
+    text: "Use structured logging (slog, zerolog, or zap). Include key-value context, not formatted strings."
+    severity: medium
+    tags: [observability]
+  - id: go.log.no_sensitive
+    text: "Never log secrets, tokens, or PII. Redact sensitive fields before logging."
+    severity: critical
+    tags: [security, privacy]
+  - id: go.log.request_context
+    text: "Extract logger from context in HTTP handlers to include request-scoped fields automatically."
+    severity: medium
+    tags: [observability]
+
+concurrency_rules:
+  - id: go.conc.goroutine_lifecycle
+    text: "Every goroutine must have a clear shutdown path. Use context cancellation or done channels."
+    severity: high
+    tags: [concurrency, reliability]
+  - id: go.conc.no_goroutine_leak
+    text: "Goroutines must not outlive their parent scope unless explicitly managed by a lifecycle controller."
+    severity: high
+    tags: [concurrency]
+  - id: go.conc.race_detector
+    text: "Run tests with -race flag in CI. Fix all data races."
+    severity: high
+    tags: [concurrency, testing]
+  - id: go.conc.channel_direction
+    text: "Declare channel direction in function parameters (chan<- T, <-chan T) to prevent misuse."
+    severity: low
+    tags: [design]
+
+testing_rules:
+  - id: go.test.table_driven
+    text: "Use table-driven tests for functions with multiple input/output combinations."
+    severity: medium
+    tags: [testing]
+  - id: go.test.testify_or_stdlib
+    text: "Use standard library testing or testify. Keep test dependencies minimal."
+    severity: low
+    tags: [testing]
+  - id: go.test.parallel
+    text: "Mark independent tests with t.Parallel() to improve test suite speed."
+    severity: low
+    tags: [testing, performance]
+  - id: go.test.integration_build_tag
+    text: "Use build tags (//go:build integration) to separate integration tests from unit tests."
+    severity: medium
+    tags: [testing, organization]
+
+security_checklist:
+  - id: go.sec.no_unsafe
+    text: "Do not use unsafe package unless absolutely necessary and thoroughly reviewed."
+    severity: high
+    tags: [security]
+  - id: go.sec.tls_config
+    text: "Configure TLS with minimum version TLS 1.2. Do not disable certificate verification."
+    severity: high
+    tags: [transport]
+  - id: go.sec.input_bounds
+    text: "Limit request body sizes, file upload sizes, and slice allocations to prevent resource exhaustion."
+    severity: high
+    tags: [dos, security]
+
+anti_patterns:
+  - id: go.anti.init_abuse
+    text: "ANTI-PATTERN: Heavy logic in init() functions. Prefer explicit initialization in main()."
+    severity: medium
+    tags: [anti-pattern]
+  - id: go.anti.package_level_state
+    text: "ANTI-PATTERN: Package-level mutable variables. Use dependency injection instead."
+    severity: high
+    tags: [anti-pattern]
+  - id: go.anti.interface_bloat
+    text: "ANTI-PATTERN: Interfaces with 10+ methods. Keep interfaces small and focused."
+    severity: medium
+    tags: [anti-pattern]
