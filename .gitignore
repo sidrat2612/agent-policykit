@@ -38,3 +38,7 @@ Thumbs.db
 # Distribution
 *.whl
 *.tar.gz
+
+tracely360-out/cache
+tracely360-out/.tracely360_uncached.txt
+tracely360-out/.tracely360_python

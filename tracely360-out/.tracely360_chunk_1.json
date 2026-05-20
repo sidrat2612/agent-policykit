@@ -1,0 +1,1071 @@
+{
+  "nodes": [
+    {
+      "id": "project_agent_policykit",
+      "label": "agent-policykit",
+      "file_type": "document",
+      "source_file": "README.md"
+    },
+    {
+      "id": "pkg_agent_policykit",
+      "label": "agent_policykit",
+      "file_type": "code",
+      "source_file": "README.md"
+    },
+    {
+      "id": "cli_agent_policykit",
+      "label": "agent-policykit CLI",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "concept_policy_bundle",
+      "label": "PolicyBundle",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "concept_canonical_policy_model",
+      "label": "Canonical Policy Model",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "rule_governance",
+      "label": "Governance Rules",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "rule_security",
+      "label": "Security Rules",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "rule_compliance",
+      "label": "Compliance Rules",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "rule_architecture",
+      "label": "Architecture Rules",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "rule_review",
+      "label": "Review Rules",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "rule_testing",
+      "label": "Testing Rules",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "rule_operations",
+      "label": "Operations Rules",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "rule_language",
+      "label": "Language Rules",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "rule_framework",
+      "label": "Framework Rules",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "rule_project_type",
+      "label": "Project Type Rules",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "module_core_loader",
+      "label": "core.loader",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "module_core_merger",
+      "label": "core.merger",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "module_core_validator",
+      "label": "core.validator",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "module_core_renderer",
+      "label": "core.renderer",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "module_core_diff_engine",
+      "label": "core.diff_engine",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "module_core_update_engine",
+      "label": "core.update_engine",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "module_core_policy_engine",
+      "label": "core.policy_engine",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "analyzer_repo_detector",
+      "label": "analysis.repo_detector",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "analyzer_language_detector",
+      "label": "analysis.language_detector",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "analyzer_framework_detector",
+      "label": "analysis.framework_detector",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "analyzer_project_type_detector",
+      "label": "analysis.project_type_detector",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "analyzer_path_selector",
+      "label": "analysis.path_selector",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "pack_governance",
+      "label": "Governance Pack",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "adapter_copilot_repo",
+      "label": "GitHub Copilot (repo-wide)",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "adapter_copilot_path",
+      "label": "GitHub Copilot (path-specific)",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "adapter_agents_md",
+      "label": "AGENTS.md",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "adapter_cursor",
+      "label": "Cursor",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "adapter_claude_code",
+      "label": "Claude Code",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "adapter_aider",
+      "label": "Aider",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "adapter_codex",
+      "label": "OpenAI Codex",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "adapter_gemini_cli",
+      "label": "Gemini CLI",
+      "file_type": "code",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "lang_python",
+      "label": "Python",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "lang_javascript",
+      "label": "JavaScript",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "lang_typescript",
+      "label": "TypeScript",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "lang_java",
+      "label": "Java",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "lang_go",
+      "label": "Go",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "lang_csharp",
+      "label": "C#",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "lang_php",
+      "label": "PHP",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "lang_ruby",
+      "label": "Ruby",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "lang_rust",
+      "label": "Rust",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "framework_fastapi",
+      "label": "FastAPI",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "framework_django",
+      "label": "Django",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "framework_flask",
+      "label": "Flask",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "framework_express",
+      "label": "Express",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "framework_nestjs",
+      "label": "NestJS",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "framework_nextjs",
+      "label": "Next.js",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "framework_spring_boot",
+      "label": "Spring Boot",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "framework_aspnet",
+      "label": "ASP.NET",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "framework_laravel",
+      "label": "Laravel",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "framework_rails",
+      "label": "Rails",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "ptype_api_service",
+      "label": "API Service",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "ptype_web_app",
+      "label": "Web App",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "ptype_mobile_app",
+      "label": "Mobile App",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "ptype_worker",
+      "label": "Worker",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "ptype_cli_tool",
+      "label": "CLI Tool",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "ptype_sdk",
+      "label": "SDK",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "ptype_microservice",
+      "label": "Microservice",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "ptype_monolith",
+      "label": "Monolith",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "ptype_data_pipeline",
+      "label": "Data Pipeline",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "concept_review_mode",
+      "label": "Review Mode",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "concept_update_merge",
+      "label": "Update and Merge Behavior",
+      "file_type": "document",
+      "source_file": "project-details.md"
+    }
+  ],
+  "edges": [
+    {
+      "source": "project_agent_policykit",
+      "target": "pkg_agent_policykit",
+      "relation": "implements as",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "cli_agent_policykit",
+      "relation": "provides command-line interface",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "concept_canonical_policy_model",
+      "relation": "centers on",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "concept_canonical_policy_model",
+      "target": "concept_policy_bundle",
+      "relation": "uses data structure",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "concept_policy_bundle",
+      "target": "rule_governance",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "concept_policy_bundle",
+      "target": "rule_security",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "concept_policy_bundle",
+      "target": "rule_compliance",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "concept_policy_bundle",
+      "target": "rule_architecture",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "concept_policy_bundle",
+      "target": "rule_review",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "concept_policy_bundle",
+      "target": "rule_testing",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "concept_policy_bundle",
+      "target": "rule_operations",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "concept_policy_bundle",
+      "target": "rule_language",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "concept_policy_bundle",
+      "target": "rule_framework",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "concept_policy_bundle",
+      "target": "rule_project_type",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "pkg_agent_policykit",
+      "target": "module_core_loader",
+      "relation": "includes module",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "pkg_agent_policykit",
+      "target": "module_core_merger",
+      "relation": "includes module",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "pkg_agent_policykit",
+      "target": "module_core_validator",
+      "relation": "includes module",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "pkg_agent_policykit",
+      "target": "module_core_renderer",
+      "relation": "includes module",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "pkg_agent_policykit",
+      "target": "module_core_diff_engine",
+      "relation": "includes module",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "pkg_agent_policykit",
+      "target": "module_core_update_engine",
+      "relation": "includes module",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "pkg_agent_policykit",
+      "target": "module_core_policy_engine",
+      "relation": "includes module",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "pkg_agent_policykit",
+      "target": "analyzer_repo_detector",
+      "relation": "includes analyzer",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "pkg_agent_policykit",
+      "target": "analyzer_language_detector",
+      "relation": "includes analyzer",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "pkg_agent_policykit",
+      "target": "analyzer_framework_detector",
+      "relation": "includes analyzer",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "pkg_agent_policykit",
+      "target": "analyzer_project_type_detector",
+      "relation": "includes analyzer",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "pkg_agent_policykit",
+      "target": "analyzer_path_selector",
+      "relation": "includes analyzer",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "pkg_agent_policykit",
+      "target": "pack_governance",
+      "relation": "loads pack",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "module_core_loader",
+      "target": "concept_policy_bundle",
+      "relation": "loads",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "module_core_merger",
+      "target": "concept_policy_bundle",
+      "relation": "merges",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "module_core_validator",
+      "target": "concept_policy_bundle",
+      "relation": "validates",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "module_core_renderer",
+      "target": "adapter_copilot_repo",
+      "relation": "renders for",
+      "confidence": "INFERRED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "module_core_renderer",
+      "target": "adapter_copilot_path",
+      "relation": "renders for",
+      "confidence": "INFERRED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "module_core_renderer",
+      "target": "adapter_agents_md",
+      "relation": "renders for",
+      "confidence": "INFERRED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "module_core_diff_engine",
+      "target": "concept_update_merge",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "module_core_update_engine",
+      "target": "concept_update_merge",
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "adapter_copilot_repo",
+      "relation": "targets agent",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "adapter_copilot_path",
+      "relation": "targets agent",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "adapter_agents_md",
+      "relation": "targets format",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "adapter_cursor",
+      "relation": "targets agent",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "adapter_claude_code",
+      "relation": "targets agent",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "adapter_aider",
+      "relation": "targets agent",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "adapter_codex",
+      "relation": "targets agent",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "adapter_gemini_cli",
+      "relation": "targets agent",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "adapter_copilot_repo",
+      "target": "adapter_copilot_path",
+      "relation": "tier-1 alongside",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "lang_python",
+      "relation": "supports language",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "lang_javascript",
+      "relation": "supports language",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "lang_typescript",
+      "relation": "supports language",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "lang_java",
+      "relation": "supports language",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "lang_go",
+      "relation": "supports language",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "lang_csharp",
+      "relation": "supports language",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "lang_php",
+      "relation": "supports language",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "lang_ruby",
+      "relation": "supports language",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "lang_rust",
+      "relation": "supports language",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "framework_fastapi",
+      "relation": "supports framework",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "framework_django",
+      "relation": "supports framework",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "framework_flask",
+      "relation": "supports framework",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "framework_express",
+      "relation": "supports framework",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "framework_nestjs",
+      "relation": "supports framework",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "framework_nextjs",
+      "relation": "supports framework",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "framework_spring_boot",
+      "relation": "supports framework",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "framework_aspnet",
+      "relation": "supports framework",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "framework_laravel",
+      "relation": "supports framework",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "framework_rails",
+      "relation": "supports framework",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "ptype_api_service",
+      "relation": "supports project type",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "ptype_web_app",
+      "relation": "supports project type",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "ptype_mobile_app",
+      "relation": "supports project type",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "ptype_worker",
+      "relation": "supports project type",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "ptype_cli_tool",
+      "relation": "supports project type",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "ptype_sdk",
+      "relation": "supports project type",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "ptype_microservice",
+      "relation": "supports project type",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "ptype_monolith",
+      "relation": "supports project type",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "ptype_data_pipeline",
+      "relation": "supports project type",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "project_agent_policykit",
+      "target": "concept_review_mode",
+      "relation": "supports mode",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md"
+    },
+    {
+      "source": "lang_python",
+      "target": "framework_fastapi",
+      "relation": "compatible with",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "lang_python",
+      "target": "framework_django",
+      "relation": "compatible with",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "lang_python",
+      "target": "framework_flask",
+      "relation": "compatible with",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "lang_javascript",
+      "target": "framework_express",
+      "relation": "compatible with",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "lang_typescript",
+      "target": "framework_nestjs",
+      "relation": "compatible with",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    },
+    {
+      "source": "lang_javascript",
+      "target": "framework_nextjs",
+      "relation": "compatible with",
+      "confidence": "EXTRACTED",
+      "source_file": "project-details.md"
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "group_languages",
+      "label": "Supported Languages",
+      "nodes": [
+        "lang_python",
+        "lang_javascript",
+        "lang_typescript",
+        "lang_java",
+        "lang_go",
+        "lang_csharp",
+        "lang_php",
+        "lang_ruby",
+        "lang_rust"
+      ],
+      "relation": "language_pack_family",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "group_frameworks",
+      "label": "Supported Frameworks",
+      "nodes": [
+        "framework_fastapi",
+        "framework_django",
+        "framework_flask",
+        "framework_express",
+        "framework_nestjs",
+        "framework_nextjs",
+        "framework_spring_boot",
+        "framework_aspnet",
+        "framework_laravel",
+        "framework_rails"
+      ],
+      "relation": "framework_pack_family",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "group_project_types",
+      "label": "Supported Project Types",
+      "nodes": [
+        "ptype_api_service",
+        "ptype_web_app",
+        "ptype_mobile_app",
+        "ptype_worker",
+        "ptype_cli_tool",
+        "ptype_sdk",
+        "ptype_microservice",
+        "ptype_monolith",
+        "ptype_data_pipeline"
+      ],
+      "relation": "project_type_pack_family",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "group_rule_types",
+      "label": "Rule Categories",
+      "nodes": [
+        "rule_governance",
+        "rule_security",
+        "rule_compliance",
+        "rule_architecture",
+        "rule_review",
+        "rule_testing",
+        "rule_operations",
+        "rule_language",
+        "rule_framework",
+        "rule_project_type"
+      ],
+      "relation": "rule_family",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "group_core_modules",
+      "label": "Core Engine Modules",
+      "nodes": [
+        "module_core_loader",
+        "module_core_merger",
+        "module_core_validator",
+        "module_core_renderer",
+        "module_core_diff_engine",
+        "module_core_update_engine",
+        "module_core_policy_engine"
+      ],
+      "relation": "engine_component_family",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "group_analysis_modules",
+      "label": "Analysis and Detection Modules",
+      "nodes": [
+        "analyzer_repo_detector",
+        "analyzer_language_detector",
+        "analyzer_framework_detector",
+        "analyzer_project_type_detector",
+        "analyzer_path_selector"
+      ],
+      "relation": "analyzer_family",
+      "source_file": "project-details.md"
+    },
+    {
+      "id": "group_tier1_adapters",
+      "label": "Tier 1 Agent Adapters",
+      "nodes": [
+        "adapter_copilot_repo",
+        "adapter_copilot_path",
+        "adapter_agents_md",
+        "adapter_cursor",
+        "adapter_claude_code",
+        "adapter_aider",
+        "adapter_codex",
+        "adapter_gemini_cli"
+      ],
+      "relation": "first_class_adapter_family",
+      "source_file": "project-details.md"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "files": {
+    "code": [
+      "tests/test_loader.py",
+      "tests/test_analysis.py",
+      "tests/test_merger.py",
+      "tests/test_adapters.py",
+      "tests/test_validator.py",
+      "tests/test_diff_update.py",
+      "src/agent_policykit/config.py",
+      "src/agent_policykit/__init__.py",
+      "src/agent_policykit/types.py",
+      "src/agent_policykit/cli.py",
+      "src/agent_policykit/core/validator.py",
+      "src/agent_policykit/core/diff_engine.py",
+      "src/agent_policykit/core/update_engine.py",
+      "src/agent_policykit/core/policy_engine.py",
+      "src/agent_policykit/core/models.py",
+      "src/agent_policykit/core/renderer.py",
+      "src/agent_policykit/core/__init__.py",
+      "src/agent_policykit/core/loader.py",
+      "src/agent_policykit/core/merger.py",
+      "src/agent_policykit/analysis/detector.py",
+      "src/agent_policykit/analysis/project_type_detector.py",
+      "src/agent_policykit/analysis/__init__.py",
+      "src/agent_policykit/analysis/framework_detector.py",
+      "src/agent_policykit/analysis/language_detector.py",
+      "src/agent_policykit/adapters/copilot_repo.py",
+      "src/agent_policykit/adapters/codex.py",
+      "src/agent_policykit/adapters/copilot_path.py",
+      "src/agent_policykit/adapters/__init__.py",
+      "src/agent_policykit/adapters/aider.py",
+      "src/agent_policykit/adapters/agents_md.py",
+      "src/agent_policykit/adapters/gemini_cli.py",
+      "src/agent_policykit/adapters/claude_code.py",
+      "src/agent_policykit/adapters/cursor.py"
+    ],
+    "document": [
+      "project-details.md",
+      "README.md"
+    ],
+    "paper": [],
+    "image": [],
+    "video": []
+  },
+  "total_files": 35,
+  "total_words": 12361,
+  "needs_graph": false,
+  "warning": "Corpus is ~12,361 words - fits in a single context window. You may not need a graph.",
+  "skipped_sensitive": [],
+  "tracely360ignore_patterns": 0
+}
