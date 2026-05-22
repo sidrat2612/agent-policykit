@@ -381,6 +381,10 @@ Development setup:
 
 [MIT](LICENSE) — use it anywhere.
 
+## Appreciation
+
+Special thanks to my good friend Arijeet Ganguli for taking the ideas behind `agent-policykit`, which is primarily focused on solo developers and small teams, and building an enhanced enterprise-oriented version for larger governance and control-plane needs: [Agent Guard](https://github.com/arijeetganguli/agent-gaurd).
+
 ---
 
 <p align="center">
